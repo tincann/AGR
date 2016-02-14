@@ -8,24 +8,25 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace Template {
-
-class Game
+namespace Template
 {
-	public Surface screen;
-	public void Init()
-	{
-		screen.Clear( 0x2222ff );
-	}
-	public void Tick()
-	{
-		screen.Print( "hello world!", 2, 2, 0xffffff );
-	}
-	public void Render()
-	{
-		// render stuff over the backbuffer (OpenGL, sprites)
-        
-	}
-}
+    internal class Game
+    {
+        public Surface Screen;
 
+        public void Init()
+        {
+            Screen.Clear(0x2222ff);
+        }
+
+        public void Tick()
+        {
+            Screen.Print("hello world!", 2, 2, 0xffffff);
+        }
+
+        public void Render()
+        {
+            // render stuff over the backbuffer (OpenGL, sprites)
+        }
+    }
 } // namespace Template
