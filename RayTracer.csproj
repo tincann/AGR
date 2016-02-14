@@ -49,8 +49,9 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="World\LightSource.cs" />
-    <Compile Include="World\Material.cs" />
-    <Compile Include="World\Primitive.cs" />
+    <Compile Include="World\MaterialType.cs" />
+    <Compile Include="World\Objects\Primitive.cs" />
+    <Compile Include="World\Objects\Triangle.cs" />
     <Compile Include="World\Ray.cs" />
     <Compile Include="World\Scene.cs" />
     <Compile Include="Surface.cs" />

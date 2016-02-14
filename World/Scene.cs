@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RayTracer.World.Objects;
 
 namespace RayTracer.World
 {
