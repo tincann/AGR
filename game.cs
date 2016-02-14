@@ -7,7 +7,7 @@ namespace RayTracer
 {
     internal class Game
     {
-        private Camera _camera = new Camera(Vector3.Zero, Vector3.UnitZ, 75);
+        private readonly Camera _camera = new Camera(Vector3.Zero, Vector3.UnitZ, 75);
         private readonly Scene _scene = new Scene();
         public Surface Screen;
 
@@ -32,11 +32,19 @@ namespace RayTracer
         public void Render()
         {
             // render stuff over the backbuffer (OpenGL, sprites)
-            for (int i = 0; i < Screen.Pixels.Length; i++)
+            for (int y = 0; y < Screen.Height; y++)
             {
-                
+                float v = (float) y/Screen.Height;
+                for (int x = 0; x < Screen.Width; x++)
+                {
+                    float u = (float) x/Screen.Width;
+                    var ray = _camera.CreatePrimaryRay(u, v);
+
+                    var color = _scene.Intersect(ray);
+                    Screen.Plot(x, y, color.ToArgb());
+                }
             }
             
         }
     }
-} // namespace Template
+}

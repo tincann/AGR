@@ -36,7 +36,7 @@ namespace RayTracer
             _e2 = p2 - _p0;
         }
 
-        public Ray GetRay(float u, float v)
+        public Ray CreatePrimaryRay(float u, float v)
         {
             var p = _p0 + u*_e1 + v*_e2;
             p.Normalize();

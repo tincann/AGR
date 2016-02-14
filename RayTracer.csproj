@@ -48,8 +48,10 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="World\Intersection.cs" />
     <Compile Include="World\LightSource.cs" />
     <Compile Include="World\MaterialType.cs" />
+    <Compile Include="World\Objects\Background.cs" />
     <Compile Include="World\Objects\Primitive.cs" />
     <Compile Include="World\Objects\Triangle.cs" />
     <Compile Include="World\Ray.cs" />

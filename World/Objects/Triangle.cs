@@ -22,7 +22,7 @@ namespace RayTracer.World.Objects
         //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
         public override bool Intersect(Ray ray, out float t)
         {
-            t = 0;
+            t = float.MaxValue;
             var P = Vector3.Cross(ray.Direction, _e2);
 
             var det = Vector3.Dot(_e1, P);
