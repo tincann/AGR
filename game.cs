@@ -1,18 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
+﻿using RayTracer.World;
 
-namespace Template
+namespace RayTracer
 {
     internal class Game
     {
         public Surface Screen;
+        public Camera Camera;
+        public Scene Scene;
 
         public void Init()
         {
