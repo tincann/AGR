@@ -52,7 +52,7 @@ namespace RayTracer.World.Objects
             var v = Vector3.Dot(ray.Direction, Q)*invDet;
 
             //if it lies outside the triangle
-            if (v < 0 || v > 1)
+            if (v < 0 || u + v > 1)
             {
                 return false;
             }
