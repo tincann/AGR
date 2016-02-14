@@ -3,7 +3,7 @@ using OpenTK.Graphics;
 
 namespace RayTracer.World.Objects
 {
-    public abstract class Primitive
+    public abstract class Primitive : Intersectable
     {
         public MaterialType MaterialType { get; set; }
         public Color4 Color { get; set; }
@@ -14,6 +14,6 @@ namespace RayTracer.World.Objects
             Color = color;
         }
 
-        public abstract bool Intersect(Ray ray, out float t);
+        public abstract bool Intersect(Ray ray, out Intersection intersection);
     }
 }

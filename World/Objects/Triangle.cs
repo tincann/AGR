@@ -20,9 +20,10 @@ namespace RayTracer.World.Objects
         }
 
         //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-        public override bool Intersect(Ray ray, out float t)
+        public override bool Intersect(Ray ray, out Intersection intersection)
         {
-            t = float.MaxValue;
+            intersection = null;
+
             var P = Vector3.Cross(ray.Direction, _e2);
 
             var det = Vector3.Dot(_e1, P);
@@ -58,10 +59,11 @@ namespace RayTracer.World.Objects
             }
 
             //t parameter of ray
-            t = Vector3.Dot(_e2, Q)*invDet;
+            float t = Vector3.Dot(_e2, Q)*invDet;
 
             if (t > float.Epsilon)
             {
+                intersection = new Intersection(t * ray.Direction, t, MaterialType, Color);
                 return true;
             }
 

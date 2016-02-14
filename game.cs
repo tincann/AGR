@@ -22,6 +22,9 @@ namespace RayTracer
                 MaterialType.Diffuse,
                 Color4.Aqua
                 ));
+
+            var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj");
+            //_scene.Objects.Add(teapot);
         }
 
         public void Tick()
@@ -44,7 +47,6 @@ namespace RayTracer
                     Screen.Plot(x, y, color.ToArgb());
                 }
             }
-            
         }
     }
 }

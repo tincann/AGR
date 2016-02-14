@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer", "RayTracer.csproj", "{9354EB6E-D674-4763-A589-3631FABE7654}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjParser", "ObjParser\ObjParser.csproj", "{04AA9B94-B460-4E73-BAF0-0154494BFE82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{D785D9F0-0EB2-454E-890C-DCC88CACD4A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +19,15 @@ Global
 		{9354EB6E-D674-4763-A589-3631FABE7654}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9354EB6E-D674-4763-A589-3631FABE7654}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9354EB6E-D674-4763-A589-3631FABE7654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04AA9B94-B460-4E73-BAF0-0154494BFE82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04AA9B94-B460-4E73-BAF0-0154494BFE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04AA9B94-B460-4E73-BAF0-0154494BFE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04AA9B94-B460-4E73-BAF0-0154494BFE82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04AA9B94-B460-4E73-BAF0-0154494BFE82} = {D785D9F0-0EB2-454E-890C-DCC88CACD4A5}
 	EndGlobalSection
 EndGlobal

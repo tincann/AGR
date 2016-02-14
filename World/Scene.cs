@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.World.Objects;
 
@@ -8,9 +9,9 @@ namespace RayTracer.World
     public class Scene
     {
         public LightSource LightSource { get; set; }
-        public List<Primitive> Objects { get; } = new List<Primitive>();
+        public List<Intersectable> Objects { get; } = new List<Intersectable>();
 
-        private static readonly Primitive Background = new Background(MaterialType.Diffuse, Color4.Black);
+        private static readonly Intersection Background = new Intersection(Vector3.Zero, float.MaxValue, MaterialType.Diffuse, Color4.Black);
 
         public Color4 Intersect(Ray ray)
         {
@@ -22,28 +23,37 @@ namespace RayTracer.World
         private Intersection GetNearestIntersection(Ray ray)
         {
             float closestDistance = float.MaxValue;
-            Primitive closestObj = Background;
+            var closestIntersection = Background;
             foreach (var obj in Objects)
             {
-                float t;
-                if (obj.Intersect(ray, out t))
+                Intersection intersection;
+                if (obj.Intersect(ray, out intersection))
                 {
-                    if (t < closestDistance)
+                    if (intersection.Distance < closestDistance)
                     {
-                        closestDistance = t;
-                        closestObj = obj;
+                        closestDistance = intersection.Distance;
+                        closestIntersection = intersection;
                     }
                 }
             }
 
-            //no intersection
-            if (closestObj == null)
-            {
-                closestObj = Background;
-            }
-
-            var intersectionPoint = ray.Direction*closestDistance;
-            return new Intersection(intersectionPoint, closestObj.MaterialType, closestObj.Color);
+            //foreach (var mesh in Meshes) //todo 
+            //{
+            //    foreach (var obj in mesh.Triangles)
+            //    {
+            //        float t;
+            //        if (obj.Intersect(ray, out t))
+            //        {
+            //            if (t < closestDistance)
+            //            {
+            //                closestDistance = t;
+            //                closestObj = obj;
+            //            }
+            //        }
+            //    }
+            //}
+            
+            return closestIntersection;
         }
     }
 }
