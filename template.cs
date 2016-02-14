@@ -4,7 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace Template
+namespace RayTracer
 {
     public class OpenTKApp : GameWindow
     {

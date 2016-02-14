@@ -48,6 +48,10 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="World\LightSource.cs" />
+    <Compile Include="World\Material.cs" />
+    <Compile Include="World\Primitive.cs" />
+    <Compile Include="World\Ray.cs" />
     <Compile Include="World\Scene.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Template.cs" />

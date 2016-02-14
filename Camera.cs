@@ -1,11 +1,18 @@
 ﻿using OpenTK;
 
-namespace template
+namespace RayTracer
 {
     public class Camera
     {
-        Vector3 Position { get; set; }
-        Vector3 Target { get; set; }
-        float FOV { get; set; }
+        public Camera(Vector3 position, Vector3 target, float fov)
+        {
+            Position = position;
+            Target = target;
+            FOV = fov;
+        }
+
+        private Vector3 Position { get; set; }
+        private Vector3 Target { get; set; }
+        private float FOV { get; set; }
     }
 }

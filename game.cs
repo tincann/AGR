@@ -1,16 +1,18 @@
-﻿using RayTracer.World;
+﻿using OpenTK;
+using RayTracer.World;
 
 namespace RayTracer
 {
     internal class Game
     {
         public Surface Screen;
-        public Camera Camera;
-        public Scene Scene;
+        private Camera _camera = new Camera(Vector3.Zero, Vector3.UnitZ, 75);
+        private Scene _scene = new Scene();
 
         public void Init()
         {
             Screen.Clear(0x2222ff);
+            _scene.LightSource = new LightSource(new Vector3(10, 10, 10));
         }
 
         public void Tick()
