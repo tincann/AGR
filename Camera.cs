@@ -9,10 +9,12 @@ namespace RayTracer
         private Vector3 _p0;
         private Vector3 _e1;
         private Vector3 _e2;
+        private Vector3 _screenCenter;
 
+        private Vector3 _position;
         private Matrix4 _cameraMatrix;
 
-        private Vector3 _screenCenter;
+        
         public float d = 1;
         private float FOV;
 
@@ -52,20 +54,21 @@ namespace RayTracer
             var p1 = _screenCenter + new Vector3(1, -1, 0);
             var p2 = _screenCenter + new Vector3(-1, 1, 0);
             
-            _p0 = Vector3.Transform(p0, _cameraMatrix);
+            _p0     = Vector3.Transform(p0, _cameraMatrix);
+            var tp1 = Vector3.Transform(p1, _cameraMatrix);
+            var tp2 = Vector3.Transform(p2, _cameraMatrix);
 
-            var e1 = p1 - p0;
-            var e2 = p2 - p0;
+            _position = Vector3.Transform(Position, _cameraMatrix);
 
-            _e1 = -Vector3.Transform(e1, _cameraMatrix);
-            _e2 = Vector3.Transform(e2, _cameraMatrix);
+            _e1 = tp1 - _p0;
+            _e2 = tp2 - _p0;
         }
 
         public Ray CreatePrimaryRay(float u, float v)
         {
-            var p = _p0 + u*_e1 + v*_e2;
-            p.Normalize();
-            return new Ray(Position, p);
+            var screenPoint = _p0 + u*_e1 + v*_e2;
+            var direction = (screenPoint - _position).Normalized();
+            return new Ray(_position, direction);
         }
     }
 }
