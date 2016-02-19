@@ -16,6 +16,14 @@ namespace RayTracer.World.Objects
         {
             Position = position;
             _obj = obj;
+
+            foreach (var face in _obj.FaceList)
+            {
+                var p1 = ToVector3(_obj.VertexList[face.VertexIndexList[0] - 1]) + Position;
+                var p2 = ToVector3(_obj.VertexList[face.VertexIndexList[1] - 1]) + Position;
+                var p3 = ToVector3(_obj.VertexList[face.VertexIndexList[2] - 1]) + Position;
+                Triangles.Add(new Triangle(p1, p2, p3, MaterialType.Diffuse, Color4.Green));
+            }
         }
 
         public bool Intersect(Ray ray, out Intersection intersection)
@@ -43,21 +51,7 @@ namespace RayTracer.World.Objects
             return true;
         }
 
-        public IEnumerable<Triangle> Triangles
-        {
-            get
-            {
-                {
-                    foreach (var face in _obj.FaceList)
-                    {
-                        var p1 = ToVector3(_obj.VertexList[face.VertexIndexList[0] - 1]) + Position;
-                        var p2 = ToVector3(_obj.VertexList[face.VertexIndexList[1] - 1]) + Position;
-                        var p3 = ToVector3(_obj.VertexList[face.VertexIndexList[2] - 1]) + Position;
-                        yield return new Triangle(p1, p2, p3, MaterialType.Diffuse, Color4.Black);
-                    }
-                }
-            }
-        }
+        public List<Triangle> Triangles { get; } = new List<Triangle>();
 
         private static Vector3 ToVector3(Vertex vertex)
         {

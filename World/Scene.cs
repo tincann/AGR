@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.World.Objects;
@@ -36,22 +35,6 @@ namespace RayTracer.World
                     }
                 }
             }
-
-            //foreach (var mesh in Meshes) //todo 
-            //{
-            //    foreach (var obj in mesh.Triangles)
-            //    {
-            //        float t;
-            //        if (obj.Intersect(ray, out t))
-            //        {
-            //            if (t < closestDistance)
-            //            {
-            //                closestDistance = t;
-            //                closestObj = obj;
-            //            }
-            //        }
-            //    }
-            //}
             
             return closestIntersection;
         }
