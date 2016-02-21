@@ -8,7 +8,7 @@ namespace RayTracer
 {
     internal class Game
     {
-        private readonly Camera _camera = new Camera(Vector3.Zero, new Vector3(0, 0, 10), 75);
+        private readonly Camera _camera = new Camera(Vector3.UnitX, new Vector3(0, 0, 0), 75);
         private readonly Scene _scene = new Scene();
         public Surface Screen;
 
@@ -34,9 +34,11 @@ namespace RayTracer
         private static float i = 0;
         public void Tick()
         {
-            _camera.Update(new Vector3((float)Math.Sin(i) * 5, 0, 0));
+            
+            var radius = 2;
+            _camera.Update(new Vector3((float)Math.Sin(i) * radius, 0.5f, (float)Math.Cos(i) * radius));
 
-            //_camera.d = (float)Math.Sin(i) * 5 + 1;
+            _camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
             Screen.Print($"d: {_camera.d}", 2, 2, 0xffffff);
 

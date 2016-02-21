@@ -10,7 +10,7 @@ namespace RayTracer
         {
             var obj = new Obj();
             obj.LoadObj(path);
-            return new TriangleMesh(new Vector3(0,0, 10),  obj);
+            return new TriangleMesh(new Vector3(0,0, 0),  obj);
         }
     }
 }
