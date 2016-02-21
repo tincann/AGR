@@ -55,7 +55,8 @@ namespace RayTracer
             _cameraMatrix.Invert();
 
             //Console.WriteLine($"Translation: {_cameraMatrix.ExtractTranslation()} Rotation: {_cameraMatrix.ExtractRotation()}");
-
+            
+            //_position = Vector3.Transform(Position, _cameraMatrix);
             _p0     = Vector3.Transform(p0, _cameraMatrix);
             var tp1 = Vector3.Transform(p1, _cameraMatrix);
             var tp2 = Vector3.Transform(p2, _cameraMatrix);

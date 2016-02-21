@@ -18,21 +18,21 @@ namespace RayTracer
         public void Init()
         {
             Screen.Clear(0x2222ff);
-            _scene.LightSources.Add(new LightSource(new Vector3(0, -3, 0), Color4.White));
-            _scene.Objects.Add(new Triangle(
-                new Vector3(-0.5f, 0, 0),
-                new Vector3(0, 1, 0),
-                new Vector3(0.5f, 0, 0),
-                MaterialType.Diffuse,
-                new Color3(Color4.Aqua)
-                ));
+            _scene.LightSources.Add(new LightSource(new Vector3(0, 3, 1), Color4.White));
+            //_scene.Objects.Add(new Triangle(
+            //    new Vector3(-0.5f, 0, 0),
+            //    new Vector3(0, 1, 0),
+            //    new Vector3(0.5f, 0, 0),
+            //    MaterialType.Diffuse,
+            //    new Color3(Color4.Aqua)
+            //    ));
 
             _scene.Objects.Add(new Triangle(
-                new Vector3(5,0,5), 
-                new Vector3(5,0,-5), 
-                new Vector3(-5,0,-5),
-                MaterialType.Diffuse, 
-                new Color3(Color4.Bisque) 
+                new Vector3(5, 0, 5),
+                new Vector3(5, 0, -5),
+                new Vector3(-5, 0, -5),
+                MaterialType.Diffuse,
+                new Color3(Color4.Bisque)
             ));
             _scene.Objects.Add(new Triangle(
                 new Vector3(5, 0, 5),
@@ -45,8 +45,8 @@ namespace RayTracer
             //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj");
             //_scene.Objects.Add(teapot);
 
-            //var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj");
-            //_scene.Objects.Add(cube);
+            var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj");
+            _scene.Objects.Add(cube);
         }
 
         private static float i = 0;
@@ -54,7 +54,7 @@ namespace RayTracer
         {
             
             var radius = 2;
-            _camera.Update(new Vector3((float)Math.Sin(i) * radius, 0.5f, (float)Math.Cos(i) * radius));
+            _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius + 0.5f, (float)Math.Cos(i) * radius));
 
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();

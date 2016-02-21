@@ -32,7 +32,7 @@ namespace RayTracer.World.Objects
             {
                 return false;
             }
-            
+
             var P = Vector3.Cross(ray.Direction, _e2);
 
             var det = Vector3.Dot(_e1, P);
@@ -70,9 +70,10 @@ namespace RayTracer.World.Objects
             //t parameter of ray
             float t = Vector3.Dot(_e2, Q)*invDet;
 
-            if (t > float.Epsilon)
+            if (t > 0.001)
             {
-                intersection = new Intersection(this, _normal, t * ray.Direction, t, MaterialType, Color);
+                var intersectionPoint = ray.Origin + t*ray.Direction;
+                intersection = new Intersection(this, _normal, intersectionPoint, t, MaterialType, Color);
                 return true;
             }
 
