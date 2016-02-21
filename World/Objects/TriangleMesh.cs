@@ -3,6 +3,7 @@ using ObjParser;
 using ObjParser.Types;
 using OpenTK;
 using OpenTK.Graphics;
+using RayTracer.Lighting;
 
 namespace RayTracer.World.Objects
 {
@@ -22,7 +23,7 @@ namespace RayTracer.World.Objects
                 var p1 = ToVector3(_obj.VertexList[face.VertexIndexList[0] - 1]) + Position;
                 var p2 = ToVector3(_obj.VertexList[face.VertexIndexList[1] - 1]) + Position;
                 var p3 = ToVector3(_obj.VertexList[face.VertexIndexList[2] - 1]) + Position;
-                Triangles.Add(new Triangle(p1, p2, p3, MaterialType.Diffuse, Color4.Green));
+                Triangles.Add(new Triangle(p1, p2, p3, MaterialType.Diffuse, new Color3(Color4.Green)));
             }
         }
 

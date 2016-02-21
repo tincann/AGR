@@ -15,7 +15,7 @@ namespace RayTracer
         private Matrix4 _cameraMatrix;
 
         
-        public float d = 1;
+        public float d = 1.5f;
         private float FOV;
 
         public Camera(Vector3 position, Vector3 target, float fov)
@@ -44,7 +44,7 @@ namespace RayTracer
 
         public void Update()
         {
-            Console.WriteLine($"Position: {Position} Target: {Target}");
+            //Console.WriteLine($"Position: {Position} Target: {Target}");
             
             //somehow it must be -d and -y
             var p0 = new Vector3(-1,  1, -d); //bottom left
@@ -67,8 +67,7 @@ namespace RayTracer
         public Ray CreatePrimaryRay(float u, float v)
         {
             var screenPoint = _p0 + u*_e1 + v*_e2;
-            var direction = (screenPoint - Position).Normalized();
-            return new Ray(Position, direction);
+            return Ray.CreateFromTwoPoints(Position, screenPoint);
         }
     }
 }

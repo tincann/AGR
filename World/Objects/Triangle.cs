@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
+using RayTracer.Lighting;
 
 namespace RayTracer.World.Objects
 {
@@ -8,8 +9,9 @@ namespace RayTracer.World.Objects
         private readonly Vector3 _e1;
         private readonly Vector3 _e2;
         private readonly Vector3 _p1;
+        private readonly Vector3 _normal;
 
-        public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, MaterialType materialType, Color4 color)
+        public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, MaterialType materialType, Color3 color)
             : base(materialType, color)
         {
             _p1 = p1;
@@ -17,6 +19,7 @@ namespace RayTracer.World.Objects
             //vectors of triangle edges
             _e1 = Vector3.Subtract(p2, _p1);
             _e2 = Vector3.Subtract(p3, _p1);
+            _normal = Vector3.Cross(_e1, _e2).Normalized();
         }
 
         //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
@@ -24,6 +27,12 @@ namespace RayTracer.World.Objects
         {
             intersection = null;
 
+            //don't intersect with primitive that ray came from
+            if (this.Equals(ray.OriginPrimitive))
+            {
+                return false;
+            }
+            
             var P = Vector3.Cross(ray.Direction, _e2);
 
             var det = Vector3.Dot(_e1, P);
@@ -63,7 +72,7 @@ namespace RayTracer.World.Objects
 
             if (t > float.Epsilon)
             {
-                intersection = new Intersection(t * ray.Direction, t, MaterialType, Color);
+                intersection = new Intersection(this, _normal, t * ray.Direction, t, MaterialType, Color);
                 return true;
             }
 
