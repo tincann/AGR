@@ -7,9 +7,10 @@ namespace RayTracer.World
 {
     public class Intersection
     {
-        public Intersection(Intersectable intersectsWith, Vector3 surfaceNormal, Vector3 location, float distance, MaterialType materialType, Color3 color)
+        public Intersection(Intersectable intersectsWith, Ray ray, Vector3 surfaceNormal, Vector3 location, float distance, MaterialType materialType, Color3 color)
         {
             IntersectsWith = intersectsWith;
+            Ray = ray;
             SurfaceNormal = surfaceNormal;
             Location = location;
             Distance = distance;
@@ -17,6 +18,7 @@ namespace RayTracer.World
             Color = color;
         }
 
+        public Ray Ray { get; }
         public Intersectable IntersectsWith { get; }
         public Vector3 SurfaceNormal { get; }
 

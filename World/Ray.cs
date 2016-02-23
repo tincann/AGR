@@ -16,6 +16,13 @@ namespace RayTracer.World
             Direction = direction.Normalized();
         }
 
+        public static Ray Reflect(Ray ray, Intersection intersection)
+        {
+            var c = -Vector3.Dot(intersection.SurfaceNormal, ray.Direction);
+            var reflectionDirection = ray.Direction + (2 * intersection.SurfaceNormal * c);
+            return new Ray(intersection.Location, reflectionDirection, intersection.IntersectsWith);
+        }
+
         public Vector3 Origin { get; }
         public Intersectable OriginPrimitive { get; }
         public Vector3 Direction { get; }

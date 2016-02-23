@@ -3,6 +3,7 @@
     public enum MaterialType
     {
         Diffuse,
-        Specular
+        Specular,
+        Mirror
     }
 }

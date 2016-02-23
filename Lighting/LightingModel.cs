@@ -18,5 +18,11 @@ namespace RayTracer.Lighting
             var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
             return Math.Abs(intensity)*color;
         }
+
+        public static Color3 Reflection(Scene scene, Intersection intersection, float reflectionRatio)
+        {
+            var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
+            return reflectionRatio * scene.Intersect(reflectedRay) + intersection.Color * (1 - reflectionRatio);
+        }
     }
 }

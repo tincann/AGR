@@ -13,7 +13,7 @@ namespace RayTracer.World.Objects
 
         public Vector3 Position { get; set; }
 
-        public TriangleMesh(Vector3 position, Obj obj)
+        public TriangleMesh(Vector3 position, Obj obj, MaterialType materialType, Color3 color)
         {
             Position = position;
             _obj = obj;
@@ -23,7 +23,7 @@ namespace RayTracer.World.Objects
                 var p1 = ToVector3(_obj.VertexList[face.VertexIndexList[0] - 1]) + Position;
                 var p2 = ToVector3(_obj.VertexList[face.VertexIndexList[1] - 1]) + Position;
                 var p3 = ToVector3(_obj.VertexList[face.VertexIndexList[2] - 1]) + Position;
-                Triangles.Add(new Triangle(p1, p2, p3, MaterialType.Diffuse, new Color3(Color4.Green)));
+                Triangles.Add(new Triangle(p1, p2, p3, materialType, color));
             }
         }
 

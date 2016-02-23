@@ -73,7 +73,7 @@ namespace RayTracer.World.Objects
             if (t > 0.001)
             {
                 var intersectionPoint = ray.Origin + t*ray.Direction;
-                intersection = new Intersection(this, _normal, intersectionPoint, t, MaterialType, Color);
+                intersection = new Intersection(this, ray, _normal, intersectionPoint, t, MaterialType, Color);
                 return true;
             }
 
