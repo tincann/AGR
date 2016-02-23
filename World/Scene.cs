@@ -21,12 +21,12 @@ namespace RayTracer.World
                 return new Color3(Color4.Black);
             }
 
-            switch (intersection.MaterialType)
+            switch (intersection.Material.MaterialType)
             {
                 case MaterialType.Diffuse:
                     return LightingModel.DirectIlumination(this, intersection, LightSources.First());
                 case MaterialType.Mirror:
-                    return LightingModel.Reflection(this, intersection, 1);
+                    return LightingModel.Reflection(this, intersection);
             }
             throw new NotImplementedException();
         }

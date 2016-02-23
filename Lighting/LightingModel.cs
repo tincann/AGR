@@ -8,7 +8,7 @@ namespace RayTracer.Lighting
     {
         public static Color3 DirectIlumination(Scene scene, Intersection intersection, LightSource light)
         {
-            var color = intersection.Color;
+            var color = intersection.Material.Color;
             var shadowRay = Ray.CreateFromTwoPoints(intersection.Location, light.Position);
             if (scene.DoesIntersect(shadowRay))
             {
@@ -19,10 +19,11 @@ namespace RayTracer.Lighting
             return Math.Abs(intensity)*color;
         }
 
-        public static Color3 Reflection(Scene scene, Intersection intersection, float reflectionRatio)
+        public static Color3 Reflection(Scene scene, Intersection intersection)
         {
+            var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
-            return reflectionRatio * scene.Intersect(reflectedRay) + intersection.Color * (1 - reflectionRatio);
+            return mat.ReflectionPercentage * scene.Intersect(reflectedRay) + mat.Color * (1 - mat.ReflectionPercentage);
         }
     }
 }

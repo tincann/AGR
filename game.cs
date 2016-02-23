@@ -25,29 +25,33 @@ namespace RayTracer
                 new Vector3(-0.5f, 0, 1),
                 new Vector3(0, 1, 1),
                 new Vector3(0.5f, 0, 1),
-                MaterialType.Diffuse,
-                new Color3(Color4.Aqua)
+                new Material(
+                    MaterialType.Diffuse,
+                    new Color3(Color4.Aqua))
                 ));
 
             _scene.Objects.Add(new Triangle(
                 new Vector3(5, 0, 5),
                 new Vector3(5, 0, -5),
                 new Vector3(-5, 0, -5),
-                MaterialType.Diffuse,
-                new Color3(Color4.Bisque)
+                new Material(
+                    MaterialType.Diffuse,
+                    new Color3(Color4.Bisque))
             ));
             _scene.Objects.Add(new Triangle(
                 new Vector3(5, 0, 5),
                 new Vector3(-5, 0, -5),
                 new Vector3(-5, 0, 5),
-                MaterialType.Diffuse,
-                new Color3(Color4.Bisque)
+                new Material(
+                    MaterialType.Diffuse,
+                    new Color3(Color4.Bisque))
             ));
 
             //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj");
             //_scene.Objects.Add(teapot);
 
-            var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", MaterialType.Specular, new Color3(Color4.Green));
+            var mat = new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.3f);
+            var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
             _scene.Objects.Add(cube);
         }
 

@@ -6,13 +6,11 @@ namespace RayTracer.World.Objects
 {
     public abstract class Primitive : Intersectable
     {
-        public MaterialType MaterialType { get; set; }
-        public Color3 Color { get; set; }
-
-        protected Primitive(MaterialType materialType, Color3 color)
+        public Material Material { get; set; }
+        
+        protected Primitive(Material material)
         {
-            MaterialType = materialType;
-            Color = color;
+            Material = material;
         }
 
         public abstract bool Intersect(Ray ray, out Intersection intersection);

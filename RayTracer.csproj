@@ -50,6 +50,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Lighting\Color.cs" />
     <Compile Include="Lighting\LightingModel.cs" />
+    <Compile Include="Lighting\Material.cs" />
     <Compile Include="ObjLoader.cs" />
     <Compile Include="World\Intersection.cs" />
     <Compile Include="World\LightSource.cs" />

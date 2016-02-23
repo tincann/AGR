@@ -11,8 +11,8 @@ namespace RayTracer.World.Objects
         private readonly Vector3 _p1;
         private readonly Vector3 _normal;
 
-        public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, MaterialType materialType, Color3 color)
-            : base(materialType, color)
+        public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, Material material)
+            : base(material)
         {
             _p1 = p1;
 
@@ -73,7 +73,7 @@ namespace RayTracer.World.Objects
             if (t > 0.001)
             {
                 var intersectionPoint = ray.Origin + t*ray.Direction;
-                intersection = new Intersection(this, ray, _normal, intersectionPoint, t, MaterialType, Color);
+                intersection = new Intersection(this, ray, _normal, intersectionPoint, t, Material);
                 return true;
             }
 
