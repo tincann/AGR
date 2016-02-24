@@ -12,7 +12,7 @@ namespace RayTracer
         {
             var obj = new Obj();
             obj.LoadObj(path);
-            return new TriangleMesh(new Vector3(0,0, 0),  obj, material);
+            return new TriangleMesh(new Vector3(0, 0.5f, 0),  obj, material);
         }
     }
 }

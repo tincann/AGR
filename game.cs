@@ -56,8 +56,15 @@ namespace RayTracer
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
             _scene.Objects.Add(cube);
 
-            _scene.Objects.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f, 
+            _scene.Objects.Add(new Sphere(new Vector3(1,        0.5f,   -1), 0.5f, 
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+            _scene.Objects.Add(new Sphere(new Vector3(2,        0.5f,   -1), 0.5f, 
+                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+            _scene.Objects.Add(new Sphere(new Vector3(1.5f,     0.5f,   -2), 0.5f, 
+                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+            _scene.Objects.Add(new Sphere(new Vector3(1.5f,    1.25f,  -1.5f), 0.5f,
+                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+
         }
 
         private static float i = 0;
@@ -98,17 +105,17 @@ namespace RayTracer
                     }
                 });
             }
-            while (true)
-            {
-                var count = tasks.Count(x => !x.IsCompleted);
-                Console.WriteLine($"Rays remaining: {count}");
-                if (count < 100)
-                {
-                    break;
-                }
+            //while (true)
+            //{
+            //    var count = tasks.Count(x => !x.IsCompleted);
+            //    Console.WriteLine($"Rays remaining: {count}");
+            //    if (count < 100)
+            //    {
+            //        break;
+            //    }
 
-                //Thread.Sleep(TimeSpan.FromSeconds(5));
-            }
+            //    //Thread.Sleep(TimeSpan.FromSeconds(5));
+            //}
             Task.WaitAll(tasks);
             _sw.Stop();
             Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0xffffff);
