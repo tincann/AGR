@@ -27,6 +27,8 @@ namespace RayTracer.World
                     return LightingModel.DirectIlumination(this, intersection, LightSources.First());
                 case MaterialType.Mirror:
                     return LightingModel.Reflection(this, intersection);
+                case MaterialType.Specular:
+                    throw new NotImplementedException();
             }
             throw new NotImplementedException();
         }

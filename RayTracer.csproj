@@ -56,6 +56,7 @@
     <Compile Include="World\LightSource.cs" />
     <Compile Include="World\MaterialType.cs" />
     <Compile Include="World\Objects\Intersectable.cs" />
+    <Compile Include="World\Objects\Sphere.cs" />
     <Compile Include="World\Objects\TriangleMesh.cs" />
     <Compile Include="World\Objects\Primitive.cs" />
     <Compile Include="World\Objects\Triangle.cs" />

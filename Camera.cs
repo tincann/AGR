@@ -47,9 +47,9 @@ namespace RayTracer
             //Console.WriteLine($"Position: {Position} Target: {Target}");
             
             //somehow it must be -d and -y
-            var p0 = new Vector3(-1,  1, -d); //bottom left
-            var p1 = new Vector3( 1,  1, -d); //bottom right
-            var p2 = new Vector3(-1, -1, -d); //top left
+            var p0 = new Vector3(-1,  1, -d); //top left
+            var p1 = new Vector3( 1,  1, -d); //top right
+            var p2 = new Vector3(-1, -1, -d); //bottom left
 
             _cameraMatrix = Matrix4.LookAt(Position, Target, Vector3.UnitY);;
             _cameraMatrix.Invert();

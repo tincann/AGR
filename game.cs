@@ -19,6 +19,7 @@ namespace RayTracer
 
         public void Init()
         {
+            tasks = new Task[Screen.Height];
             Screen.Clear(0x2222ff);
             _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White));
             _scene.Objects.Add(new Triangle(
@@ -47,21 +48,25 @@ namespace RayTracer
                     new Color3(Color4.Bisque))
             ));
 
-            //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj");
-            //_scene.Objects.Add(teapot);
 
             var mat = new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.3f);
+            //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", mat);
+            //_scene.Objects.Add(teapot);
+
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
             _scene.Objects.Add(cube);
+
+            _scene.Objects.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f, 
+                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
         }
 
         private static float i = 0;
         public void Tick()
         {
             
-            var radius = 2;
+            var radius = 3;
             _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius + 0.5f, (float)Math.Cos(i) * radius));
-            //_scene.LightSources[0] = new LightSource(new Vector3(0, (float)Math.Sin(i) * radius + 2, 2), Color4.White);
+            _scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
             Screen.Print($"d: {_camera.d}", 2, 2, 0xffffff);
@@ -70,10 +75,11 @@ namespace RayTracer
         }
 
         readonly Stopwatch _sw = new Stopwatch();
+        private Task[] tasks;
+
         public void Render()
         {
             _sw.Restart();
-            Task[] tasks = new Task[Screen.Height];
             // render stuff over the backbuffer (OpenGL, sprites)
             for (int y = 0; y < Screen.Height; y++)
             {

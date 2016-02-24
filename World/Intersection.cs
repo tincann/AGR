@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using OpenTK.Graphics;
 using RayTracer.Lighting;
 using RayTracer.World.Objects;
 
