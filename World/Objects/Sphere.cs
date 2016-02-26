@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenTK;
 using RayTracer.Lighting;
+using RayTracer.Structures;
 
 namespace RayTracer.World.Objects
 {
@@ -8,13 +9,15 @@ namespace RayTracer.World.Objects
     {
         public Vector3 Center { get; }
         public float Radius { get; }
-
-        private float _rad2;
+        public override BoundingBox BoundingBox { get; }
+        private readonly float _rad2;
         public Sphere(Vector3 center, float radius, Material material) : base(material)
         {
             Center = center;
             Radius = radius;
             _rad2 = radius*radius;
+            var radVector = new Vector3(radius, radius, radius);
+            BoundingBox = new BoundingBox(Center - radVector, Center + radVector);
         }
 
         public override bool Intersect(Ray ray, out Intersection intersection)

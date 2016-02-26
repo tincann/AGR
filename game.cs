@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using OpenTK.Graphics;
 using RayTracer.Lighting;
+using RayTracer.Structures;
 using RayTracer.World.Objects;
 
 namespace RayTracer
@@ -54,16 +56,20 @@ namespace RayTracer
             //_scene.Objects.Add(teapot);
 
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
-            _scene.Objects.Add(cube);
+            var bvh = new BVHNode(new List<Boundable> {cube});
+            _scene.Objects.Add(bvh);
 
-            _scene.Objects.Add(new Sphere(new Vector3(1,        0.5f,   -1), 0.5f, 
+            var balls = new List<Boundable>();
+            balls.Add(new Sphere(new Vector3(1,        0.5f,   -1), 0.5f, 
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
-            _scene.Objects.Add(new Sphere(new Vector3(2,        0.5f,   -1), 0.5f, 
+            balls.Add(new Sphere(new Vector3(2,        0.5f,   -1), 0.5f, 
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
-            _scene.Objects.Add(new Sphere(new Vector3(1.5f,     0.5f,   -2), 0.5f, 
+            balls.Add(new Sphere(new Vector3(1.5f,     0.5f,   -2), 0.5f, 
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
-            _scene.Objects.Add(new Sphere(new Vector3(1.5f,    1.25f,  -1.5f), 0.5f,
+            balls.Add(new Sphere(new Vector3(1.5f,    1.25f,  -1.5f), 0.5f,
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+
+            _scene.Objects.Add(new BVHNode(balls));
 
         }
 
@@ -77,7 +83,7 @@ namespace RayTracer
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
             Screen.Print($"d: {_camera.d}", 2, 2, 0xffffff);
-
+            //todo count intersection statistics
             i += 0.01f;
         }
 

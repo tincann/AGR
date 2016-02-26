@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.Lighting;
+using RayTracer.Structures;
 
 namespace RayTracer.World.Objects
 {
@@ -11,6 +12,8 @@ namespace RayTracer.World.Objects
         private readonly Vector3 _p1;
         private readonly Vector3 _normal;
 
+        public override BoundingBox BoundingBox { get; }
+
         public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, Material material)
             : base(material)
         {
@@ -20,6 +23,7 @@ namespace RayTracer.World.Objects
             _e1 = Vector3.Subtract(p2, _p1);
             _e2 = Vector3.Subtract(p3, _p1);
             _normal = Vector3.Cross(_e1, _e2).Normalized();
+            BoundingBox = BoundingBox.FromVectors(p1, p2, p3);
         }
 
         //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm

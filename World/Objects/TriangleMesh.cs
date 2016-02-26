@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ObjParser;
 using ObjParser.Types;
 using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.Lighting;
+using RayTracer.Structures;
 
 namespace RayTracer.World.Objects
 {
-    public class TriangleMesh : Intersectable
+    public class TriangleMesh : Boundable
     {
         private readonly Obj _obj;
 
         public Vector3 Position { get; set; }
+        public BoundingBox BoundingBox { get; }
 
         public TriangleMesh(Vector3 position, Obj obj, Material material)
         {
@@ -25,6 +28,8 @@ namespace RayTracer.World.Objects
                 var p3 = ToVector3(_obj.VertexList[face.VertexIndexList[2] - 1]) + Position;
                 Triangles.Add(new Triangle(p1, p2, p3, material));
             }
+
+            BoundingBox = BoundingBox.FromBoundables(Triangles);
         }
 
         public bool Intersect(Ray ray, out Intersection intersection)

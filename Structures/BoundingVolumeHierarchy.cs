@@ -16,28 +16,43 @@ namespace RayTracer.Structures
 
     public class BVHNode : Intersectable
     {
-        private readonly BoundingBox _boundingBox;
+        public BoundingBox BoundingBox { get; }
 
-        private readonly Intersectable _left;
-        private readonly Intersectable _right;
+        private readonly BVHNode _left;
+        private readonly BVHNode _right;
 
-        public BVHNode(Boundable left)
+        private readonly List<Boundable> _boundables = null;
+
+        private bool IsLeaf => _boundables != null;
+
+        public BVHNode(BVHNode left)
         {
             _left = left;
-            _boundingBox = left.BoundingBox;
+            BoundingBox = left.BoundingBox;
         }
 
-        public BVHNode(Boundable left, Boundable right)
+        public BVHNode(BVHNode left, BVHNode right)
         {
             _left = left;
             _right = right;
-            _boundingBox = BoundingBox.Combine(left.BoundingBox, right.BoundingBox);
+            BoundingBox = BoundingBox.Combine(left.BoundingBox, right.BoundingBox);
+        }
+
+        public BVHNode(List<Boundable> boundables)
+        {
+            _boundables = boundables;
+            BoundingBox = BoundingBox.FromBoundables(boundables); 
         }
 
         public bool Intersect(Ray ray, out Intersection intersection)
         {
-            intersection = null;
-            if(_boundingBox.Intersect(ray))
+            if (IsLeaf)
+            {
+                intersection = IntersectionHelper.GetClosestIntersection(ray, _boundables);
+                return intersection != null;
+            }
+
+            if (BoundingBox.Intersect(ray))
             {
                 Intersection i1 = null, i2 = null;
                 if (_left != null)
@@ -53,6 +68,7 @@ namespace RayTracer.Structures
                 return intersection != null;
             }
 
+            intersection = null;
             return false;
         }
     }
