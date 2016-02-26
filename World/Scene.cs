@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics;
+using RayTracer.Helpers;
 using RayTracer.Lighting;
 using RayTracer.World.Objects;
 
@@ -15,7 +16,7 @@ namespace RayTracer.World
         public Color3 Intersect(Ray ray)
         {
             //get nearest intersection
-            var intersection = GetNearestIntersection(ray);
+            var intersection = IntersectionHelper.GetClosestIntersection(ray, Objects);
             if (intersection == null)
             {
                 return new Color3(Color4.Black);
@@ -46,26 +47,6 @@ namespace RayTracer.World
                 }
             }
             return false;
-        }
-
-        private Intersection GetNearestIntersection(Ray ray)
-        {
-            float closestDistance = float.MaxValue;
-            Intersection closestIntersection = null;
-            foreach (var obj in Objects)
-            {
-                Intersection intersection;
-                if (obj.Intersect(ray, out intersection))
-                {
-                    if (intersection.Distance < closestDistance)
-                    {
-                        closestDistance = intersection.Distance;
-                        closestIntersection = intersection;
-                    }
-                }
-            }
-            
-            return closestIntersection;
         }
     }
 }

@@ -48,13 +48,17 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Helpers\IntersectionHelper.cs" />
     <Compile Include="Lighting\Color.cs" />
     <Compile Include="Lighting\LightingModel.cs" />
     <Compile Include="Lighting\Material.cs" />
     <Compile Include="ObjLoader.cs" />
+    <Compile Include="Structures\Boundable.cs" />
+    <Compile Include="Structures\BoundingBox.cs" />
+    <Compile Include="Structures\BoundingVolumeHierarchy.cs" />
     <Compile Include="World\Intersection.cs" />
     <Compile Include="World\LightSource.cs" />
-    <Compile Include="World\MaterialType.cs" />
+    <Compile Include="Lighting\MaterialType.cs" />
     <Compile Include="World\Objects\Intersectable.cs" />
     <Compile Include="World\Objects\Sphere.cs" />
     <Compile Include="World\Objects\TriangleMesh.cs" />

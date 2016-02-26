@@ -14,6 +14,9 @@ namespace RayTracer.World
         {
             Origin = origin;
             Direction = direction.Normalized();
+
+            //todo possible divide by zero
+            InverseDirection = Vector3.Divide(Vector3.One, Direction);
         }
 
         public Vector3 GetPoint(float t)
@@ -31,6 +34,7 @@ namespace RayTracer.World
         public Vector3 Origin { get; }
         public Intersectable OriginPrimitive { get; }
         public Vector3 Direction { get; }
+        public Vector3 InverseDirection { get; }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {
