@@ -29,6 +29,20 @@ namespace RayTracer.Structures
 
             return new BoundingBox(minVector, maxVector);
         }
+        
+        public static BoundingBox Combine(params BoundingBox[] bb)
+        {
+            var minVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var maxVector = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            foreach (var v in bb)
+            {
+                minVector = Vector3.ComponentMin(minVector, v._min);
+                maxVector = Vector3.ComponentMax(maxVector, v._max);
+            }
+
+            return new BoundingBox(minVector, maxVector);
+        }
 
         public static BoundingBox Combine(BoundingBox b1, BoundingBox b2)
         {
@@ -36,20 +50,7 @@ namespace RayTracer.Structures
                 Vector3.ComponentMin(b1._min, b2._min), 
                 Vector3.ComponentMax(b1._max, b2._max));
         }
-
-        public static BoundingBox FromBoundables(IEnumerable<Boundable> bb)
-        {
-            var minVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            var maxVector = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-            foreach (var boundable in bb)
-            {
-                minVector = Vector3.ComponentMin(minVector, boundable.BoundingBox._min);
-                maxVector = Vector3.ComponentMax(maxVector, boundable.BoundingBox._max);
-            }
-            throw new NotImplementedException();
-        }
-
+        
         public bool Intersect(Ray ray)
         {
             float tmin = float.NegativeInfinity, tmax = float.PositiveInfinity;

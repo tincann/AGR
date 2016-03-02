@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
+using RayTracer.Helpers;
 using RayTracer.Lighting;
 using RayTracer.Structures;
 
@@ -29,6 +30,8 @@ namespace RayTracer.World.Objects
         //https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
         public override bool Intersect(Ray ray, out Intersection intersection)
         {
+            Statistics.Add("Triangle test");
+            
             intersection = null;
 
             //don't intersect with primitive that ray came from
@@ -78,6 +81,7 @@ namespace RayTracer.World.Objects
             {
                 var intersectionPoint = ray.GetPoint(t);
                 intersection = new Intersection(this, ray, _normal, intersectionPoint, t, Material);
+                Statistics.Add("Triangle test success");
                 return true;
             }
 

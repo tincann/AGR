@@ -40,6 +40,11 @@ namespace RayTracer
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, 0.0, 4.0);
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            _game.TraceRay(e.X, e.Y);
+        }
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             // called once per frame; app logic

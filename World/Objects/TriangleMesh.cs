@@ -29,7 +29,7 @@ namespace RayTracer.World.Objects
                 Triangles.Add(new Triangle(p1, p2, p3, material));
             }
 
-            BoundingBox = BoundingBox.FromBoundables(Triangles);
+            BoundingBox = BoundingBox.Combine(Triangles.Select(x => x.BoundingBox).ToArray());
         }
 
         public bool Intersect(Ray ray, out Intersection intersection)

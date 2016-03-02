@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RayTracer.Helpers;
 using RayTracer.World;
 using RayTracer.World.Objects;
@@ -41,7 +42,7 @@ namespace RayTracer.Structures
         public BVHNode(List<Boundable> boundables)
         {
             _boundables = boundables;
-            BoundingBox = BoundingBox.FromBoundables(boundables); 
+            BoundingBox = BoundingBox.Combine(boundables.Select(x => x.BoundingBox).ToArray());
         }
 
         public bool Intersect(Ray ray, out Intersection intersection)

@@ -49,6 +49,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Helpers\IntersectionHelper.cs" />
+    <Compile Include="Helpers\Statistics.cs" />
     <Compile Include="Lighting\Color.cs" />
     <Compile Include="Lighting\LightingModel.cs" />
     <Compile Include="Lighting\Material.cs" />
