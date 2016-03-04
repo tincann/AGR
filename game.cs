@@ -27,15 +27,7 @@ namespace RayTracer
             tasks = new Task[Screen.Height];
             Screen.Clear(0x2222ff);
             _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White, 30));
-            _scene.LightSources.Add(new LightSource(new Vector3(3, 6, 5), Color4.White, 30));
-            _scene.Objects.Add(new Triangle(
-                new Vector3(-0.5f, 0, 1),
-                new Vector3(0, 1, 1),
-                new Vector3(0.5f, 0, 1),
-                new Material(
-                    MaterialType.Diffuse,
-                    new Color3(Color4.Aqua))
-                ));
+            _scene.LightSources.Add(new LightSource(new Vector3(3, 3, 5), Color4.White, 30));
 
             _scene.Objects.Add(new Triangle(
                 new Vector3(5, 0, 5),
@@ -65,13 +57,13 @@ namespace RayTracer
 
             var balls = new List<Boundable>();
             balls.Add(new Sphere(new Vector3(1,        0.5f,   -1), 0.5f, 
-                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+                new Material(MaterialType.Mirror, new Color3(Color4.Red), 0.9f)));
             balls.Add(new Sphere(new Vector3(2,        0.5f,   -1), 0.5f, 
-                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+                new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.9f)));
             balls.Add(new Sphere(new Vector3(1.5f,     0.5f,   -2), 0.5f, 
-                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+                new Material(MaterialType.Mirror, new Color3(Color4.Blue), 0.9f)));
             balls.Add(new Sphere(new Vector3(1.5f,    1.25f,  -1.5f), 0.5f,
-                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.9f)));
+                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.95f)));
 
             //_scene.Objects.Add(new BVHNode(balls));
             _scene.Objects.Add(new BVHNode(new BVHNode(balls)));
@@ -88,10 +80,14 @@ namespace RayTracer
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
             Screen.Print($"d: {_camera.d}", 2, 2, 0xffffff);
-            Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
-            
+
+            if (Statistics.Enabled)
+            {
+                Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
+            }
+
             Statistics.Reset();
-            i += 0.01f;
+            i += 0.005f;
         }
 
         readonly Stopwatch _sw = new Stopwatch();
