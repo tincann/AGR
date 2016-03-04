@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing.Drawing2D;
-using System.Net.NetworkInformation;
 using OpenTK.Graphics;
 
 namespace RayTracer.Lighting

@@ -9,10 +9,48 @@ namespace RayTracer.Structures
 {
     public class BoundingVolumeHierarchy
     {
+        private List<BVHNode> Nodes; 
         public BVHNode Construct(List<Boundable> boundables)
         {
+            //sort on x
+            var xOrdered = boundables.OrderBy(x => x.BoundingBox.Centroid.X).ToList();
+            //sort on y
+            var yOrdered = boundables.OrderBy(x => x.BoundingBox.Centroid.Y).ToList();
+            //sort on z
+            var zOrdered = boundables.OrderBy(x => x.BoundingBox.Centroid.Z).ToList();
+
+
             throw new NotImplementedException();
         }
+
+        private SplitPlane CalculateBestSplitPlane(List<Boundable> boundables)
+        {
+            var bestSplitPlane = new SplitPlane(float.MaxValue, -1);
+            for (int i = 1; i < boundables.Count; i++)
+            {
+                var leftB = BoundingBox.FromBoundables(boundables.Take(i));
+                var rightB = BoundingBox.FromBoundables(boundables.Skip(i));
+
+                var cost = leftB.Area*i + rightB.Area*(boundables.Count - i);
+                if (cost < bestSplitPlane.Cost)
+                {
+                    bestSplitPlane = new SplitPlane(cost, i);
+                }
+            }
+
+            return bestSplitPlane;
+        }
+    }
+
+    struct SplitPlane
+    {
+        public SplitPlane(float cost, int index)
+        {
+            Cost = cost;
+            Index = index;
+        }
+        public float Cost;
+        public int Index;
     }
 
     public class BVHNode : Intersectable

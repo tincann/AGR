@@ -9,11 +9,18 @@ namespace RayTracer.Structures
     public class BoundingBox
     {
         private Vector3 _min, _max;
-
+        public Vector3 Centroid { get; }
+        public readonly float Area;
         public BoundingBox(Vector3 min, Vector3 max)
         {
             _min = min;
             _max = max;
+            Centroid = (_min + _max)/2;
+
+            var h = _max.Y - _min.Y;
+            var w = _max.X - _min.X;
+            var l = _max.Z - _min.Z;
+            Area = 2*(l*w + l*h + w*h);
         }
 
         public static BoundingBox FromVectors(params Vector3[] vectors)
@@ -28,6 +35,11 @@ namespace RayTracer.Structures
             }
 
             return new BoundingBox(minVector, maxVector);
+        }
+
+        public static BoundingBox FromBoundables(IEnumerable<Boundable> boundables)
+        {
+            return Combine(boundables.Select(x => x.BoundingBox).ToArray());
         }
         
         public static BoundingBox Combine(params BoundingBox[] bb)
