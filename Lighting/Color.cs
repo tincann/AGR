@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System;
+using System.Drawing.Drawing2D;
 using System.Net.NetworkInformation;
 using OpenTK.Graphics;
 
@@ -40,7 +41,7 @@ namespace RayTracer.Lighting
 
         public int ToArgb()
         {
-            return new Color4(R, G, B, 1).ToArgb();
+            return new Color4(Math.Min(R, 1), Math.Min(G, 1), Math.Min(B, 1), 1).ToArgb();
         }
     }
 }

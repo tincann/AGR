@@ -77,9 +77,10 @@ namespace RayTracer.World.Objects
             //t parameter of ray
             float t = Vector3.Dot(_e2, Q)*invDet;
 
-            if (t > 0.001)
+            if (t > 0.001 && t < ray.T)
             {
                 var intersectionPoint = ray.GetPoint(t);
+                ray.SetLength(t);
                 intersection = new Intersection(this, ray, _normal, intersectionPoint, t, Material);
                 Statistics.Add("Triangle test success");
                 return true;

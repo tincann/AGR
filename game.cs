@@ -1,10 +1,13 @@
 ﻿#define PARALLEL
 
+using System;
 using System.Collections.Generic;
 using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Lighting;
@@ -23,7 +26,7 @@ namespace RayTracer
         {
             tasks = new Task[Screen.Height];
             Screen.Clear(0x2222ff);
-            _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White));
+            _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White, 10));
             _scene.Objects.Add(new Triangle(
                 new Vector3(-0.5f, 0, 1),
                 new Vector3(0, 1, 1),
@@ -72,18 +75,20 @@ namespace RayTracer
             //_scene.Objects.Add(new BVHNode(balls));
             _scene.Objects.Add(new BVHNode(new BVHNode(balls)));
 
+            Statistics.Enabled = false;
         }
 
         private static float i = 0;
         public void Tick()
         {
             var radius = 3;
-            //_camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius + 0.5f, (float)Math.Cos(i) * radius));
+            _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius + 0.5f, (float)Math.Cos(i) * radius));
             //_scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
             Screen.Print($"d: {_camera.d}", 2, 2, 0xffffff);
             Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
+            
             Statistics.Reset();
             i += 0.01f;
         }

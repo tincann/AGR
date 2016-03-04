@@ -19,6 +19,11 @@ namespace RayTracer.World
             InverseDirection = Vector3.Divide(Vector3.One, Direction);
         }
 
+        public void SetLength(float length)
+        {
+            T = length;
+        }
+
         public Vector3 GetPoint(float t)
         {
             return Origin + t*Direction;
@@ -31,6 +36,7 @@ namespace RayTracer.World
             return new Ray(intersection.Location, reflectionDirection, intersection.IntersectsWith);
         }
 
+        public float T { get; private set; } = float.MaxValue;
         public Vector3 Origin { get; }
         public Intersectable OriginPrimitive { get; }
         public Vector3 Direction { get; }

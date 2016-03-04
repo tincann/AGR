@@ -22,7 +22,7 @@ namespace RayTracer.Structures
         private readonly BVHNode _left;
         private readonly BVHNode _right;
 
-        private readonly List<Boundable> _boundables = null;
+        private readonly List<Boundable> _boundables;
 
         private bool IsLeaf => _boundables != null;
 

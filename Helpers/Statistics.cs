@@ -1,37 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 
 namespace RayTracer.Helpers
 {
-    public static class Statistics
+    public class Statistics
     {
-        public readonly static Dictionary<string, int> Stats = new Dictionary<string, int>();
-        private static object _lock = new object();
+        private static readonly ConcurrentDictionary<string, int> Stats = new ConcurrentDictionary<string, int>();
+        public static bool Enabled = true;
+
         public static void Add(string key)
         {
-            return;
-            lock (_lock)
+            if (Enabled)
             {
-
-
-                if (Stats.ContainsKey(key))
-                {
-                    Stats[key]++;
-                }
-                else
-                {
-                    Stats.Add(key, 1);
-                }
+                Stats.AddOrUpdate(key, 1, (k, v) => v + 1);
             }
         }
 
         public static int Get(string key)
         {
-            if (Stats.ContainsKey(key))
-            {
-                return Stats[key];
-            }
-
-            return 0;
+            int value;
+            Stats.TryGetValue(key, out value);
+            return value;
         }
 
         public static void Reset()

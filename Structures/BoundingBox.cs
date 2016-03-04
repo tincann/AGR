@@ -73,7 +73,7 @@ namespace RayTracer.Structures
             tmin = Math.Max(tmin, Math.Min(t1, t2));
             tmax = Math.Min(tmax, Math.Max(t1, t2));
 
-            return tmax > Math.Max(tmin, 0);
+            return tmax > Math.Max(tmin, 0) && ray.T >= tmin; //todo klopt dit laatste?
         }
     }
 }
