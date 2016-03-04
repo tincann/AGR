@@ -26,7 +26,8 @@ namespace RayTracer
         {
             tasks = new Task[Screen.Height];
             Screen.Clear(0x2222ff);
-            _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White, 10));
+            _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White, 30));
+            _scene.LightSources.Add(new LightSource(new Vector3(3, 6, 5), Color4.White, 30));
             _scene.Objects.Add(new Triangle(
                 new Vector3(-0.5f, 0, 1),
                 new Vector3(0, 1, 1),

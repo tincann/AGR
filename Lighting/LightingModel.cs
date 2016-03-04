@@ -1,31 +1,37 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Graphics;
 using RayTracer.World;
 
 namespace RayTracer.Lighting
 {
     public static class LightingModel
     {
-        public static Color3 DirectIlumination(Scene scene, Intersection intersection, LightSource light)
+        public static Color3 DirectIlumination(Scene scene, Intersection intersection)
         {
-            var color = intersection.Material.Color;
-            var lightVector = light.Position - intersection.Location;
-            var invLightDistance2 = 1/lightVector.LengthSquared;
-            var shadowRay = new Ray(intersection.Location, lightVector);
-            if (scene.DoesIntersect(shadowRay))
+            var color = new Color3(Color4.Black);
+            foreach (var light in scene.LightSources)
             {
-                return 0.1f*color;
+                var lightVector = light.Position - intersection.Location;
+                var invLightDistance2 = 1/lightVector.LengthSquared;
+                var shadowRay = new Ray(intersection.Location, lightVector);
+                if (scene.DoesIntersect(shadowRay))
+                {
+                    continue;
+                }
+
+                var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
+                color += Math.Abs(intensity)* intersection.Material.Color * invLightDistance2*light.Intensity;
             }
 
-            var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
-            return Math.Abs(intensity) * color * invLightDistance2 * light.Intensity;
+            return color;
         }
 
-        public static Color3 Reflection(Scene scene, Intersection intersection, LightSource light)
+        public static Color3 Reflection(Scene scene, Intersection intersection)
         {
             var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
-            return mat.ReflectionPercentage * scene.Intersect(reflectedRay) + DirectIlumination(scene, intersection, light) * (1 - mat.ReflectionPercentage);
+            return mat.ReflectionPercentage * scene.Intersect(reflectedRay) + DirectIlumination(scene, intersection) * (1 - mat.ReflectionPercentage);
         }
     }
 }

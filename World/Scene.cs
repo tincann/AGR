@@ -25,9 +25,9 @@ namespace RayTracer.World
             switch (intersection.Material.MaterialType)
             {
                 case MaterialType.Diffuse:
-                    return LightingModel.DirectIlumination(this, intersection, LightSources.First());
+                    return LightingModel.DirectIlumination(this, intersection);
                 case MaterialType.Mirror:
-                    return LightingModel.Reflection(this, intersection, LightSources.First());
+                    return LightingModel.Reflection(this, intersection);
                 case MaterialType.Specular:
                     throw new NotImplementedException();
             }
