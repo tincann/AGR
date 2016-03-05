@@ -52,8 +52,8 @@ namespace RayTracer
             //_scene.Objects.Add(teapot);
 
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
-            var bvh = new BVHNode(new List<Boundable> {cube});
-            _scene.Objects.Add(new BVHNode(bvh));
+            var bvh = new BoundingVolumeHierarchy(cube.Triangles);
+            _scene.Objects.Add(bvh.Root);
 
             var balls = new List<Boundable>();
             balls.Add(new Sphere(new Vector3(1,        0.5f,   -1), 0.5f, 
@@ -65,8 +65,9 @@ namespace RayTracer
             balls.Add(new Sphere(new Vector3(1.5f,    1.25f,  -1.5f), 0.5f,
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.95f)));
 
+            var bvh2 = new BoundingVolumeHierarchy(balls);
             //_scene.Objects.Add(new BVHNode(balls));
-            _scene.Objects.Add(new BVHNode(new BVHNode(balls)));
+            _scene.Objects.Add(bvh2.Root);
 
             Statistics.Enabled = false;
         }

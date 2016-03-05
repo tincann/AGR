@@ -9,32 +9,54 @@ namespace RayTracer.Structures
 {
     public class BoundingVolumeHierarchy
     {
-        private List<BVHNode> Nodes; 
-        public BVHNode Construct(List<Boundable> boundables)
+        public BVHNode Root;
+        public BoundingVolumeHierarchy(IEnumerable<Boundable> boundables)
+        {
+            Root = Construct(new BVHNode(boundables));
+        }
+        
+        public BVHNode Construct(BVHNode leaf)
         {
             //sort on x
-            var xOrdered = boundables.OrderBy(x => x.BoundingBox.Centroid.X).ToList();
+            var xOrdered = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.X).ToList();
             //sort on y
-            var yOrdered = boundables.OrderBy(x => x.BoundingBox.Centroid.Y).ToList();
+            var yOrdered = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.Y).ToList();
             //sort on z
-            var zOrdered = boundables.OrderBy(x => x.BoundingBox.Centroid.Z).ToList();
+            var zOrdered = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.Z).ToList();
 
+            var planeX = CalculateBestSplitPlane(xOrdered);
+            var planeY = CalculateBestSplitPlane(yOrdered);
+            var planeZ = CalculateBestSplitPlane(zOrdered);
 
-            throw new NotImplementedException();
+            var bestPlane = new List<SplitPlane> {planeX, planeY, planeZ}.OrderBy(x => x.Cost).FirstOrDefault();
+            
+            //don't split further
+            if (bestPlane.Cost > leaf.BoundingBox.Area*leaf.Boundables.Count)
+            {
+                return leaf;
+            }
+
+            var left = new BVHNode(bestPlane.Left);
+            var right = new BVHNode(bestPlane.Right);
+
+            var root = new BVHNode(Construct(left), Construct(right));
+            return root;
         }
-
+        
         private SplitPlane CalculateBestSplitPlane(List<Boundable> boundables)
         {
-            var bestSplitPlane = new SplitPlane(float.MaxValue, -1);
+            var bestSplitPlane = new SplitPlane(float.MaxValue, null, null);
             for (int i = 1; i < boundables.Count; i++)
             {
-                var leftB = BoundingBox.FromBoundables(boundables.Take(i));
-                var rightB = BoundingBox.FromBoundables(boundables.Skip(i));
+                var left = boundables.Take(i).ToList();
+                var leftB = BoundingBox.FromBoundables(left);
+                var right = boundables.Skip(i).ToList();
+                var rightB = BoundingBox.FromBoundables(right);
 
-                var cost = leftB.Area*i + rightB.Area*(boundables.Count - i);
+                var cost = leftB.Area * left.Count + rightB.Area * right.Count;
                 if (cost < bestSplitPlane.Cost)
                 {
-                    bestSplitPlane = new SplitPlane(cost, i);
+                    bestSplitPlane = new SplitPlane(cost, left, right);
                 }
             }
 
@@ -44,13 +66,21 @@ namespace RayTracer.Structures
 
     struct SplitPlane
     {
-        public SplitPlane(float cost, int index)
+        public readonly IEnumerable<Boundable> Left; 
+        public readonly IEnumerable<Boundable> Right; 
+
+        public SplitPlane(float cost, IEnumerable<Boundable> left, IEnumerable<Boundable> right)
         {
             Cost = cost;
-            Index = index;
+            Left = left;
+            Right = right;
         }
         public float Cost;
-        public int Index;
+
+        public static SplitPlane GetBestSplitplane(params SplitPlane[] planes)
+        {
+            return planes.OrderBy(x => x.Cost).FirstOrDefault();
+        }
     }
 
     public class BVHNode : Intersectable
@@ -60,9 +90,9 @@ namespace RayTracer.Structures
         private readonly BVHNode _left;
         private readonly BVHNode _right;
 
-        private readonly List<Boundable> _boundables;
+        public readonly List<Boundable> Boundables;
 
-        private bool IsLeaf => _boundables != null;
+        private bool IsLeaf => Boundables != null;
 
         public BVHNode(BVHNode left)
         {
@@ -77,17 +107,17 @@ namespace RayTracer.Structures
             BoundingBox = BoundingBox.Combine(left.BoundingBox, right.BoundingBox);
         }
 
-        public BVHNode(List<Boundable> boundables)
+        public BVHNode(IEnumerable<Boundable> boundables)
         {
-            _boundables = boundables;
-            BoundingBox = BoundingBox.Combine(boundables.Select(x => x.BoundingBox).ToArray());
+            Boundables = boundables.ToList();
+            BoundingBox = BoundingBox.Combine(Boundables.Select(x => x.BoundingBox).ToArray());
         }
 
         public bool Intersect(Ray ray, out Intersection intersection)
         {
             if (IsLeaf)
             {
-                intersection = IntersectionHelper.GetClosestIntersection(ray, _boundables);
+                intersection = IntersectionHelper.GetClosestIntersection(ray, Boundables);
                 return intersection != null;
             }
 
