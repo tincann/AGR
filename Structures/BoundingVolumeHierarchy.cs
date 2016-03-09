@@ -39,8 +39,8 @@ namespace RayTracer.Structures
             var left = new BVHNode(bestPlane.Left);
             var right = new BVHNode(bestPlane.Right);
 
-            var root = new BVHNode(Construct(left), Construct(right));
-            return root;
+            var parent = new BVHNode(Construct(left), Construct(right));
+            return parent;
         }
         
         private SplitPlane CalculateBestSplitPlane(List<Boundable> boundables)

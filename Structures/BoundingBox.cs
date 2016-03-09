@@ -14,7 +14,7 @@ namespace RayTracer.Structures
         public BoundingBox(Vector3 min, Vector3 max)
         {
             _min = min;
-            _max = max;
+            _max = max;// + new Vector3(float.Epsilon);
             Centroid = (_min + _max)/2;
 
             var h = _max.Y - _min.Y;
@@ -85,7 +85,7 @@ namespace RayTracer.Structures
             tmin = Math.Max(tmin, Math.Min(t1, t2));
             tmax = Math.Min(tmax, Math.Max(t1, t2));
 
-            return tmax > Math.Max(tmin, 0) && ray.T >= tmin; //todo klopt dit laatste?
+            return tmax >= Math.Max(tmin, 0) && ray.T >= tmin; //todo klopt dit laatste?
         }
     }
 }

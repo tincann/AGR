@@ -54,19 +54,18 @@ namespace RayTracer
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
             var bvh = new BoundingVolumeHierarchy(cube.Triangles);
             _scene.Objects.Add(bvh.Root);
-
+            
             var balls = new List<Boundable>();
-            balls.Add(new Sphere(new Vector3(1,        0.5f,   -1), 0.5f, 
+            balls.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Mirror, new Color3(Color4.Red), 0.9f)));
-            balls.Add(new Sphere(new Vector3(2,        0.5f,   -1), 0.5f, 
+            balls.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.9f)));
-            balls.Add(new Sphere(new Vector3(1.5f,     0.5f,   -2), 0.5f, 
+            balls.Add(new Sphere(new Vector3(1.5f, 0.5f, -2), 0.5f,
                 new Material(MaterialType.Mirror, new Color3(Color4.Blue), 0.9f)));
-            balls.Add(new Sphere(new Vector3(1.5f,    1.25f,  -1.5f), 0.5f,
+            balls.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
                 new Material(MaterialType.Mirror, new Color3(Color4.White), 0.95f)));
 
             var bvh2 = new BoundingVolumeHierarchy(balls);
-            //_scene.Objects.Add(new BVHNode(balls));
             _scene.Objects.Add(bvh2.Root);
 
             Statistics.Enabled = false;
@@ -88,7 +87,7 @@ namespace RayTracer
             }
 
             Statistics.Reset();
-            i += 0.005f;
+            i += 0.03f;
         }
 
         readonly Stopwatch _sw = new Stopwatch();

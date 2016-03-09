@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System.Diagnostics;
+using OpenTK;
 using RayTracer.World.Objects;
 
 namespace RayTracer.World
@@ -21,6 +22,7 @@ namespace RayTracer.World
 
         public void SetLength(float length)
         {
+            Debug.Assert(length <= T);
             T = length;
         }
 
