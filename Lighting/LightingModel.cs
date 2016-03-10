@@ -14,14 +14,14 @@ namespace RayTracer.Lighting
             {
                 var lightVector = light.Position - intersection.Location;
                 var invLightDistance2 = 1/lightVector.LengthSquared;
-                var shadowRay = new Ray(intersection.Location, lightVector);
+                var shadowRay = new Ray(intersection.Location + Constants.ShadowRayEpsilon * intersection.SurfaceNormal, lightVector, intersection.Ray.BounceNumber);
                 if (scene.DoesIntersect(shadowRay))
                 {
                     continue;
                 }
 
                 var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
-                color += Math.Abs(intensity)* intersection.Material.Color * invLightDistance2*light.Intensity;
+                color += Math.Abs(intensity) * intersection.Material.Color * invLightDistance2*light.Intensity;
             }
 
             return color;

@@ -10,9 +10,12 @@ namespace RayTracer.Structures
     public class BoundingVolumeHierarchy
     {
         public BVHNode Root;
-        public BoundingVolumeHierarchy(IEnumerable<Boundable> boundables)
+        public BoundingVolumeHierarchy(List<Boundable> boundables)
         {
+            var time = DateTime.UtcNow;
+            Console.WriteLine($"Building BVH for {boundables.Count()} boundables...");
             Root = Construct(new BVHNode(boundables));
+            Console.WriteLine($"Constuction done in {DateTime.UtcNow - time}");
         }
         
         public BVHNode Construct(BVHNode leaf)

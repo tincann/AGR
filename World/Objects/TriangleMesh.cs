@@ -57,7 +57,7 @@ namespace RayTracer.World.Objects
             return true;
         }
 
-        public List<Triangle> Triangles { get; } = new List<Triangle>();
+        public List<Boundable> Triangles { get; } = new List<Boundable>();
 
         private static Vector3 ToVector3(Vertex vertex)
         {

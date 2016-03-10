@@ -17,6 +17,8 @@ namespace RayTracer.Helpers
 
         public static int Get(string key)
         {
+            if (!Enabled) return 0;
+
             int value;
             Stats.TryGetValue(key, out value);
             return value;
@@ -24,6 +26,8 @@ namespace RayTracer.Helpers
 
         public static void Reset()
         {
+            if (!Enabled) return;
+
             Stats.Clear();
         }
     }

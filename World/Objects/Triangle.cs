@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Lighting;
 using RayTracer.Structures;
@@ -77,7 +76,7 @@ namespace RayTracer.World.Objects
             //t parameter of ray
             float t = Vector3.Dot(_e2, Q)*invDet;
 
-            if (t > 0.001 && t <= ray.T)
+            if (t > Constants.MinimumRayT && t <= ray.T)
             {
                 var intersectionPoint = ray.GetPoint(t);
                 ray.SetLength(t);

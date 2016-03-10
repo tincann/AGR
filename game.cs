@@ -49,7 +49,7 @@ namespace RayTracer
 
             var mat = new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.3f);
             //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", mat);
-            //_scene.Objects.Add(teapot);
+            //_scene.Objects.Add(new BoundingVolumeHierarchy(teapot.Triangles).Root);
 
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
             var bvh = new BoundingVolumeHierarchy(cube.Triangles);
@@ -74,7 +74,7 @@ namespace RayTracer
         private static float i = 0;
         public void Tick()
         {
-            var radius = 3;
+            var radius = 9;
             _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius + 0.5f, (float)Math.Cos(i) * radius));
             //_scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);

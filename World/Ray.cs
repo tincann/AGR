@@ -6,14 +6,17 @@ namespace RayTracer.World
 {
     public class Ray
     {
-        public Ray(Vector3 origin, Vector3 direction, Intersectable originPrimitive) : this(origin, direction)
+        public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive) : this(origin, direction, bounceNumber)
         {
             OriginPrimitive = originPrimitive;
         }
 
-        public Ray(Vector3 origin, Vector3 direction)
+        public readonly int BounceNumber;
+
+        public Ray(Vector3 origin, Vector3 direction, int bounceNumber)
         {
             Origin = origin;
+            BounceNumber = bounceNumber + 1;
             Direction = direction.Normalized();
 
             //todo possible divide by zero
@@ -35,7 +38,7 @@ namespace RayTracer.World
         {
             var c = -Vector3.Dot(intersection.SurfaceNormal, ray.Direction);
             var reflectionDirection = ray.Direction + (2 * intersection.SurfaceNormal * c);
-            return new Ray(intersection.Location, reflectionDirection, intersection.IntersectsWith);
+            return new Ray(intersection.Location, reflectionDirection, ray.BounceNumber, intersection.IntersectsWith);
         }
 
         public float T { get; private set; } = float.MaxValue;
@@ -46,12 +49,12 @@ namespace RayTracer.World
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {
-            return new Ray(origin, target - origin, originalPrimitive);
+            return new Ray(origin, target - origin, 0, originalPrimitive);
         }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target)
         {
-            return new Ray(origin, target - origin);
+            return new Ray(origin, target - origin, 0);
         }
     }
 }
