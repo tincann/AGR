@@ -16,7 +16,7 @@ namespace RayTracer
 {
     internal class Game
     {
-        private readonly Camera _camera = new Camera(new Vector3(3, 5, 0), new Vector3(0, 0, 0), 75);
+        private readonly Camera _camera = new Camera(new Vector3(3, 5, 0), Vector3.UnitZ);
         private readonly Scene _scene = new Scene();
         public Surface Screen;
 
@@ -63,7 +63,7 @@ namespace RayTracer
         public void Tick()
         {
             var radius = 6;
-            _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius / 2 + 1.6f, (float)Math.Cos(i) * radius));
+            //_camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius / 2 + 1.6f, (float)Math.Cos(i) * radius));
             //_scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
@@ -140,6 +140,11 @@ namespace RayTracer
 
             var color = _scene.Intersect(ray);
             Screen.Plot(x, y, color.ToArgb());
+        }
+
+        public void MoveCamera(Vector3 moveVector)
+        {
+            _camera.Move(moveVector);
         }
     }
 }

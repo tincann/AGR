@@ -50,6 +50,37 @@ namespace RayTracer
             // called once per frame; app logic
             var keyboard = OpenTK.Input.Keyboard.GetState();
             if (keyboard[Key.Escape]) Exit();
+
+            var moveVector = Vector3.Zero;
+            if (keyboard[Key.A])
+            {
+                moveVector += -Vector3.UnitX;
+            }
+            if (keyboard[Key.D])
+            {
+                moveVector += Vector3.UnitX;
+            }
+            if (keyboard[Key.W])
+            {
+                moveVector += Vector3.UnitZ;
+            }
+            if (keyboard[Key.S])
+            {
+                moveVector += -Vector3.UnitZ;
+            }
+            if (keyboard[Key.Space])
+            {
+                moveVector += Vector3.UnitY;
+            }
+            if (keyboard[Key.ControlLeft])
+            {
+                moveVector += -Vector3.UnitY;
+            }
+
+            if (moveVector != Vector3.Zero)
+            {
+                _game.MoveCamera(moveVector.Normalized());
+            }
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

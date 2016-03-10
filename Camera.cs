@@ -14,25 +14,39 @@ namespace RayTracer
         private Vector3 _position;
         private Matrix4 _cameraMatrix;
 
-        
-        public float d = 1.5f;
-        private float FOV;
+        private Vector3 CrossDir => -Vector3.Cross(Vector3.UnitY, ViewDirection);
 
-        public Camera(Vector3 position, Vector3 target, float fov)
+        public float d = 1.5f;
+        
+        public Camera(Vector3 position, Vector3 target)
         {
-            Position = position;
-            Target = target;
-            FOV = fov;
             Update(position, target);
         }
 
         public Vector3 Position { get; private set; }
         public Vector3 Target { get; private set; }
+        public Vector3 ViewDirection { get; private set; }
+
+        private float Speed = 0.1f;
+
+        public void Move(Vector3 direction)
+        {
+            var moveDir = 
+                direction.X * CrossDir +
+                direction.Y * Vector3.UnitY +
+                direction.Z * ViewDirection;
+
+            moveDir.Normalize();
+            moveDir *= Speed;
+
+            Update(Position + moveDir, Target + moveDir);
+        }
 
         public void Update(Vector3 position, Vector3 target)
         {
-            Position = Position;
+            Position = position;
             Target = target;
+            ViewDirection = (target - position).Normalized();
             Update();
         }
 
