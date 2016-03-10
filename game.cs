@@ -146,5 +146,10 @@ namespace RayTracer
         {
             _camera.Move(moveVector);
         }
+
+        public void RotateCamera(Vector2 rotVector)
+        {
+            _camera.Rotate(rotVector);
+        }
     }
 }

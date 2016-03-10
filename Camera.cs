@@ -27,7 +27,7 @@ namespace RayTracer
         public Vector3 Target { get; private set; }
         public Vector3 ViewDirection { get; private set; }
 
-        private float Speed = 0.1f;
+        private float _moveSpeed = 0.1f;
 
         public void Move(Vector3 direction)
         {
@@ -37,9 +37,22 @@ namespace RayTracer
                 direction.Z * ViewDirection;
 
             moveDir.Normalize();
-            moveDir *= Speed;
+            moveDir *= _moveSpeed;
 
             Update(Position + moveDir, Target + moveDir);
+        }
+
+        private float _rotSpeed = 0.05f;
+        public void Rotate(Vector2 rotation)
+        {
+            rotation *= _rotSpeed;
+
+            var rotMatrix = 
+                Matrix4.CreateFromAxisAngle(Vector3.UnitY, -rotation.X) *
+                Matrix4.CreateFromAxisAngle(CrossDir, rotation.Y);
+
+            var viewDir = Vector3.Transform(ViewDirection, rotMatrix);
+            Update(Position, Position + viewDir);
         }
 
         public void Update(Vector3 position, Vector3 target)

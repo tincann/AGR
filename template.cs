@@ -55,24 +55,22 @@ namespace RayTracer
             if (keyboard[Key.A])
             {
                 moveVector += -Vector3.UnitX;
-            }
-            if (keyboard[Key.D])
+            }else if (keyboard[Key.D])
             {
                 moveVector += Vector3.UnitX;
             }
             if (keyboard[Key.W])
             {
                 moveVector += Vector3.UnitZ;
-            }
-            if (keyboard[Key.S])
+            }else if (keyboard[Key.S])
             {
                 moveVector += -Vector3.UnitZ;
             }
+
             if (keyboard[Key.Space])
             {
                 moveVector += Vector3.UnitY;
-            }
-            if (keyboard[Key.ControlLeft])
+            }else if (keyboard[Key.ControlLeft])
             {
                 moveVector += -Vector3.UnitY;
             }
@@ -80,6 +78,28 @@ namespace RayTracer
             if (moveVector != Vector3.Zero)
             {
                 _game.MoveCamera(moveVector.Normalized());
+            }
+
+            var rotVector = Vector2.Zero;
+            if (keyboard[Key.Left])
+            {
+                rotVector += -Vector2.UnitX;
+            }else if (keyboard[Key.Right])
+            {
+                rotVector += Vector2.UnitX;
+            }
+
+            if (keyboard[Key.Up])
+            {
+                rotVector += Vector2.UnitY;
+            }else if (keyboard[Key.Down])
+            {
+                rotVector += -Vector2.UnitY;
+            }
+
+            if (rotVector != Vector2.Zero)
+            {
+                _game.RotateCamera(rotVector);
             }
         }
 
