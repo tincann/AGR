@@ -6,8 +6,6 @@ using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Lighting;
@@ -24,7 +22,7 @@ namespace RayTracer
 
         public void Init()
         {
-            tasks = new Task[Screen.Height];
+            tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
             _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White, 30));
             _scene.LightSources.Add(new LightSource(new Vector3(3, 3, 5), Color4.White, 30));
@@ -64,8 +62,8 @@ namespace RayTracer
         private static float i = 0;
         public void Tick()
         {
-            var radius = 9;
-            _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius + 0.5f, (float)Math.Cos(i) * radius));
+            var radius = 6;
+            _camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius / 2 + 1.6f, (float)Math.Cos(i) * radius));
             //_scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
@@ -83,21 +81,27 @@ namespace RayTracer
         readonly Stopwatch _sw = new Stopwatch();
         private Task[] tasks;
 
+        private int parallelBundles = 32;
         public void Render()
         {
             _sw.Restart();
             // render stuff over the backbuffer (OpenGL, sprites)
 
 #if PARALLEL
-            for (int y = 0; y < Screen.Height; y++)
+            var bundleSize = Screen.Height/parallelBundles;
+            for (int b = 0; b < parallelBundles; b++)
             {
                 //Console.WriteLine($"y: {y}");
-                int copyY = y;
-                tasks[y] = Task.Factory.StartNew(() =>
-                {     
-                    for (int x = 0; x < Screen.Width; x++)
+                int currentBundle = b;
+                tasks[b] = Task.Factory.StartNew(() =>
+                {
+                    var beginLine = currentBundle*bundleSize;
+                    for (int y = beginLine; y < beginLine + bundleSize; y++)
                     {
-                        TraceRay(x, copyY);
+                        for (int x = 0; x < Screen.Width; x++)
+                        {
+                            TraceRay(x, y);
+                        }
                     }
                 });
             }
