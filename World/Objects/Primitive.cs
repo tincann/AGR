@@ -1,14 +1,10 @@
-﻿using OpenTK;
-using OpenTK.Graphics;
-using RayTracer.Lighting;
-using RayTracer.Structures;
+﻿using RayTracer.Lighting;
 
 namespace RayTracer.World.Objects
 {
-    public abstract class Primitive : Boundable
+    public abstract class Primitive : Intersectable
     {
         public Material Material { get; set; }
-        public abstract BoundingBox BoundingBox { get; }
         
         protected Primitive(Material material)
         {

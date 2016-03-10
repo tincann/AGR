@@ -5,14 +5,14 @@ using RayTracer.Structures;
 
 namespace RayTracer.World.Objects
 {
-    public class Triangle : Primitive
+    public class Triangle : Primitive, Boundable
     {
         private readonly Vector3 _e1;
         private readonly Vector3 _e2;
         private readonly Vector3 _p1;
         private readonly Vector3 _normal;
 
-        public override BoundingBox BoundingBox { get; }
+        public BoundingBox BoundingBox { get; }
 
         public Triangle(Vector3 p1, Vector3 p2, Vector3 p3, Material material)
             : base(material)

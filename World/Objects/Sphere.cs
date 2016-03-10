@@ -5,11 +5,11 @@ using RayTracer.Structures;
 
 namespace RayTracer.World.Objects
 {
-    public class Sphere : Primitive
+    public class Sphere : Primitive, Boundable
     {
         public Vector3 Center { get; }
         public float Radius { get; }
-        public override BoundingBox BoundingBox { get; }
+        public BoundingBox BoundingBox { get; }
         private readonly float _rad2;
         public Sphere(Vector3 center, float radius, Material material) : base(material)
         {
