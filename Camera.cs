@@ -11,12 +11,11 @@ namespace RayTracer
         private Vector3 _e2;
         //private Vector3 _screenCenter;
 
-        private Vector3 _position;
         private Matrix4 _cameraMatrix;
 
         private Vector3 CrossDir => -Vector3.Cross(Vector3.UnitY, ViewDirection);
 
-        public float d = 1.5f;
+        public float D = 1.5f;
         
         public Camera(Vector3 position, Vector3 target)
         {
@@ -74,9 +73,9 @@ namespace RayTracer
             //Console.WriteLine($"Position: {Position} Target: {Target}");
             
             //somehow it must be -d and -y
-            var p0 = new Vector3(-1,  1, -d); //top left
-            var p1 = new Vector3( 1,  1, -d); //top right
-            var p2 = new Vector3(-1, -1, -d); //bottom left
+            var p0 = new Vector3(-1,  1, -D); //top left
+            var p1 = new Vector3( 1,  1, -D); //top right
+            var p2 = new Vector3(-1, -1, -D); //bottom left
 
             _cameraMatrix = Matrix4.LookAt(Position, Target, Vector3.UnitY);;
             _cameraMatrix.Invert();

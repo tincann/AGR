@@ -6,6 +6,13 @@ namespace RayTracer.World
 {
     public class Ray
     {
+
+        public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive, bool transmitted) : this(origin, direction, bounceNumber)
+        {
+            OriginPrimitive = originPrimitive;
+            Transmitted = transmitted;
+        }
+
         public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive) : this(origin, direction, bounceNumber)
         {
             OriginPrimitive = originPrimitive;
@@ -31,6 +38,7 @@ namespace RayTracer.World
 
         public Vector3 GetPoint(float t)
         {
+            Debug.Assert(t >= 0);
             return Origin + t*Direction;
         }
 
@@ -46,6 +54,9 @@ namespace RayTracer.World
         public Intersectable OriginPrimitive { get; }
         public Vector3 Direction { get; }
         public Vector3 InverseDirection { get; }
+
+        //Is ray now inside last intersected material?
+        public bool Transmitted { get; } = false;
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {

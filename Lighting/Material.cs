@@ -2,22 +2,18 @@
 
 namespace RayTracer.Lighting
 {
-    public struct Material
+    public class Material
     {
-
-        public Material(MaterialType materialType, Color3 color) : this(materialType, color, 1)
-        {
-        }
-
-        public Material(MaterialType materialType, Color3 color, float reflectionPercentage)
+        public Material(MaterialType materialType, Color3 color)
         {
             MaterialType = materialType;
             Color = color;
-            ReflectionPercentage = reflectionPercentage;
         }
 
         public MaterialType MaterialType { get; }
         public Color3 Color { get; }
-        public float ReflectionPercentage { get; }
+
+        public float Specularity { get; set; } = 1;
+        public float RefractiveIndex { get; set; } = 1;
     }
 }

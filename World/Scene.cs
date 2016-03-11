@@ -15,6 +15,11 @@ namespace RayTracer.World
 
         public Color3 Intersect(Ray ray)
         {
+            if (ray.BounceNumber > 20)
+            {
+                return new Color3(Color4.Red);
+            }
+
             //get nearest intersection
             var intersection = IntersectionHelper.GetClosestIntersection(ray, Objects);
             if (intersection == null)
@@ -25,11 +30,11 @@ namespace RayTracer.World
             switch (intersection.Material.MaterialType)
             {
                 case MaterialType.Diffuse:
-                    return LightingModel.DirectIlumination(this, intersection);
-                case MaterialType.Mirror:
-                    return LightingModel.Reflection(this, intersection);
+                    return LightingModel.DirectIllumination(this, intersection);
                 case MaterialType.Specular:
-                    throw new NotImplementedException();
+                    return LightingModel.Specular(this, intersection);
+                case MaterialType.Dielectric:
+                    return LightingModel.Dielectric(this, intersection);
             }
             throw new NotImplementedException();
         }

@@ -25,7 +25,7 @@ namespace RayTracer
             tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
             _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), Color4.White, 30));
-            _scene.LightSources.Add(new LightSource(new Vector3(3, 3, 5), Color4.White, 30));
+            _scene.LightSources.Add(new LightSource(new Vector3(20, 20, 20), Color4.White, 500));
 
             _scene.Objects.Add(new Plane(
                 Vector3.UnitY, 
@@ -35,7 +35,7 @@ namespace RayTracer
                     new Color3(Color4.Bisque))
             ));
 
-            var mat = new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.3f);
+            var mat = new Material(MaterialType.Specular, new Color3(Color4.Green)) { Specularity = 0.3f };
             //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", mat);
             //_scene.Objects.Add(new BoundingVolumeHierarchy(teapot.Triangles).Root);
 
@@ -45,16 +45,18 @@ namespace RayTracer
             
             var balls = new List<Boundable>();
             balls.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
-                new Material(MaterialType.Mirror, new Color3(Color4.Red), 0.9f)));
+                new Material(MaterialType.Diffuse, new Color3(Color4.Red)) { Specularity = 0.9f }));
             balls.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
-                new Material(MaterialType.Mirror, new Color3(Color4.Green), 0.9f)));
+                new Material(MaterialType.Diffuse, new Color3(Color4.Green)) { Specularity = 0.9f }));
             balls.Add(new Sphere(new Vector3(1.5f, 0.5f, -2), 0.5f,
-                new Material(MaterialType.Mirror, new Color3(Color4.Blue), 0.9f)));
+                new Material(MaterialType.Diffuse, new Color3(Color4.Blue)) { Specularity = 0.9f }));
             balls.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
-                new Material(MaterialType.Mirror, new Color3(Color4.White), 0.95f)));
+                new Material(MaterialType.Diffuse, new Color3(Color4.White)) { Specularity = 0.95f }));
 
             var bvh2 = new BoundingVolumeHierarchy(balls);
             _scene.Objects.Add(bvh2.Root);
+
+            _scene.Objects.Add(new Sphere(new Vector3(0, 1, 2), 1, new Material(MaterialType.Dielectric, new Color3(Color4.White))));
 
             Statistics.Enabled = false;
         }
@@ -67,7 +69,7 @@ namespace RayTracer
             //_scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
-            Screen.Print($"d: {_camera.d}", 2, 2, 0xffffff);
+            Screen.Print($"d: {_camera.D}", 2, 2, 0xffffff);
 
             if (Statistics.Enabled)
             {
