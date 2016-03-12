@@ -43,10 +43,10 @@ namespace RayTracer.World.Objects
                     return false;
                 }
 
-                var sd = Math.Sqrt(d);
+                var sd = (float)Math.Sqrt(d);
                 var t1 = (-b + sd)/2*a;
                 var t2 = (-b - sd)/2*a;
-                t = (float)Math.Min(t1, t2);
+                t = Math.Max(t1, t2);
             }
             else
             {
@@ -58,7 +58,7 @@ namespace RayTracer.World.Objects
                 t -= (float) Math.Sqrt(_rad2 - p2);
             }
 
-            if (t > 0)
+            if (t > 0.0001f)
             {
                 var intersectionPoint = ray.GetPoint(t);
                 var normal = (intersectionPoint - Center).Normalized();

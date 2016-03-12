@@ -19,6 +19,6 @@ namespace RayTracer.Lighting
         public static readonly Material Air = new Material(MaterialType.Dielectric) { RefractiveIndex = 1.0f };
         public static readonly Material Glass = new Material(MaterialType.Dielectric) { RefractiveIndex = 1.5f };
         public static readonly Material Water = new Material(MaterialType.Dielectric) { RefractiveIndex = 1.35f };
-        public static readonly Material Metal = new Material(MaterialType.Specular) { Specularity = 0.9f };
+        public static readonly Material Metal = new Material(MaterialType.Specular) { Specularity = 0.5f };
     }
 }

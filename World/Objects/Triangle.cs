@@ -33,12 +33,6 @@ namespace RayTracer.World.Objects
             
             intersection = null;
 
-            //don't intersect with primitive that ray came from
-            if (this.Equals(ray.OriginPrimitive))
-            {
-                return false;
-            }
-
             var P = Vector3.Cross(ray.Direction, _e2);
 
             var det = Vector3.Dot(_e1, P);

@@ -22,7 +22,7 @@ namespace RayTracer.Lighting
                 }
 
                 var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
-                color += Math.Abs(intensity) * intersection.Material.Color * invLightDistance2*light.Intensity;
+                color += Math.Max(intensity, 0) * intersection.Material.Color * invLightDistance2*light.Intensity;
             }
 
             return color;
@@ -33,18 +33,18 @@ namespace RayTracer.Lighting
             var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
 
-            var specColor = new Color3(Color4.Black);
-            foreach (var lightSource in scene.LightSources)
-            {
-                var lightDir = (intersection.Location - lightSource.Position).Normalized();
-                var h = (intersection.Ray.Direction + lightDir).Normalized();
-                var dot = Vector3.Dot(h, intersection.SurfaceNormal);
-                if (dot > 0)
-                {
-                    var spec = (float) Math.Pow(dot, 20)*intersection.Material.Specularity;
-                    specColor += lightSource.Color * spec;
-                }
-            }
+            //var specColor = new Color3(Color4.Black);
+            //foreach (var lightSource in scene.LightSources)
+            //{
+            //    var lightDir = (lightSource.Position - intersection.Location).Normalized();
+            //    var h = (-intersection.Ray.Direction + lightDir).Normalized();
+            //    var dot = Vector3.Dot(h, intersection.SurfaceNormal);
+            //    if (dot > 0)
+            //    {
+            //        var spec = (float) Math.Pow(dot, 20)*intersection.Material.Specularity;
+            //        specColor += lightSource.Color * spec;
+            //    }
+            //}
 
             return mat.Specularity * (scene.Intersect(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
         }

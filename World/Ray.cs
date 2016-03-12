@@ -63,7 +63,7 @@ namespace RayTracer.World
 
         public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction)
         {
-            var epsilon = direction*0.0001f;
+            var epsilon = direction*0.001f;
             return new Ray(intersection.Location + epsilon, direction, intersection.Ray.BounceNumber, intersection.IntersectsWith);
         }
 
