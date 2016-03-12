@@ -15,7 +15,7 @@ namespace RayTracer.World
 
         public Color3 Intersect(Ray ray)
         {
-            if (ray.BounceNumber > 20)
+            if (ray.BounceNumber > Constants.MaxRayBounces)
             {
                 return new Color3(Color4.Red);
             }
@@ -37,21 +37,6 @@ namespace RayTracer.World
                     return LightingModel.Dielectric(this, intersection);
             }
             throw new NotImplementedException();
-        }
-
-       
-
-        public bool DoesIntersect(Ray ray)
-        {
-            foreach(var obj in Objects)
-            {
-                Intersection intersection;
-                if (obj.Intersect(ray, out intersection))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

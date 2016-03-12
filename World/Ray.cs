@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using OpenTK;
+using RayTracer.Lighting;
 using RayTracer.World.Objects;
 
 namespace RayTracer.World
@@ -7,10 +8,10 @@ namespace RayTracer.World
     public class Ray
     {
 
-        public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive, bool transmitted) : this(origin, direction, bounceNumber)
+        public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive, Material medium) : this(origin, direction, bounceNumber)
         {
             OriginPrimitive = originPrimitive;
-            Transmitted = transmitted;
+            Medium = medium;
         }
 
         public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive) : this(origin, direction, bounceNumber)
@@ -55,8 +56,16 @@ namespace RayTracer.World
         public Vector3 Direction { get; }
         public Vector3 InverseDirection { get; }
 
+        public Material Medium { get; } = Material.Air;
+        
         //Is ray now inside last intersected material?
         public bool Transmitted { get; } = false;
+
+        public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction)
+        {
+            var epsilon = direction*0.0001f;
+            return new Ray(intersection.Location + epsilon, direction, intersection.Ray.BounceNumber, intersection.IntersectsWith);
+        }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {

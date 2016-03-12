@@ -1,11 +1,12 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
+using RayTracer.Lighting;
 
 namespace RayTracer.World
 {
     public class LightSource
     {
-        public LightSource(Vector3 position, Color4 color, float intensity)
+        public LightSource(Vector3 position, Color3 color, float intensity)
         {
             Position = position;
             Color = color;
@@ -13,7 +14,7 @@ namespace RayTracer.World
         }
 
         public Vector3 Position { get; }
-        public Color4 Color { get; }
+        public Color3 Color { get; }
         public float Intensity { get; }
     }
 }

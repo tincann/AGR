@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenTK;
 using OpenTK.Graphics;
+using RayTracer.Helpers;
 using RayTracer.World;
 
 namespace RayTracer.Lighting
@@ -14,8 +15,8 @@ namespace RayTracer.Lighting
             {
                 var lightVector = light.Position - intersection.Location;
                 var invLightDistance2 = 1/lightVector.LengthSquared;
-                var shadowRay = new Ray(intersection.Location + Constants.ShadowRayEpsilon * intersection.SurfaceNormal, lightVector, intersection.Ray.BounceNumber);
-                if (scene.DoesIntersect(shadowRay))
+                var shadowRay = Ray.CreateFromIntersection(intersection, lightVector);
+                if (IntersectionHelper.DoesIntersect(shadowRay, scene.Objects))
                 {
                     continue;
                 }
@@ -31,23 +32,33 @@ namespace RayTracer.Lighting
         {
             var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
-            return mat.Specularity * scene.Intersect(reflectedRay) + DirectIllumination(scene, intersection) * (1 - mat.Specularity);
+
+            var specColor = new Color3(Color4.Black);
+            foreach (var lightSource in scene.LightSources)
+            {
+                var lightDir = (intersection.Location - lightSource.Position).Normalized();
+                var h = (intersection.Ray.Direction + lightDir).Normalized();
+                var dot = Vector3.Dot(h, intersection.SurfaceNormal);
+                if (dot > 0)
+                {
+                    var spec = (float) Math.Pow(dot, 20)*intersection.Material.Specularity;
+                    specColor += lightSource.Color * spec;
+                }
+            }
+
+            return mat.Specularity * (scene.Intersect(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
         }
 
         public static Color3 Dielectric(Scene scene, Intersection intersection)
         {
-            var n1 = 1;
+            var n1 = intersection.Ray.Medium.RefractiveIndex;
             var n2 = intersection.Material.RefractiveIndex;
             float n = n1/n2;
 
             var ray = intersection.Ray;
             var normal = intersection.SurfaceNormal;
-            //if (inside)
-            //{
-            //    normal *= -1;
-            //}
-
-            float cost = Vector3.Dot(normal, -ray.Direction);
+            
+            float cost = -Vector3.Dot(normal, ray.Direction);
             float k = 1 - n*n*(1 - cost*cost);
             if (k < 0)
             {
@@ -56,42 +67,15 @@ namespace RayTracer.Lighting
             }
 
             var T = n*ray.Direction - normal*(n*cost + (float)Math.Sqrt(k));
-            var eps = T*0.0001f;
-            var refracted = new Ray(intersection.Location + eps, T, ray.BounceNumber, intersection.IntersectsWith);
+
+            var refracted = Ray.CreateFromIntersection(intersection, T);
             float R0 = (n1 - n2)/(n1 + n2);
             R0 *= R0;
             var a = 1 - cost;
             float Fr = R0 + (1 - R0)*a*a*a*a*a;
             float Ft = 1 - Fr;
-
-
-            //Intersection internalIntersection;
-            //intersection.IntersectsWith.Intersect(refracted, out internalIntersection);
-
-
+            
             return Ft * scene.Intersect(refracted) + Fr * Specular(scene, intersection);
-            //var normal = inside ? -intersection.SurfaceNormal : intersection.SurfaceNormal;
-            //float cosI = Vector3.Dot(normal, intersection.Ray.Direction);
-            //float sinT2 = n*n*(1 - cosI*cosI);
-            //if (sinT2 > 1)
-            //{
-            //    //no refraction, only reflection
-            //    return new Color3(Color4.Green);//Specular(scene, intersection);
-            //}
-
-            //var refractedVector = n*intersection.Ray.Direction - (n + (float)Math.Sqrt(1 - sinT2))*normal;
-            //var refractedRay = new Ray(intersection.Location, refractedVector, intersection.Ray.BounceNumber, intersection.IntersectsWith, true);
-
-            ////reflection percentage
-            //var r02 = (n1 - n2)/(n1 + n2);
-            //var r0 = r02*r02;
-
-            //var a = (1 - Vector3.Dot(intersection.SurfaceNormal, intersection.Ray.Direction));
-            //var fr = r0 + (1 - r0)*a*a*a*a*a; //reflection percentage
-            //var ft = 1 - fr; //refraction precentage
-
-            //return scene.Intersect(refractedRay);
-            //return fr*Specular(scene, intersection) + ft* scene.Intersect(refractedRay);
         }
     }
 }

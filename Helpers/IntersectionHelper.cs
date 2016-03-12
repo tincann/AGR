@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RayTracer.World;
 using RayTracer.World.Objects;
 
@@ -13,7 +14,7 @@ namespace RayTracer.Helpers
             foreach (var obj in intersectables)
             {
                 Intersection intersection;
-                if (obj.Intersect(ray, out intersection))
+                if (obj.Intersect(ray, out intersection))// && !ReferenceEquals(ray.OriginPrimitive, obj))
                 {
                     if (intersection.Distance < closestDistance)
                     {
@@ -24,6 +25,20 @@ namespace RayTracer.Helpers
             }
 
             return closestIntersection;
+        }
+
+        
+        public static bool DoesIntersect(Ray ray, IEnumerable<Intersectable> intersectables)
+        {
+            foreach (var obj in intersectables)
+            {
+                Intersection intersection;
+                if (obj.Intersect(ray, out intersection))// && !ReferenceEquals(ray.OriginPrimitive, obj))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static Intersection GetMinimumIntersection(Intersection i1, Intersection i2)

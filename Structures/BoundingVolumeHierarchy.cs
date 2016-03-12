@@ -13,7 +13,7 @@ namespace RayTracer.Structures
         public BoundingVolumeHierarchy(List<Boundable> boundables)
         {
             var time = DateTime.UtcNow;
-            Console.WriteLine($"Building BVH for {boundables.Count()} boundables...");
+            Console.WriteLine($"Building BVH for {boundables.Count} boundables...");
             Root = Construct(new BVHNode(boundables));
             Console.WriteLine($"Constuction done in {DateTime.UtcNow - time}");
         }
