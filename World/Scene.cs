@@ -24,7 +24,7 @@ namespace RayTracer.World
             var intersection = IntersectionHelper.GetClosestIntersection(ray, Objects);
             if (intersection == null)
             {
-                return new Color3(Color4.DarkGray);
+                return new Color3(Color4.Black);
             }
 
             switch (intersection.Material.MaterialType)

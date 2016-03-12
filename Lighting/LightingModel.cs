@@ -33,20 +33,20 @@ namespace RayTracer.Lighting
             var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
 
-            //var specColor = new Color3(Color4.Black);
-            //foreach (var lightSource in scene.LightSources)
-            //{
-            //    var lightDir = (lightSource.Position - intersection.Location).Normalized();
-            //    var h = (-intersection.Ray.Direction + lightDir).Normalized();
-            //    var dot = Vector3.Dot(h, intersection.SurfaceNormal);
-            //    if (dot > 0)
-            //    {
-            //        var spec = (float) Math.Pow(dot, 20)*intersection.Material.Specularity;
-            //        specColor += lightSource.Color * spec;
-            //    }
-            //}
+            var specColor = new Color3(Color4.Black);
+            foreach (var lightSource in scene.LightSources)
+            {
+                var lightDir = (lightSource.Position - intersection.Location).Normalized();
+                var h = (-intersection.Ray.Direction + lightDir).Normalized();
+                var dot = Vector3.Dot(h, intersection.SurfaceNormal);
+                if (dot > 0)
+                {
+                    var spec = (float)Math.Pow(dot, 32) * intersection.Material.Specularity;
+                    specColor += lightSource.Color * spec;
+                }
+            }
 
-            return mat.Specularity * (scene.Intersect(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
+            return mat.Specularity * (specColor + scene.Intersect(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
         }
 
         public static Color3 Dielectric(Scene scene, Intersection intersection)
