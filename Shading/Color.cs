@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK.Graphics;
 
-namespace RayTracer.Lighting
+namespace RayTracer.Shading
 {
     public class Color3
     {
@@ -37,8 +37,14 @@ namespace RayTracer.Lighting
             return color*s;
         }
 
-        public int ToArgb()
+        public int ToArgb(bool gammaCorrect)
         {
+            if (gammaCorrect)
+            {
+                R = (float)Math.Sqrt(R);
+                G = (float)Math.Sqrt(G);
+                B = (float)Math.Sqrt(B);
+            }
             return new Color4(Math.Min(R, 1), Math.Min(G, 1), Math.Min(B, 1), 1).ToArgb();
         }
     }

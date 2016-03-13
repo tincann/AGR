@@ -1,5 +1,5 @@
 ﻿using OpenTK;
-using RayTracer.Lighting;
+using RayTracer.Shading;
 
 namespace RayTracer.World.Objects
 {

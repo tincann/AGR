@@ -1,4 +1,4 @@
-﻿namespace RayTracer.World
+﻿namespace RayTracer.Shading
 {
     public enum MaterialType
     {

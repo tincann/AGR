@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using OpenTK;
-using RayTracer.Lighting;
+using RayTracer.Shading;
 using RayTracer.World.Objects;
 
 namespace RayTracer.World

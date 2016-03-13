@@ -1,9 +1,6 @@
-﻿using System;
-using OpenTK;
-using OpenTK.Graphics;
-using RayTracer.World;
+﻿using OpenTK.Graphics;
 
-namespace RayTracer.Lighting
+namespace RayTracer.Shading
 {
     public class Material
     {

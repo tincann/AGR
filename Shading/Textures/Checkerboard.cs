@@ -1,8 +1,7 @@
 ﻿using System;
 using OpenTK;
-using OpenTK.Graphics;
 
-namespace RayTracer.Lighting.Textures
+namespace RayTracer.Shading.Textures
 {
     public class Checkerboard : Texture
     {

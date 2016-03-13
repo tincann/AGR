@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 using RayTracer.Helpers;
-using RayTracer.Lighting;
+using RayTracer.Shading;
 using RayTracer.Structures;
 
 namespace RayTracer.World.Objects

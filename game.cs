@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
-using RayTracer.Lighting;
-using RayTracer.Lighting.Textures;
+using RayTracer.Shading;
+using RayTracer.Shading.Textures;
 using RayTracer.World.Objects;
 
 namespace RayTracer
@@ -22,8 +22,8 @@ namespace RayTracer
         {
             tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
-            _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), new Color3(Color4.White), 30));
-            _scene.LightSources.Add(new LightSource(new Vector3(20, 20, 20), new Color3(Color4.White), 500));
+            _scene.Add(new LightSource(new Vector3(0, 6, 3), new Color3(Color4.White), 20));
+            _scene.Add(new LightSource(new Vector3(20, 20, 20), new Color3(Color4.White), 500));
 
             _scene.Add(new Plane(
                 Vector3.UnitY, 
@@ -114,17 +114,6 @@ namespace RayTracer
                 }
             }
 #endif
-            //while (true)
-            //{
-            //    var count = tasks.Count(x => !x.IsCompleted);
-            //    Console.WriteLine($"Rays remaining: {count}");
-            //    if (count < 100)
-            //    {
-            //        break;
-            //    }
-
-            //    //Thread.Sleep(TimeSpan.FromSeconds(5));
-            //}
             _sw.Stop();
             Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0xffffff);
         }
@@ -136,7 +125,8 @@ namespace RayTracer
             var ray = _camera.CreatePrimaryRay(u, v);
 
             var color = _scene.Intersect(ray);
-            Screen.Plot(x, y, color.ToArgb());
+            
+            Screen.Plot(x, y, color.ToArgb(true));
         }
 
         public void MoveCamera(Vector3 moveVector)

@@ -4,7 +4,7 @@ using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.World;
 
-namespace RayTracer.Lighting
+namespace RayTracer.Shading
 {
     public static class LightingModel
     {

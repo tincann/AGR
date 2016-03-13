@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
-using RayTracer.Lighting;
+using RayTracer.Shading;
 using RayTracer.Structures;
 using RayTracer.World.Objects;
 
@@ -20,6 +20,11 @@ namespace RayTracer.World
         public readonly List<Intersectable> Objects = new List<Intersectable>(); 
 
         private BoundingVolumeHierarchy _bvh;
+
+        public void Add(LightSource lightSource)
+        {
+            LightSources.Add(lightSource);
+        }
 
         public void Add(Intersectable intersectable)
         {

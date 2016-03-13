@@ -4,7 +4,7 @@ using ObjParser;
 using ObjParser.Types;
 using OpenTK;
 using OpenTK.Graphics;
-using RayTracer.Lighting;
+using RayTracer.Shading;
 using RayTracer.Structures;
 
 namespace RayTracer.World.Objects
