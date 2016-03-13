@@ -54,6 +54,8 @@
     <Compile Include="Lighting\Color.cs" />
     <Compile Include="Lighting\LightingModel.cs" />
     <Compile Include="Lighting\Material.cs" />
+    <Compile Include="Lighting\Texture.cs" />
+    <Compile Include="Lighting\Textures\Checkerboard.cs" />
     <Compile Include="ObjLoader.cs" />
     <Compile Include="Structures\Boundable.cs" />
     <Compile Include="Structures\BoundingBox.cs" />

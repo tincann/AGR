@@ -1,4 +1,4 @@
-﻿//#define PARALLEL
+﻿#define PARALLEL
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Diagnostics;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Lighting;
+using RayTracer.Lighting.Textures;
 using RayTracer.Structures;
 using RayTracer.World.Objects;
 
@@ -30,23 +31,24 @@ namespace RayTracer
             _scene.Objects.Add(new Plane(
                 Vector3.UnitY, 
                 0,
-                new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Bisque) }
+                new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, new Color3(Color4.Bisque), new Color3(Color4.White))}
             ));
 
-            var mat = new Material(MaterialType.Specular) { Specularity = 0.3f, Color = new Color3(Color4.Green)};
             //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", mat);
             //_scene.Objects.Add(new BoundingVolumeHierarchy(teapot.Triangles).Root);
 
-            //var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj", mat);
-            //var bvh = new BoundingVolumeHierarchy(cube.Triangles);
-            //_scene.Objects.Add(bvh.Root);
-            
+            var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj",
+                new Vector3(3, 0.5f, 1),
+                Material.Metal);
+            var bvh = new BoundingVolumeHierarchy(cube.Triangles);
+            _scene.Objects.Add(bvh.Root);
+
             var balls = new List<Boundable>();
             balls.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Red), Specularity = 0.9f }));
             balls.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Green), Specularity = 0.9f }));
-            balls.Add(new Sphere(new Vector3(1.5f, 0.5f, -2), 0.5f,
+            balls.Add(new Sphere(new Vector3(1.5f, 0.5f, -2f), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Blue), Specularity = 0.9f }));
             balls.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));

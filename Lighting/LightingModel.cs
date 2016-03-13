@@ -10,7 +10,7 @@ namespace RayTracer.Lighting
     {
         public static Color3 DirectIllumination(Scene scene, Intersection intersection)
         {
-            var color = new Color3(Color4.Black);
+            var totalIntensity = 0.0f;
             foreach (var light in scene.LightSources)
             {
                 var lightVector = light.Position - intersection.Location;
@@ -22,10 +22,12 @@ namespace RayTracer.Lighting
                 }
 
                 var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
-                color += Math.Max(intensity, 0) * intersection.Material.Color * invLightDistance2*light.Intensity;
+                totalIntensity += Math.Max(intensity, 0) * invLightDistance2*light.Intensity;
             }
-
-            return color;
+            var color = intersection.Material.Texture == null
+                    ? intersection.Material.Color
+                    : intersection.Material.Texture.GetColor(intersection.Location);
+            return totalIntensity * color;
         }
 
         public static Color3 Specular(Scene scene, Intersection intersection)

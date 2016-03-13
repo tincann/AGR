@@ -8,11 +8,11 @@ namespace RayTracer
 {
     public static class ObjLoader
     {
-        public static TriangleMesh Load(string path, Material material)
+        public static TriangleMesh Load(string path, Vector3 position, Material material)
         {
             var obj = new Obj();
             obj.LoadObj(path);
-            return new TriangleMesh(new Vector3(0, 0.5f, 0),  obj, material);
+            return new TriangleMesh(position,  obj, material);
         }
     }
 }

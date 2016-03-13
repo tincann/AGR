@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics;
+﻿using System;
+using OpenTK;
+using OpenTK.Graphics;
 using RayTracer.World;
 
 namespace RayTracer.Lighting
@@ -13,6 +15,7 @@ namespace RayTracer.Lighting
         public MaterialType MaterialType { get; }
         public Color3 Color { get; set; } = new Color3(Color4.White);
 
+        public Texture Texture { get; set; }
         public float Specularity { get; set; } = 1;
         public float RefractiveIndex { get; set; } = 1;
         

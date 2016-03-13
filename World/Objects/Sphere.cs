@@ -58,7 +58,7 @@ namespace RayTracer.World.Objects
                 t -= (float) Math.Sqrt(_rad2 - p2);
             }
 
-            if (t > 0.0001f)
+            if (t > float.Epsilon)
             {
                 var intersectionPoint = ray.GetPoint(t);
                 var normal = (intersectionPoint - Center).Normalized();
