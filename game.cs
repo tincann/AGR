@@ -54,7 +54,7 @@ namespace RayTracer
             var bvh2 = new BoundingVolumeHierarchy(balls);
             _scene.Objects.Add(bvh2.Root);
 
-            _scene.Objects.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Metal));
+            _scene.Objects.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass));
 
             Statistics.Enabled = false;
         }

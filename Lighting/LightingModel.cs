@@ -58,23 +58,24 @@ namespace RayTracer.Lighting
             var ray = intersection.Ray;
             var normal = intersection.SurfaceNormal;
             
-            float cost = -Vector3.Dot(normal, ray.Direction);
+            float cost = Vector3.Dot(normal, -ray.Direction);
             float k = 1 - n*n*(1 - cost*cost);
             if (k < 0)
             {
                 //internal reflection
-                return new Color3(Color4.Green);
+                return Specular(scene, intersection);
             }
 
-            var T = n*ray.Direction - normal*(n*cost + (float)Math.Sqrt(k));
+            var T = n*ray.Direction + normal*(n*cost - (float) Math.Sqrt(k));
 
-            var refracted = Ray.CreateFromIntersection(intersection, T);
+            var epsilon = T * 0.0001f;
+            var refracted = new Ray(intersection.Location + epsilon, T, ray.BouncesLeft, intersection.IntersectsWith, intersection.Material);
             float R0 = (n1 - n2)/(n1 + n2);
             R0 *= R0;
             var a = 1 - cost;
             float Fr = R0 + (1 - R0)*a*a*a*a*a;
             float Ft = 1 - Fr;
-            
+
             return Ft * scene.Intersect(refracted) + Fr * Specular(scene, intersection);
         }
     }

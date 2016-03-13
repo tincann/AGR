@@ -6,6 +6,13 @@ namespace RayTracer.World
 {
     public class Intersection
     {
+        public Intersection(Intersectable intersectsWith, Ray ray, Vector3 surfaceNormal, Vector3 location,
+            float distance, Material material, bool insidePrimitive)
+            : this(intersectsWith, ray, surfaceNormal, location, distance, material)
+        {
+            InsidePrimitive = insidePrimitive;
+        }
+
         public Intersection(Intersectable intersectsWith, Ray ray, Vector3 surfaceNormal, Vector3 location, float distance, Material material)
         {
             IntersectsWith = intersectsWith;
@@ -24,5 +31,6 @@ namespace RayTracer.World
         public float Distance { get; set; }
 
         public Material Material { get; }
+        public bool InsidePrimitive { get; set; }
     }
 }

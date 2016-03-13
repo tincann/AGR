@@ -8,23 +8,23 @@ namespace RayTracer.World
     public class Ray
     {
 
-        public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive, Material medium) : this(origin, direction, bounceNumber)
+        public Ray(Vector3 origin, Vector3 direction, int bouncesLeft, Intersectable originPrimitive, Material medium) : this(origin, direction, bouncesLeft)
         {
             OriginPrimitive = originPrimitive;
             Medium = medium;
         }
 
-        public Ray(Vector3 origin, Vector3 direction, int bounceNumber, Intersectable originPrimitive) : this(origin, direction, bounceNumber)
+        public Ray(Vector3 origin, Vector3 direction, int bouncesLeft, Intersectable originPrimitive) : this(origin, direction, bouncesLeft)
         {
             OriginPrimitive = originPrimitive;
         }
 
-        public readonly int BounceNumber;
+        public readonly int BouncesLeft;
 
-        public Ray(Vector3 origin, Vector3 direction, int bounceNumber)
+        public Ray(Vector3 origin, Vector3 direction, int bouncesLeft)
         {
             Origin = origin;
-            BounceNumber = bounceNumber + 1;
+            BouncesLeft = bouncesLeft - 1;
             Direction = direction.Normalized();
 
             //todo possible divide by zero
@@ -47,7 +47,7 @@ namespace RayTracer.World
         {
             var c = -Vector3.Dot(intersection.SurfaceNormal, ray.Direction);
             var reflectionDirection = ray.Direction + (2 * intersection.SurfaceNormal * c);
-            return new Ray(intersection.Location, reflectionDirection, ray.BounceNumber, intersection.IntersectsWith);
+            return new Ray(intersection.Location, reflectionDirection, ray.BouncesLeft, intersection.IntersectsWith);
         }
 
         public float T { get; private set; } = float.MaxValue;
@@ -64,17 +64,17 @@ namespace RayTracer.World
         public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction)
         {
             var epsilon = direction*0.001f;
-            return new Ray(intersection.Location + epsilon, direction, intersection.Ray.BounceNumber, intersection.IntersectsWith);
+            return new Ray(intersection.Location + epsilon, direction, intersection.Ray.BouncesLeft, intersection.IntersectsWith);
         }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {
-            return new Ray(origin, target - origin, 0, originalPrimitive);
+            return new Ray(origin, target - origin, Constants.MaxRayBounces, originalPrimitive);
         }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target)
         {
-            return new Ray(origin, target - origin, 0);
+            return new Ray(origin, target - origin, Constants.MaxRayBounces);
         }
     }
 }

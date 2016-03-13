@@ -15,7 +15,7 @@ namespace RayTracer.World
 
         public Color3 Intersect(Ray ray)
         {
-            if (ray.BounceNumber > Constants.MaxRayBounces)
+            if (ray.BouncesLeft < 1)
             {
                 return new Color3(Color4.Red);
             }

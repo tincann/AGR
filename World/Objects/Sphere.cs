@@ -66,7 +66,8 @@ namespace RayTracer.World.Objects
                 {
                     normal *= -1;
                 }
-                intersection = new Intersection(this, ray, normal, intersectionPoint, t, Material);
+                var mat = insideSphere ? Material.Air : Material;
+                intersection = new Intersection(this, ray, normal, intersectionPoint, t, mat, insideSphere);
                 return true;
             }
 
