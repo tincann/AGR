@@ -1,8 +1,6 @@
 ﻿using OpenTK;
-using RayTracer.World;
-using System;
 
-namespace RayTracer
+namespace RayTracer.World
 {
     public class Camera
     {

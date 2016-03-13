@@ -1,10 +1,9 @@
 ﻿using ObjParser;
 using OpenTK;
 using RayTracer.Lighting;
-using RayTracer.World;
 using RayTracer.World.Objects;
 
-namespace RayTracer
+namespace RayTracer.Helpers
 {
     public static class ObjLoader
     {
