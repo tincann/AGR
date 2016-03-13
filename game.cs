@@ -1,7 +1,5 @@
 ﻿#define PARALLEL
 
-using System;
-using System.Collections.Generic;
 using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
@@ -10,7 +8,6 @@ using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Lighting;
 using RayTracer.Lighting.Textures;
-using RayTracer.Structures;
 using RayTracer.World.Objects;
 
 namespace RayTracer
@@ -28,35 +25,33 @@ namespace RayTracer
             _scene.LightSources.Add(new LightSource(new Vector3(0, 6, 3), new Color3(Color4.White), 30));
             _scene.LightSources.Add(new LightSource(new Vector3(20, 20, 20), new Color3(Color4.White), 500));
 
-            _scene.Objects.Add(new Plane(
+            _scene.Add(new Plane(
                 Vector3.UnitY, 
                 0,
                 new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, new Color3(Color4.Bisque), new Color3(Color4.White))}
             ));
 
             //var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", mat);
-            //_scene.Objects.Add(new BoundingVolumeHierarchy(teapot.Triangles).Root);
+            //_scene.Add(new BoundingVolumeHierarchy(teapot.Triangles).Root);
 
             var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj",
                 new Vector3(3, 0.5f, 1),
                 Material.Metal);
-            var bvh = new BoundingVolumeHierarchy(cube.Triangles);
-            _scene.Objects.Add(bvh.Root);
 
-            var balls = new List<Boundable>();
-            balls.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
+            _scene.Add(cube);
+
+            _scene.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Red), Specularity = 0.9f }));
-            balls.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
+            _scene.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Green), Specularity = 0.9f }));
-            balls.Add(new Sphere(new Vector3(1.5f, 0.5f, -2f), 0.5f,
+            _scene.Add(new Sphere(new Vector3(1.5f, 0.5f, -2f), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Blue), Specularity = 0.9f }));
-            balls.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
+            _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));
+            
+            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass));
 
-            var bvh2 = new BoundingVolumeHierarchy(balls);
-            _scene.Objects.Add(bvh2.Root);
-
-            _scene.Objects.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass));
+            _scene.Construct();
 
             Statistics.Enabled = false;
         }
