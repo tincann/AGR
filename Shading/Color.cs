@@ -45,6 +45,11 @@ namespace RayTracer.Shading
             return new Color3(color.R * vector.X, color.G * vector.Y, color.B * vector.Z);
         }
 
+        public static Color3 operator /(Color3 color, float denominator)
+        {
+            return new Color3(color.R / denominator, color.G / denominator, color.B / denominator);
+        }
+
         public static Color3 operator *(float s, Color3 color)
         {
             return color*s;

@@ -4,11 +4,9 @@ using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using OpenTK.Graphics;
+using System.Xml.Serialization.Configuration;
 using RayTracer.Helpers;
 using RayTracer.Shading;
-using RayTracer.Shading.Textures;
-using RayTracer.World.Objects;
 
 namespace RayTracer
 {
@@ -24,9 +22,9 @@ namespace RayTracer
             Screen.Clear(0x2222ff);
             
             var sceneDef = new SceneDefinition(_camera, _scene);
-            
-            //sceneDef.Default();
-            sceneDef.Teapot();
+
+            sceneDef.Default();
+            //sceneDef.Teapot();
             //sceneDef.BeerTest();
 
             _scene.Construct();
@@ -100,9 +98,21 @@ namespace RayTracer
         {
             float v = (float)y / Screen.Height;
             float u = (float)x / Screen.Width;
-            var ray = _camera.CreatePrimaryRay(u, v);
 
-            var color = _scene.Intersect(ray);
+            var xSize = 1.0f/Screen.Width;
+            var ySize = 1.0f/Screen.Height;
+
+            Color3 color = new Color3(0,0,0);
+            var sampleSize = 4;
+            for (int i = 0; i < sampleSize; i++)
+            {
+                var dx = xSize*i/sampleSize;
+                var dy = ySize*i/sampleSize;
+                var ray = _camera.CreatePrimaryRay(u + dx, v + dy);
+                color += _scene.Intersect(ray);
+            }
+
+            color /= sampleSize;
             
             Screen.Plot(x, y, color.ToArgb(true));
         }
