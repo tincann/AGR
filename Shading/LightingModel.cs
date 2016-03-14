@@ -81,11 +81,11 @@ namespace RayTracer.Shading
             var transparency = new Vector3(1);
             if (intersection.InsidePrimitive)
             {
-                var absorbance = intersection.Material.Color * intersection.Material.Absorbance * -intersection.Distance;
+                var absorbance = intersection.Ray.Medium.Color * intersection.Ray.Medium.Absorbance * -intersection.Distance;
                 transparency = new Vector3(
-                    (float)Math.Exp(absorbance.R),
-                    (float)Math.Exp(absorbance.G),
-                    (float)Math.Exp(absorbance.B)); 
+                    (float)Math.Exp(-absorbance.R),
+                    (float)Math.Exp(-absorbance.G),
+                    (float)Math.Exp(-absorbance.B)); 
             }
             var color = Ft* scene.Intersect(refracted) + Fr * Specular(scene, intersection);
             return transparency*color;
