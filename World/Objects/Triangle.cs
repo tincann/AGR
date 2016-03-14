@@ -22,7 +22,7 @@ namespace RayTracer.World.Objects
             //vectors of triangle edges
             _e1 = Vector3.Subtract(p2, _p1);
             _e2 = Vector3.Subtract(p3, _p1);
-            _normal = Vector3.Cross(_e1, _e2).Normalized();
+            _normal = -Vector3.Cross(_e1, _e2).Normalized();
             BoundingBox = BoundingBox.FromVectors(p1, p2, p3);
         }
 
@@ -32,6 +32,12 @@ namespace RayTracer.World.Objects
             Statistics.Add("Triangle test");
             
             intersection = null;
+
+            //don't intersect backside
+            if (Vector3.Dot(ray.Direction, _normal) > 0)
+            {
+                return false;
+            }
 
             var P = Vector3.Cross(ray.Direction, _e2);
 

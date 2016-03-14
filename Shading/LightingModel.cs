@@ -70,8 +70,10 @@ namespace RayTracer.Shading
 
             var T = n*ray.Direction + normal*(n*cost - (float) Math.Sqrt(k));
 
-            var epsilon = T * 0.0001f;
-            var refracted = new Ray(intersection.Location + epsilon, T, ray.BouncesLeft, intersection.IntersectsWith, intersection.Material);
+            //var epsilon = T * 0.000001f;
+            var refracted = Ray.CreateFromIntersection(intersection, T, true);
+            //var refracted = new Ray(intersection.Location + epsilon, T, ray.BouncesLeft, intersection.IntersectsWith, intersection.Material);
+
             float R0 = (n1 - n2)/(n1 + n2);
             R0 *= R0;
             var a = 1 - cost;
