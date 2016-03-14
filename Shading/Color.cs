@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK;
 using OpenTK.Graphics;
 
 namespace RayTracer.Shading
@@ -37,6 +38,11 @@ namespace RayTracer.Shading
         public static Color3 operator *(Color3 color, float s)
         {
             return new Color3(color.R * s, color.G * s, color.B * s);
+        }
+
+        public static Color3 operator *(Vector3 vector, Color3 color)
+        {
+            return new Color3(color.R * vector.X, color.G * vector.Y, color.B * vector.Z);
         }
 
         public static Color3 operator *(float s, Color3 color)

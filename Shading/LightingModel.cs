@@ -69,10 +69,8 @@ namespace RayTracer.Shading
             }
 
             var T = n*ray.Direction + normal*(n*cost - (float) Math.Sqrt(k));
-
-            //var epsilon = T * 0.000001f;
+            
             var refracted = Ray.CreateFromIntersection(intersection, T, true);
-            //var refracted = new Ray(intersection.Location + epsilon, T, ray.BouncesLeft, intersection.IntersectsWith, intersection.Material);
 
             float R0 = (n1 - n2)/(n1 + n2);
             R0 *= R0;
@@ -80,7 +78,17 @@ namespace RayTracer.Shading
             float Fr = R0 + (1 - R0)*a*a*a*a*a;
             float Ft = 1 - Fr;
 
-            return Ft * scene.Intersect(refracted) + Fr * Specular(scene, intersection);
+            var transparency = new Vector3(1);
+            if (intersection.InsidePrimitive)
+            {
+                var absorbance = intersection.Material.Color * intersection.Material.Absorbance * -intersection.Distance;
+                transparency = new Vector3(
+                    (float)Math.Exp(absorbance.R),
+                    (float)Math.Exp(absorbance.G),
+                    (float)Math.Exp(absorbance.B)); 
+            }
+            var color = Ft* scene.Intersect(refracted) + Fr * Specular(scene, intersection);
+            return transparency*color;
         }
     }
 }

@@ -43,12 +43,15 @@ namespace RayTracer
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Red), Specularity = 0.9f }));
             _scene.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Green), Specularity = 0.9f }));
-            _scene.Add(new Sphere(new Vector3(1.5f, 0.5f, -2f), 0.5f,
+            _scene.Add(new Sphere(new Vector3(1.5f, 0.5f, -1.9f), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Blue), Specularity = 0.9f }));
-            _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
+            _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.4f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));
-            
-            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Metal));
+
+            var mat = Material.Glass;
+            mat.Color = new Color3(Color4.Green);
+            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, mat));
+            _scene.Add(new Sphere(new Vector3(0, 3, 2), 1, Material.Metal));
 
             //_scene.Add(new Triangle(new Vector3(-2, 1, 0), new Vector3(0,3,0), new Vector3(2, 1, 0), Material.Water));
             
