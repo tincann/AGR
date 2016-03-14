@@ -52,8 +52,8 @@ namespace RayTracer.Shading.Textures
             Debug.Assert(u < _width && v < _height);
             Debug.Assert(u >= 0 && u <= 1 && v >= 0 && v <= 1);
 
-            int x = (int) (u*_width);
-            int y = (int) (v*_height);
+            int x = (int) (u*(_width - 1));
+            int y = (int) (v*(_height - 1));
 
             var offset = (y*_width + x)*_depth;
             return new Color3(_imageBuffer[offset + 2], _imageBuffer[offset + 1], _imageBuffer[offset]);

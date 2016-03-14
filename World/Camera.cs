@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System;
+using OpenTK;
 
 namespace RayTracer.World
 {
@@ -68,8 +69,8 @@ namespace RayTracer.World
 
         public void Update()
         {
-            //Console.WriteLine($"Position: {Position} Target: {Target}");
-            
+            Console.WriteLine($"Position: {Position} Target: {Target}");
+
             //somehow it must be -d and -y
             var p0 = new Vector3(-1,  1, -D); //top left
             var p1 = new Vector3( 1,  1, -D); //top right
@@ -78,9 +79,6 @@ namespace RayTracer.World
             _cameraMatrix = Matrix4.LookAt(Position, Target, Vector3.UnitY);;
             _cameraMatrix.Invert();
 
-            //Console.WriteLine($"Translation: {_cameraMatrix.ExtractTranslation()} Rotation: {_cameraMatrix.ExtractRotation()}");
-            
-            //_position = Vector3.Transform(Position, _cameraMatrix);
             _p0     = Vector3.Transform(p0, _cameraMatrix);
             var tp1 = Vector3.Transform(p1, _cameraMatrix);
             var tp2 = Vector3.Transform(p2, _cameraMatrix);
