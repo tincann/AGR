@@ -18,14 +18,18 @@ namespace RayTracer.Shading.Textures
 
         public Color3 GetColor(Vector3 point)
         {
-            var hSize = _squareSize/2.0f;
-            if ((Math.Abs(point.X) % _squareSize < hSize) == (Math.Abs(point.Z) % _squareSize < hSize))
+            return GetColor(point.Xz);
+        }
+
+        public Color3 GetColor(Vector2 uv)
+        {
+            var hSize = _squareSize / 2.0f;
+            if ((Math.Abs(uv.X) % _squareSize < hSize) == (Math.Abs(uv.Y) % _squareSize < hSize))
             {
                 return _c1;
             }
 
             return _c2;
-
         }
     }
 }

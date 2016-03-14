@@ -9,6 +9,13 @@ namespace RayTracer.Shading
         public float G;
         public float R;
 
+        public Color3(byte r, byte g, byte b)
+        {
+            R = (float)r/255;
+            G = (float)g/255;
+            B = (float)b/255;
+        }
+
         public Color3(float r, float g, float b)
         {
             R = r;

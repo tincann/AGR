@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
@@ -20,6 +21,8 @@ namespace RayTracer.World
         public readonly List<Intersectable> Objects = new List<Intersectable>(); 
 
         private BoundingVolumeHierarchy _bvh;
+
+        private Skybox _skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\image5.jpg"));
 
         public void Add(LightSource lightSource)
         {
@@ -62,7 +65,7 @@ namespace RayTracer.World
             var intersection = IntersectionHelper.GetClosestIntersection(ray, Objects);
             if (intersection == null)
             {
-                return new Color3(Color4.Black);
+                return _skybox.Intersect(ray.Direction);
             }
 
             switch (intersection.Material.MaterialType)

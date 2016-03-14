@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shading\Textures\ImageTexture.cs" />
     <Compile Include="World\Camera.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Game.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Surface.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\Skybox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
