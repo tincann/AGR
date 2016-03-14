@@ -31,15 +31,9 @@ namespace RayTracer
 
             Statistics.Enabled = false;
         }
-
-        private static float i = 0;
+        
         public void Tick()
         {
-            var radius = 6;
-            //_camera.Update(new Vector3((float)Math.Sin(i) * radius, (float)Math.Sin(i) * radius / 2 + 1.6f, (float)Math.Cos(i) * radius));
-            //_scene.LightSources[0] = new LightSource(new Vector3((float)Math.Sin(i * 10) * radius + 2, 5, (float)Math.Sin(i * 10) * radius + 2), Color4.White);
-            //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
-            //_camera.Update();
             Screen.Print($"d: {_camera.D}", 2, 2, 0xffffff);
             
             if (Statistics.Enabled)
@@ -51,7 +45,6 @@ namespace RayTracer
             Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 62, 0xffffff);
 
             Statistics.Reset();
-            i += 0.03f;
         }
 
         readonly Stopwatch _sw = new Stopwatch();
