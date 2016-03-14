@@ -5,6 +5,6 @@
         public const float ShadowRayEpsilon = 0.0001f;
         public const float MinimumRayT = 0.0001f;
 
-        public const int MaxRayBounces = 6;
+        public const int MaxRayBounces = 8;
     }
 }

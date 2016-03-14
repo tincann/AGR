@@ -22,7 +22,7 @@ namespace RayTracer.World
 
         private BoundingVolumeHierarchy _bvh;
 
-        private Skybox _skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\image5.jpg"));
+        private readonly Skybox _skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
 
         public void Add(LightSource lightSource)
         {

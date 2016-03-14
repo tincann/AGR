@@ -22,8 +22,8 @@ namespace RayTracer
         {
             tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
-            _scene.Add(new LightSource(new Vector3(0, 6, 3), new Color3(Color4.White), 20));
-            _scene.Add(new LightSource(new Vector3(20, 20, 20), new Color3(Color4.White), 500));
+            _scene.Add(new LightSource(new Vector3(5, 6, 3), new Color3(Color4.White), 20));
+            _scene.Add(new LightSource(new Vector3(-2000, 2000, 2000), new Color3(Color4.White), 7000000));
 
             _scene.Add(new Plane(
                 Vector3.UnitY, 
@@ -48,7 +48,7 @@ namespace RayTracer
             _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.5f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));
             
-            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass));
+            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Metal));
             
             _scene.Construct();
 
