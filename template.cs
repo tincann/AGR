@@ -101,6 +101,26 @@ namespace RayTracer
             {
                 _game.RotateCamera(rotVector);
             }
+
+            if (keyboard[Key.KeypadPlus])
+            {
+                _game.Antialiasing(1);
+            }
+
+            if (keyboard[Key.KeypadMinus])
+            {
+                _game.Antialiasing(-1);
+            }
+
+            if (keyboard[Key.Keypad7])
+            {
+                _game.GammaCorrection(true);
+            }
+
+            if (keyboard[Key.Keypad8])
+            {
+                _game.GammaCorrection(false);
+            }
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

@@ -23,9 +23,9 @@ namespace RayTracer
             
             var sceneDef = new SceneDefinition(_camera, _scene);
 
-            sceneDef.Default();
+            //sceneDef.Default();
             //sceneDef.Teapot();
-            //sceneDef.BeerTest();
+            sceneDef.BeerTest();
 
             _scene.Construct();
 
@@ -41,11 +41,14 @@ namespace RayTracer
             //_camera.d = (float)(Math.Sin(i) * 0.5 + 1);
             //_camera.Update();
             Screen.Print($"d: {_camera.D}", 2, 2, 0xffffff);
-
+            
             if (Statistics.Enabled)
             {
                 Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
             }
+
+            Screen.Print($"spp (kp_+, kp_-): {_sampleSize}", 2, 42, 0xffffff);
+            Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 62, 0xffffff);
 
             Statistics.Reset();
             i += 0.03f;
@@ -55,6 +58,9 @@ namespace RayTracer
         private Task[] tasks;
 
         private int parallelBundles = 32;
+        private int _sampleSize = 1;
+        private bool _gammaCorrection = true;
+
         public void Render()
         {
             _sw.Restart();
@@ -103,18 +109,17 @@ namespace RayTracer
             var ySize = 1.0f/Screen.Height;
 
             Color3 color = new Color3(0,0,0);
-            var sampleSize = 4;
-            for (int i = 0; i < sampleSize; i++)
+            for (int i = 0; i < _sampleSize; i++)
             {
-                var dx = xSize*i/sampleSize;
-                var dy = ySize*i/sampleSize;
+                var dx = xSize*i/_sampleSize;
+                var dy = ySize*i/_sampleSize;
                 var ray = _camera.CreatePrimaryRay(u + dx, v + dy);
                 color += _scene.Intersect(ray);
             }
 
-            color /= sampleSize;
+            color /= _sampleSize;
             
-            Screen.Plot(x, y, color.ToArgb(true));
+            Screen.Plot(x, y, color.ToArgb(_gammaCorrection));
         }
 
         public void MoveCamera(Vector3 moveVector)
@@ -125,6 +130,17 @@ namespace RayTracer
         public void RotateCamera(Vector2 rotVector)
         {
             _camera.Rotate(rotVector);
+        }
+
+
+        public void Antialiasing(int d)
+        {
+            _sampleSize = MathHelper.Clamp(_sampleSize + d, 1, 16);
+        }
+
+        public void GammaCorrection(bool on)
+        {
+            _gammaCorrection = on;
         }
     }
 }

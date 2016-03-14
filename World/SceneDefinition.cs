@@ -76,9 +76,9 @@ namespace RayTracer.World
             mat.Color = new Color3(Color4.Red);
 
             _scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat));
-            _scene.Add(new Sphere(new Vector3(2, 0.4f, 0), 0.4f, mat));
-            _scene.Add(new Sphere(new Vector3(4, 0.8f, 0), 0.8f, mat));
-            _scene.Add(new Sphere(new Vector3(8, 1.6f, 0), 1.6f, mat));
+            _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat));
+            _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat));
+            _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat));
         }
     }
 }
