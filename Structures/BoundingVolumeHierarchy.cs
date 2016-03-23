@@ -20,18 +20,26 @@ namespace RayTracer.Structures
         
         public BVHNode Construct(BVHNode leaf)
         {
-            //sort on x
-            var xOrdered = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.X).ToList();
-            //sort on y
-            var yOrdered = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.Y).ToList();
-            //sort on z
-            var zOrdered = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.Z).ToList();
+            var bb = BoundingBox.FromBoundables(leaf.Boundables);
+            var xLen = bb.Max.X - bb.Min.X;
+            var yLen = bb.Max.Y - bb.Min.Y;
+            var zLen = bb.Max.Z - bb.Min.Z;
 
-            var planeX = CalculateBestSplitPlane(xOrdered);
-            var planeY = CalculateBestSplitPlane(yOrdered);
-            var planeZ = CalculateBestSplitPlane(zOrdered);
-
-            var bestPlane = new List<SplitPlane> {planeX, planeY, planeZ}.OrderBy(x => x.Cost).FirstOrDefault();
+            List<Boundable> sorted;
+            if (xLen > yLen && xLen > zLen)
+            {
+                sorted = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.X).ToList();
+            }
+            else if (yLen > xLen && yLen > zLen)
+            {
+                sorted = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.Y).ToList();
+            }
+            else
+            {
+                sorted = leaf.Boundables.OrderBy(x => x.BoundingBox.Centroid.Z).ToList();
+            }
+            
+            var bestPlane = CalculateBestSplitPlane(sorted);
             
             //don't split further
             if (bestPlane.Cost > leaf.BoundingBox.Area*leaf.Boundables.Count)

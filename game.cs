@@ -4,7 +4,6 @@ using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Xml.Serialization.Configuration;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 
@@ -77,6 +76,7 @@ namespace RayTracer
                     }
                 });
             }
+            
             Task.WaitAll(tasks);
             
 #else

@@ -23,8 +23,7 @@ namespace RayTracer.Shading.Textures
 
         public Color3 GetColor(Vector2 uv)
         {
-            var hSize = _squareSize / 2.0f;
-            if ((Math.Abs(uv.X) % _squareSize < hSize) == (Math.Abs(uv.Y) % _squareSize < hSize))
+            if (((int)Math.Floor(uv.X / _squareSize) % 2 == 0) == ((int)Math.Floor(uv.Y /_squareSize) % 2 == 0))
             {
                 return _c1;
             }
