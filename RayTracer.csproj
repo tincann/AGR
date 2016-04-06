@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Shading\Textures\ImageTexture.cs" />
+    <Compile Include="Shading\Tracers\PathTracer.cs" />
+    <Compile Include="Shading\Tracers\IRayTracer.cs" />
+    <Compile Include="Shading\Tracers\WhittedStyleTracer.cs" />
     <Compile Include="World\Camera.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Game.cs" />

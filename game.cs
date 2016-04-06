@@ -6,25 +6,29 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using RayTracer.Helpers;
 using RayTracer.Shading;
+using RayTracer.Shading.Tracers;
 
 namespace RayTracer
 {
     internal class Game
     {
         private readonly Camera _camera = new Camera(new Vector3(3, 5, 0), Vector3.UnitZ);
-        private readonly Scene _scene = new Scene();
+        private Scene _scene;
         public Surface Screen;
-
+        
         public void Init()
         {
             tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
-            
+
+            var tracer = new WhittedStyleTracer();
+            _scene = new Scene(tracer);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
             //sceneDef.Default();
             //sceneDef.Teapot();
             sceneDef.BeerTest();
+
 
             _scene.Construct();
 
@@ -107,7 +111,7 @@ namespace RayTracer
                 var dx = xSize*i/_sampleSize;
                 var dy = ySize*i/_sampleSize;
                 var ray = _camera.CreatePrimaryRay(u + dx, v + dy);
-                color += _scene.Intersect(ray);
+                color += _scene.Sample(ray);
             }
 
             color /= _sampleSize;

@@ -8,6 +8,11 @@ namespace RayTracer.Shading
 {
     public static class LightingModel
     {
+        public static Color3 PathTrace(Scene scene, Intersection intersection)
+        {
+            return new Color3(255,0,0);
+        }
+
         public static Color3 DirectIllumination(Scene scene, Intersection intersection)
         {
             var totalIntensity = 0.0f;
@@ -48,7 +53,7 @@ namespace RayTracer.Shading
                 }
             }
 
-            return mat.Specularity * (specColor + scene.Intersect(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
+            return mat.Specularity * (specColor + scene.Sample(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
         }
 
         public static Color3 Dielectric(Scene scene, Intersection intersection)
@@ -87,7 +92,7 @@ namespace RayTracer.Shading
                     (float)Math.Exp(-absorbance.G),
                     (float)Math.Exp(-absorbance.B)); 
             }
-            var color = Ft* scene.Intersect(refracted) + Fr * Specular(scene, intersection);
+            var color = Ft* scene.Sample(refracted) + Fr * Specular(scene, intersection);
             return transparency*color;
         }
     }

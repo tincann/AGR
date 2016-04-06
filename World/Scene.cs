@@ -6,6 +6,7 @@ using System.Linq;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Shading;
+using RayTracer.Shading.Tracers;
 using RayTracer.Structures;
 using RayTracer.World.Objects;
 
@@ -13,6 +14,7 @@ namespace RayTracer.World
 {
     public class Scene
     {
+        private readonly IRayTracer _tracer;
         public List<LightSource> LightSources { get; set; } = new List<LightSource>();
 
         private readonly List<Intersectable> _intersectables = new List<Intersectable>();
@@ -20,9 +22,14 @@ namespace RayTracer.World
 
         public readonly List<Intersectable> Objects = new List<Intersectable>(); 
 
-        private BoundingVolumeHierarchy _bvh;
+        public BoundingVolumeHierarchy BVH;
 
-        private readonly Skybox _skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
+        public readonly Skybox Skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
+
+        public Scene(IRayTracer tracer)
+        {
+            _tracer = tracer;
+        }
 
         public void Add(LightSource lightSource)
         {
@@ -44,40 +51,18 @@ namespace RayTracer.World
             _boundables.AddRange(mesh.Triangles);
         }
 
+        public Color3 Sample(Ray ray)
+        {
+            return _tracer.Sample(this, ray);
+        }
+
         public void Construct()
         {
             Objects.Clear();
-            _bvh = new BoundingVolumeHierarchy(_boundables);
+            BVH = new BoundingVolumeHierarchy(_boundables);
             Objects.AddRange(_intersectables);
-            Objects.Add(_bvh.Root);
+            Objects.Add(BVH.Root);
         }
-
-        public Color3 Intersect(Ray ray)
-        {
-            Debug.Assert(_bvh != null);
-
-            if (ray.BouncesLeft < 1)
-            {
-                return new Color3(Color4.Red);
-            }
-
-            //get nearest intersection
-            var intersection = IntersectionHelper.GetClosestIntersection(ray, Objects);
-            if (intersection == null)
-            {
-                return _skybox.Intersect(ray.Direction);
-            }
-
-            switch (intersection.Material.MaterialType)
-            {
-                case MaterialType.Diffuse:
-                    return LightingModel.DirectIllumination(this, intersection);
-                case MaterialType.Specular:
-                    return LightingModel.Specular(this, intersection);
-                case MaterialType.Dielectric:
-                    return LightingModel.Dielectric(this, intersection);
-            }
-            throw new NotImplementedException();
-        }
+        
     }
 }
