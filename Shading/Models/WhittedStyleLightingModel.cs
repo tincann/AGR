@@ -4,24 +4,26 @@ using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.World;
 
-namespace RayTracer.Shading
+namespace RayTracer.Shading.Models
 {
-    public static class LightingModel
+    public class WhittedStyleLightingModel
     {
-        public static Color3 PathTrace(Scene scene, Intersection intersection)
+        private readonly Scene _scene;
+
+        public WhittedStyleLightingModel(Scene scene)
         {
-            return new Color3(255,0,0);
+            _scene = scene;
         }
 
-        public static Color3 DirectIllumination(Scene scene, Intersection intersection)
+        public Color3 DirectIllumination(Intersection intersection)
         {
             var totalIntensity = 0.0f;
-            foreach (var light in scene.LightSources)
+            foreach (var light in _scene.LightSources)
             {
                 var lightVector = light.Position - intersection.Location;
                 var invLightDistance2 = 1/lightVector.LengthSquared;
                 var shadowRay = Ray.CreateFromIntersection(intersection, lightVector);
-                if (IntersectionHelper.DoesIntersect(shadowRay, scene.Objects))
+                if (IntersectionHelper.DoesIntersect(shadowRay, _scene.Objects))
                 {
                     continue;
                 }
@@ -35,13 +37,13 @@ namespace RayTracer.Shading
             return totalIntensity * color;
         }
 
-        public static Color3 Specular(Scene scene, Intersection intersection)
+        public Color3 Specular(Intersection intersection)
         {
             var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
 
             Color3 specColor = Color4.Black;
-            foreach (var lightSource in scene.LightSources)
+            foreach (var lightSource in _scene.LightSources)
             {
                 var lightDir = (lightSource.Position - intersection.Location).Normalized();
                 var h = (-intersection.Ray.Direction + lightDir).Normalized();
@@ -53,10 +55,10 @@ namespace RayTracer.Shading
                 }
             }
 
-            return mat.Specularity * (specColor + scene.Sample(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(scene, intersection);
+            return mat.Specularity * (specColor + _scene.Sample(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(intersection);
         }
 
-        public static Color3 Dielectric(Scene scene, Intersection intersection)
+        public Color3 Dielectric(Intersection intersection)
         {
             var n1 = intersection.Ray.Medium.RefractiveIndex;
             var n2 = intersection.Material.RefractiveIndex;
@@ -70,7 +72,7 @@ namespace RayTracer.Shading
             if (k < 0)
             {
                 //internal reflection
-                return Specular(scene, intersection);
+                return Specular(intersection);
             }
 
             var T = n*ray.Direction + normal*(n*cost - (float) Math.Sqrt(k));
@@ -92,7 +94,7 @@ namespace RayTracer.Shading
                     (float)Math.Exp(-absorbance.G),
                     (float)Math.Exp(-absorbance.B)); 
             }
-            var color = Ft* scene.Sample(refracted) + Fr * Specular(scene, intersection);
+            var color = Ft* _scene.Sample(refracted) + Fr * Specular(intersection);
             return transparency*color;
         }
     }

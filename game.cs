@@ -18,11 +18,11 @@ namespace RayTracer
         
         public void Init()
         {
-            tasks = new Task[parallelBundles];
+            _tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
 
-            //var tracer = new WhittedStyleTracer();
-            var tracer = new PathTracer();
+            var tracer = new WhittedStyleTracer();
+            //var tracer = new PathTracer();
             _scene = new Scene(tracer);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
@@ -52,7 +52,7 @@ namespace RayTracer
         }
 
         readonly Stopwatch _sw = new Stopwatch();
-        private Task[] tasks;
+        private Task[] _tasks;
 
         private int parallelBundles = 32;
         private int _sampleSize = 1;
@@ -69,7 +69,7 @@ namespace RayTracer
             {
                 //Console.WriteLine($"y: {y}");
                 int currentBundle = b;
-                tasks[b] = Task.Factory.StartNew(() =>
+                _tasks[b] = Task.Factory.StartNew(() =>
                 {
                     var beginLine = currentBundle*bundleSize;
                     for (int y = beginLine; y < beginLine + bundleSize; y++)
@@ -82,7 +82,7 @@ namespace RayTracer
                 });
             }
             
-            Task.WaitAll(tasks);
+            Task.WaitAll(_tasks);
             
 #else
             for (int y = 0; y < Screen.Height; y++)

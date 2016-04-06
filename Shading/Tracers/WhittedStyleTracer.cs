@@ -2,15 +2,16 @@
 using System.Diagnostics;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
+using RayTracer.Shading.Models;
 using RayTracer.World;
 
 namespace RayTracer.Shading.Tracers
 {
     public class WhittedStyleTracer : IRayTracer
     {
-
         public Color3 Sample(Scene scene, Ray ray)
         {
+            var lightingModel = new WhittedStyleLightingModel(scene);
             Debug.Assert(scene.BVH != null);
 
             if (ray.BouncesLeft < 1)
@@ -27,12 +28,13 @@ namespace RayTracer.Shading.Tracers
 
             switch (intersection.Material.MaterialType)
             {
+                case MaterialType.Light:
                 case MaterialType.Diffuse:
-                    return LightingModel.DirectIllumination(scene, intersection);
+                    return lightingModel.DirectIllumination(intersection);
                 case MaterialType.Specular:
-                    return LightingModel.Specular(scene, intersection);
+                    return lightingModel.Specular(intersection);
                 case MaterialType.Dielectric:
-                    return LightingModel.Dielectric(scene, intersection);
+                    return lightingModel.Dielectric(intersection);
             }
             throw new NotImplementedException();
         }

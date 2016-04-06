@@ -4,7 +4,7 @@ using RayTracer.World;
 
 namespace RayTracer.Shading.Tracers
 {
-    class PathTracer : IRayTracer
+    public class PathTracer : IRayTracer
     {
         public Color3 Sample(Scene scene, Ray ray)
         {
