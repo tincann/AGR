@@ -10,7 +10,7 @@ namespace RayTracer.Shading.Tracers
         {
             if (ray.BouncesLeft < 1)
             {
-                return new Color3(Color4.Red);
+                return Color4.Red;
             }
 
             //get nearest intersection
@@ -20,7 +20,7 @@ namespace RayTracer.Shading.Tracers
                 return scene.Skybox.Intersect(ray.Direction);
             }
 
-            return new Color3(Color4.Black);
+            return Color4.Black;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace RayTracer.Shading
             var mat = intersection.Material;
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
 
-            var specColor = new Color3(Color4.Black);
+            Color3 specColor = Color4.Black;
             foreach (var lightSource in scene.LightSources)
             {
                 var lightDir = (lightSource.Position - intersection.Location).Normalized();

@@ -23,14 +23,14 @@ namespace RayTracer.World
             _scene.Add(new Plane(
                 Vector3.UnitY,
                 0,
-                new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, new Color3(Color4.Bisque), new Color3(Color4.White)) }
+                new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, Color4.Bisque, Color4.White) }
             ));
         }
 
         public void AddLight()
         {
-            _scene.Add(new LightSource(new Vector3(5, 6, 3), new Color3(Color4.White), 20));
-            _scene.Add(new LightSource(new Vector3(-2000, 2000, 2000), new Color3(Color4.White), 7000000));
+            _scene.Add(new LightSource(new Vector3(5, 6, 3), Color4.White, 20));
+            _scene.Add(new LightSource(new Vector3(-2000, 2000, 2000), Color4.White, 7000000));
         }
 
         public void Teapot()
@@ -52,16 +52,16 @@ namespace RayTracer.World
             _scene.Add(cube);
 
             _scene.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
-                new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Red), Specularity = 0.9f }));
+                new Material(MaterialType.Diffuse) { Color = Color4.Red, Specularity = 0.9f }));
             _scene.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
-                new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Green), Specularity = 0.9f }));
+                new Material(MaterialType.Diffuse) { Color = Color4.Green, Specularity = 0.9f }));
             _scene.Add(new Sphere(new Vector3(1.5f, 0.5f, -1.9f), 0.5f,
-                new Material(MaterialType.Diffuse) { Color = new Color3(Color4.Blue), Specularity = 0.9f }));
+                new Material(MaterialType.Diffuse) { Color = Color4.Blue, Specularity = 0.9f }));
             _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.4f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));
 
             var mat = Material.Glass;
-            mat.Color = new Color3(Color4.Green);
+            mat.Color = Color4.Green;
             _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, mat));
             _scene.Add(new Sphere(new Vector3(0, 3, 2), 1, Material.Metal));
         }
@@ -73,7 +73,7 @@ namespace RayTracer.World
             AddLight();
 
             var mat = Material.Glass;
-            mat.Color = new Color3(Color4.Red);
+            mat.Color = Color4.Red;
 
             _scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat));
             _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat));

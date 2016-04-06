@@ -15,7 +15,7 @@ namespace RayTracer.Shading.Tracers
 
             if (ray.BouncesLeft < 1)
             {
-                return new Color3(Color4.Red);
+                return Color4.Red;
             }
 
             //get nearest intersection

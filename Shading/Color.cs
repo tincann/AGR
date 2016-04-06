@@ -30,6 +30,11 @@ namespace RayTracer.Shading
             R = color.R;
         }
 
+        public static implicit operator Color3(Color4 color)
+        {
+            return new Color3(color.R, color.G, color.B);
+        }
+
         public static Color3 operator +(Color3 c1, Color3 c2)
         {
             return new Color3(c1.R + c2.R, c1.G + c2.G, c1.B + c2.B);
