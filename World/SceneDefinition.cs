@@ -4,6 +4,8 @@ using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Textures;
 using RayTracer.World.Objects;
+using RayTracer.World.Objects.Complex;
+using RayTracer.World.Objects.Primitives;
 
 namespace RayTracer.World
 {
@@ -29,8 +31,8 @@ namespace RayTracer.World
 
         public void AddLight()
         {
-            _scene.Add(new LightSource(new Vector3(5, 6, 3), Color4.White, 20));
-            _scene.Add(new LightSource(new Vector3(-2000, 2000, 2000), Color4.White, 7000000));
+            _scene.Add(new PointLight(new Vector3(5, 6, 3), Color4.White, 20));
+            _scene.Add(new PointLight(new Vector3(-2000, 2000, 2000), Color4.White, 7000000));
         }
 
         public void Teapot()
@@ -50,7 +52,7 @@ namespace RayTracer.World
                 new Vector3(3, 0.51f, 1),
                 Material.Glass);
             _scene.Add(cube);
-
+            
             _scene.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = Color4.Red, Specularity = 0.9f }));
             _scene.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
@@ -74,7 +76,7 @@ namespace RayTracer.World
 
             var mat = Material.Glass;
             mat.Color = Color4.Red;
-
+            
             _scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat));
             _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat));
             _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat));
@@ -91,7 +93,27 @@ namespace RayTracer.World
             _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
             _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat.WithColor(Color4.Yellow)));
 
-            _scene.Add(new Sphere(new Vector3(0, 4, 0), 2, new Material(MaterialType.Light)));
+
+
+            //facing down
+            //var quad = new Quad(
+            //    new Vector3(1, 5f, 0),
+            //    new Vector3(1, 5f, 1),
+            //    new Vector3(0, 5f, 1),
+            //    new Vector3(0, 5f, 0),
+            //        new Material(MaterialType.Diffuse).WithColor(Color4.Green)
+            //    ));
+
+            //facing up
+            var quad = new Quad(
+                new Vector3(0, 5f, 0),
+                new Vector3(0, 5f, 1),
+                new Vector3(1, 5f, 1),
+                new Vector3(1, 5f, 0),
+                    new Material(MaterialType.Diffuse)
+                );
+
+            _scene.Add(new SurfaceLight(quad));
         }
     }
 }

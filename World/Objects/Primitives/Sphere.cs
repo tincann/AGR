@@ -3,7 +3,7 @@ using OpenTK;
 using RayTracer.Shading;
 using RayTracer.Structures;
 
-namespace RayTracer.World.Objects
+namespace RayTracer.World.Objects.Primitives
 {
     public class Sphere : Primitive, Boundable
     {

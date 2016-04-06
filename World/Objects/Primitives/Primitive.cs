@@ -1,6 +1,6 @@
 ﻿using RayTracer.Shading;
 
-namespace RayTracer.World.Objects
+namespace RayTracer.World.Objects.Primitives
 {
     public abstract class Primitive : Intersectable
     {

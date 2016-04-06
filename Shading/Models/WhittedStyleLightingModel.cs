@@ -18,7 +18,7 @@ namespace RayTracer.Shading.Models
         public Color3 DirectIllumination(Intersection intersection)
         {
             var totalIntensity = 0.0f;
-            foreach (var light in _scene.LightSources)
+            foreach (var light in _scene.PointLights)
             {
                 var lightVector = light.Position - intersection.Location;
                 var invLightDistance2 = 1/lightVector.LengthSquared;
@@ -43,7 +43,7 @@ namespace RayTracer.Shading.Models
             var reflectedRay = Ray.Reflect(intersection.Ray, intersection);
 
             Color3 specColor = Color4.Black;
-            foreach (var lightSource in _scene.LightSources)
+            foreach (var lightSource in _scene.PointLights)
             {
                 var lightDir = (lightSource.Position - intersection.Location).Normalized();
                 var h = (-intersection.Ray.Direction + lightDir).Normalized();

@@ -9,13 +9,15 @@ using RayTracer.Shading;
 using RayTracer.Shading.Tracers;
 using RayTracer.Structures;
 using RayTracer.World.Objects;
+using RayTracer.World.Objects.Complex;
 
 namespace RayTracer.World
 {
     public class Scene
     {
         private readonly IRayTracer _tracer;
-        public List<LightSource> LightSources { get; set; } = new List<LightSource>();
+        public List<PointLight> PointLights { get; set; } = new List<PointLight>();
+        public List<SurfaceLight> SurfaceLights { get; set; } = new List<SurfaceLight>();
 
         private readonly List<Intersectable> _intersectables = new List<Intersectable>();
         private readonly List<Boundable> _boundables = new List<Boundable>();
@@ -31,9 +33,14 @@ namespace RayTracer.World
             _tracer = tracer;
         }
 
-        public void Add(LightSource lightSource)
+        public void Add(PointLight pointLight)
         {
-            LightSources.Add(lightSource);
+            PointLights.Add(pointLight);
+        }
+
+        public void Add(SurfaceLight surfaceLight)
+        {
+            SurfaceLights.Add(surfaceLight);
         }
 
         public void Add(Intersectable intersectable)
@@ -46,9 +53,9 @@ namespace RayTracer.World
             _boundables.Add(boundable);
         }
 
-        public void Add(TriangleMesh mesh)
+        public void Add(IMesh mesh)
         {
-            _boundables.AddRange(mesh.Triangles);
+            _boundables.AddRange(mesh.Boundables);
         }
 
         public Color3 Sample(Ray ray)

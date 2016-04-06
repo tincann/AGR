@@ -2,6 +2,7 @@
 using OpenTK;
 using RayTracer.Shading;
 using RayTracer.World.Objects;
+using RayTracer.World.Objects.Complex;
 
 namespace RayTracer.Helpers
 {

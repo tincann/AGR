@@ -30,5 +30,6 @@ namespace RayTracer.Shading
         public static readonly Material Glass = new Material(MaterialType.Dielectric) { RefractiveIndex = 1.4f, Absorbance = 0.2f };
         public static readonly Material Water = new Material(MaterialType.Dielectric) { RefractiveIndex = 1.35f, Absorbance = 0.2f };
         public static readonly Material Metal = new Material(MaterialType.Specular) { Color = Color4.Gray,Specularity = 0.8f };
+        public static readonly Material Light = new Material(MaterialType.Light) { Color = Color4.White };
     }
 }

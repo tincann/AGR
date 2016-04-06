@@ -29,7 +29,8 @@ namespace RayTracer.Shading.Models
             //// light is visible (V(p,p’)=1); calculate transport
             //Vector3 BRDF = material.diffuse * INVPI;
             //float solidAngle = (cos_o * Scene.LIGHTAREA) / (dist * dist);
-            //return BRDF * Scene.lightColor * solidAngle * cos_i;            throw new NotImplementedException();
+            //return BRDF * Scene.lightColor * solidAngle * cos_i;
+            throw new NotImplementedException();
         }
     }
 }

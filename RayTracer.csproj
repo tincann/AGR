@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\RNG.cs" />
     <Compile Include="Shading\Models\MonteCarloLightingModel.cs" />
     <Compile Include="Shading\Textures\ImageTexture.cs" />
     <Compile Include="Shading\Tracers\PathTracer.cs" />
@@ -68,12 +69,14 @@
     <Compile Include="World\Intersection.cs" />
     <Compile Include="World\LightSource.cs" />
     <Compile Include="Shading\MaterialType.cs" />
+    <Compile Include="World\Objects\Complex\IMesh.cs" />
     <Compile Include="World\Objects\Intersectable.cs" />
-    <Compile Include="World\Objects\Plane.cs" />
-    <Compile Include="World\Objects\Sphere.cs" />
-    <Compile Include="World\Objects\TriangleMesh.cs" />
-    <Compile Include="World\Objects\Primitive.cs" />
-    <Compile Include="World\Objects\Triangle.cs" />
+    <Compile Include="World\Objects\Primitives\Plane.cs" />
+    <Compile Include="World\Objects\Complex\Quad.cs" />
+    <Compile Include="World\Objects\Primitives\Sphere.cs" />
+    <Compile Include="World\Objects\Complex\TriangleMesh.cs" />
+    <Compile Include="World\Objects\Primitives\Primitive.cs" />
+    <Compile Include="World\Objects\Primitives\Triangle.cs" />
     <Compile Include="World\Ray.cs" />
     <Compile Include="World\Scene.cs" />
     <Compile Include="Surface.cs" />
