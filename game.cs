@@ -26,10 +26,10 @@ namespace RayTracer
             _scene = new Scene(tracer);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
-            //sceneDef.Default();
+            sceneDef.Default();
             //sceneDef.Teapot();
             //sceneDef.BeerTest();
-            sceneDef.PathTracerTest();
+            //sceneDef.PathTracerTest();
 
             _scene.Construct();
 

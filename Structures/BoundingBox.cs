@@ -63,7 +63,7 @@ namespace RayTracer.Structures
                 Vector3.ComponentMax(b1.Max, b2.Max));
         }
         
-        public bool Intersect(Ray ray)
+        public bool Intersect(Ray ray, out float t)
         {
             float tmin = float.NegativeInfinity, tmax = float.PositiveInfinity;
 
@@ -84,7 +84,7 @@ namespace RayTracer.Structures
 
             tmin = Math.Max(tmin, Math.Min(t1, t2));
             tmax = Math.Min(tmax, Math.Max(t1, t2));
-
+            t = tmin;
             return tmax >= Math.Max(tmin, 0) && ray.T >= tmin; //todo klopt dit laatste?
         }
     }

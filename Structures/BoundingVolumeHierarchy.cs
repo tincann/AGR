@@ -131,25 +131,35 @@ namespace RayTracer.Structures
                 intersection = IntersectionHelper.GetClosestIntersection(ray, Boundables);
                 return intersection != null;
             }
+            
+            Intersection i1 = null, i2 = null;
+            float t1 = float.MaxValue, t2 = float.MaxValue;
+            var goLeft = _left != null && _left.BoundingBox.Intersect(ray, out t1);
+            var goRight = _right != null && _right.BoundingBox.Intersect(ray, out t2);
 
-            if (BoundingBox.Intersect(ray))
+            if (goLeft && goRight)
             {
-                Intersection i1 = null, i2 = null;
-                if (_left != null)
+                //choose shortest
+                if (t1 < t2)
                 {
                     _left.Intersect(ray, out i1);
-                }
-                if (_right != null)
-                {
                     _right.Intersect(ray, out i2);
                 }
-
-                intersection = IntersectionHelper.GetMinimumIntersection(i1, i2);
-                return intersection != null;
+                else
+                {
+                    _right.Intersect(ray, out i2);
+                    _left.Intersect(ray, out i1);
+                }
+            }else if (goLeft)
+            {
+                _left.Intersect(ray, out i1);
+            }else if (goRight)
+            {
+                _right.Intersect(ray, out i2);
             }
 
-            intersection = null;
-            return false;
+            intersection = IntersectionHelper.GetMinimumIntersection(i1, i2);
+            return intersection != null;
         }
     }
 }
