@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Shading.Models;
@@ -11,7 +10,6 @@ namespace RayTracer.Shading.Tracers
     {
         public Color3 Sample(Scene scene, Ray ray)
         {
-            var lightingModel = new WhittedStyleLightingModel(scene);
             Debug.Assert(scene.BVH != null);
 
             if (ray.BouncesLeft < 1)
@@ -26,17 +24,8 @@ namespace RayTracer.Shading.Tracers
                 return scene.Skybox.Intersect(ray.Direction);
             }
 
-            switch (intersection.Material.MaterialType)
-            {
-                case MaterialType.Light:
-                case MaterialType.Diffuse:
-                    return lightingModel.DirectIllumination(intersection);
-                case MaterialType.Specular:
-                    return lightingModel.Specular(intersection);
-                case MaterialType.Dielectric:
-                    return lightingModel.Dielectric(intersection);
-            }
-            throw new NotImplementedException();
+            var lightingModel = new WhittedStyleLightingModel(scene);
+            return lightingModel.Calculate(intersection);
         }
     }
 }

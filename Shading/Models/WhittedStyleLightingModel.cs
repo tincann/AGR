@@ -15,6 +15,22 @@ namespace RayTracer.Shading.Models
             _scene = scene;
         }
 
+        public Color3 Calculate(Intersection intersection)
+        {
+            switch (intersection.Material.MaterialType)
+            {
+                case MaterialType.Light:
+                case MaterialType.Diffuse:
+                    return DirectIllumination(intersection);
+                case MaterialType.Specular:
+                    return Specular(intersection);
+                case MaterialType.Dielectric:
+                    return Dielectric(intersection);
+            }
+
+            throw new Exception("Materialtype is not supported");
+        }
+
         public Color3 DirectIllumination(Intersection intersection)
         {
             var totalIntensity = 0.0f;

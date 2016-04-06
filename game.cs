@@ -28,8 +28,8 @@ namespace RayTracer
 
             //sceneDef.Default();
             //sceneDef.Teapot();
-            sceneDef.BeerTest();
-            //sceneDef.PathTracerTest();
+            //sceneDef.BeerTest();
+            sceneDef.PathTracerTest();
 
             _scene.Construct();
 

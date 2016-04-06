@@ -32,5 +32,6 @@ namespace RayTracer.World
 
         public Material Material { get; }
         public bool InsidePrimitive { get; set; }
+        public bool IsLight => Material.MaterialType == MaterialType.Light;
     }
 }

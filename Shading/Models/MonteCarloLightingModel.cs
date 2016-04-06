@@ -12,6 +12,22 @@ namespace RayTracer.Shading.Models
             _scene = scene;
         }
 
+        public Color3 Calculate(Intersection intersection)
+        {
+            switch (intersection.Material.MaterialType)
+            {
+                case MaterialType.Light:
+                    return intersection.Material.Color;
+                case MaterialType.Diffuse:
+                    throw new NotImplementedException();
+                case MaterialType.Specular:
+                    throw new NotImplementedException();
+                case MaterialType.Dielectric:
+                    throw new NotImplementedException();
+            }
+            throw new Exception("Materialtype is not supported");
+        }
+
         public Color3 Diffuse(Intersection intersection)
         {
             // construct vector to random point on light

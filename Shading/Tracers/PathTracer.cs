@@ -1,5 +1,6 @@
 using OpenTK.Graphics;
 using RayTracer.Helpers;
+using RayTracer.Shading.Models;
 using RayTracer.World;
 
 namespace RayTracer.Shading.Tracers
@@ -20,7 +21,8 @@ namespace RayTracer.Shading.Tracers
                 return scene.Skybox.Intersect(ray.Direction);
             }
 
-            return Color4.Black;
+            var lightingModel = new MonteCarloLightingModel(scene);
+            return lightingModel.Calculate(intersection);
         }
     }
 }
