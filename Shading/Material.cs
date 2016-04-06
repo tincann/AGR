@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics;
+﻿using System;
+using OpenTK.Graphics;
 
 namespace RayTracer.Shading
 {
@@ -7,6 +8,14 @@ namespace RayTracer.Shading
         public Material(MaterialType materialType)
         {
             MaterialType = materialType;
+        }
+
+        public Material WithColor(Color4 color)
+        {
+            var copy = MemberwiseClone() as Material;
+            if(copy == null) throw new Exception("This shouldn't happen");
+            copy.Color = new Color3(color);
+            return copy;
         }
 
         public MaterialType MaterialType { get; }

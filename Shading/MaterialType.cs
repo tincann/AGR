@@ -4,6 +4,7 @@
     {
         Diffuse,
         Specular,
-        Dielectric
+        Dielectric,
+        Light
     }
 }

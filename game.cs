@@ -21,14 +21,15 @@ namespace RayTracer
             tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
 
-            var tracer = new WhittedStyleTracer();
+            //var tracer = new WhittedStyleTracer();
+            var tracer = new PathTracer();
             _scene = new Scene(tracer);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
             //sceneDef.Default();
             //sceneDef.Teapot();
-            sceneDef.BeerTest();
-
+            //sceneDef.BeerTest();
+            sceneDef.PathTracerTest();
 
             _scene.Construct();
 

@@ -80,5 +80,18 @@ namespace RayTracer.World
             _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat));
             _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat));
         }
+
+        public void PathTracerTest()
+        {
+            _camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
+            AddFloor();
+            var mat = new Material(MaterialType.Diffuse);
+            _scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat.WithColor(Color4.Red)));
+            _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat.WithColor(Color4.Blue)));
+            _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
+            _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat.WithColor(Color4.Yellow)));
+
+            _scene.Add(new Sphere(new Vector3(0, 4, 0), 2, new Material(MaterialType.Light)));
+        }
     }
 }
