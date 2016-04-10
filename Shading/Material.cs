@@ -23,6 +23,7 @@ namespace RayTracer.Shading
 
         public Texture Texture { get; set; }
         public float Specularity { get; set; } = 1;
+        public float Diffusivity => 1 - Specularity;
         public float RefractiveIndex { get; set; } = 1;
         public float Absorbance { get; set; } = 1;
 

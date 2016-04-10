@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ListExtensions.cs" />
     <Compile Include="Helpers\RNG.cs" />
     <Compile Include="Shading\Models\MonteCarloLightingModel.cs" />
     <Compile Include="Shading\Textures\ImageTexture.cs" />

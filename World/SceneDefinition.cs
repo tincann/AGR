@@ -83,6 +83,52 @@ namespace RayTracer.World
             _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat));
         }
 
+        public void PathTracerBox()
+        {
+            //Position: (0.1456885, 1.408235, 3.456715) Target: (0.1496517, 1.251657, 2.469057)
+            _camera.Update(new Vector3(0.145f, 1.4f, 3.5f), new Vector3(0.15f, 1.25f, 2.4f));
+            _scene.Add(new PointLight(new Vector3(0, 0.5f, 0.5f), Color4.White, 2));
+            
+            var wallMat = new Material(MaterialType.Diffuse);
+            //top
+            _scene.Add(new Quad(
+                new Vector3(-1, 2, -1), 
+                new Vector3(1, 2, -1), 
+                new Vector3(1, 2, 1), 
+                new Vector3(-1, 2, 1),
+                 wallMat
+                ));
+
+            //bottom
+            _scene.Add(new Quad(
+                new Vector3(-1, 0, -1),
+                new Vector3(-1, 0, 1),
+                new Vector3(1, 0, 1),
+                new Vector3(1, 0, -1),
+                 wallMat
+                ));
+
+            //left
+            _scene.Add(new Quad(
+                new Vector3(-1, 0, -1),
+                new Vector3(-1, 2, -1),
+                new Vector3(-1, 2, 1),
+                new Vector3(-1, 0, 1),
+                 wallMat
+                ));
+            
+            ////right
+            //_scene.Add(new Quad(
+            //    new Vector3(1, 0, -1),
+            //    new Vector3(1, 0, 1),
+            //    new Vector3(1, 2, 1),
+            //    new Vector3(1, 2, -1),
+            //     wallMat
+            //    ));
+
+
+        }
+
         public void PathTracerTest()
         {
             _camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
@@ -96,22 +142,22 @@ namespace RayTracer.World
 
 
             //facing down
-            //var quad = new Quad(
-            //    new Vector3(1, 5f, 0),
-            //    new Vector3(1, 5f, 1),
-            //    new Vector3(0, 5f, 1),
-            //    new Vector3(0, 5f, 0),
-            //        new Material(MaterialType.Diffuse).WithColor(Color4.Green)
-            //    ));
+            var quad = new Quad(
+                new Vector3(1, 5f, 0),
+                new Vector3(1, 5f, 1),
+                new Vector3(0, 5f, 1),
+                new Vector3(0, 5f, 0),
+                    new Material(MaterialType.Diffuse).WithColor(Color4.Green)
+                );
 
             //facing up
-            var quad = new Quad(
-                new Vector3(0, 5f, 0),
-                new Vector3(0, 5f, 1),
-                new Vector3(1, 5f, 1),
-                new Vector3(1, 5f, 0),
-                    new Material(MaterialType.Diffuse)
-                );
+            //var quad = new Quad(
+            //    new Vector3(0, 5f, 0),
+            //    new Vector3(0, 5f, 1),
+            //    new Vector3(1, 5f, 1),
+            //    new Vector3(1, 5f, 0),
+            //        new Material(MaterialType.Diffuse)
+            //    );
 
             _scene.Add(new SurfaceLight(quad));
         }
