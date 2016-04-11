@@ -12,7 +12,7 @@ namespace RayTracer
     {
         private readonly Surface _screen;
         private Color3[,] _acc;
-        private int _numSamples = 0;
+        public int NumSamples { get; private set; }
 
         public Accumulator(Surface screen)
         {
@@ -27,18 +27,18 @@ namespace RayTracer
 
         public void EndFrame()
         {
-            _numSamples++;
+            NumSamples++;
         }
 
         public void Reset()
         {
-            _numSamples = 0;
+            NumSamples = 0;
         }
 
         public void Plot(int x, int y, Color3 color, bool gammaCorrection)
         {
             var oldColor = _acc[x, y];
-            var newColor = (oldColor*_numSamples + color)/(_numSamples + 1);
+            var newColor = (oldColor*NumSamples + color)/(NumSamples + 1);
             _acc[x, y] = newColor;
             _screen.Plot(x, y, newColor.ToArgb(gammaCorrection));
         }

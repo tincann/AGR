@@ -50,10 +50,8 @@ namespace RayTracer.Shading.Models
                 var intensity = Vector3.Dot(intersection.SurfaceNormal, shadowRay.Direction);
                 totalIntensity += Math.Max(intensity, 0) * invLightDistance2*light.Intensity;
             }
-            var color = intersection.Material.Texture == null
-                    ? intersection.Material.Color
-                    : intersection.Material.Texture.GetColor(intersection.Location);
-            return totalIntensity * color;
+
+            return totalIntensity * intersection.Material.CalculateColor(intersection.Location);
         }
 
         public Color3 Specular(Intersection intersection)

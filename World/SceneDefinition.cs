@@ -94,6 +94,7 @@ namespace RayTracer.World
 
         public void PathTracerBox()
         {
+            AddSkybox();
             _camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
 
             var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);
@@ -111,17 +112,17 @@ namespace RayTracer.World
 
             var diffuse = new Material(MaterialType.Diffuse);
             _scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, -0.3f), 0.4f, diffuse.WithColor(Color4.Red)));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, -0.3f), 0.4f, Material.Glass));
 
             var wallMat = new Material(MaterialType.Diffuse);
             //top
-            _scene.Add(new Quad(
-                new Vector3(-1, 2, -1), 
-                new Vector3(1, 2, -1), 
-                new Vector3(1, 2, 1), 
-                new Vector3(-1, 2, 1),
-                 wallMat
-                ));
+            //_scene.Add(new Quad(
+            //    new Vector3(-1, 2, -1), 
+            //    new Vector3(1, 2, -1), 
+            //    new Vector3(1, 2, 1), 
+            //    new Vector3(-1, 2, 1),
+            //     wallMat
+            //    ));
 
             //bottom
             _scene.Add(new Quad(

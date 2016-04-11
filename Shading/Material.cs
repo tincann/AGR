@@ -1,5 +1,7 @@
 ﻿using System;
+using OpenTK;
 using OpenTK.Graphics;
+using RayTracer.World;
 
 namespace RayTracer.Shading
 {
@@ -20,6 +22,21 @@ namespace RayTracer.Shading
 
         public MaterialType MaterialType { get; }
         public Color3 Color { get; set; } = Color4.White;
+
+        public Color3 CalculateColor(Intersection intersection)
+        {
+            return CalculateColor(intersection.Location);
+        }
+
+        public Color3 CalculateColor(Vector3 position)
+        {
+            if (Texture != null)
+            {
+                return Texture.GetColor(position);
+            }
+
+            return Color;
+        }
 
         public Texture Texture { get; set; }
         public float Specularity { get; set; } = 1;

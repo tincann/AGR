@@ -55,8 +55,9 @@ namespace RayTracer
                 Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
             }
 
-            Screen.Print($"spp (kp_+, kp_-): {_sampleSize}", 2, 42, 0xffffff);
-            Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 62, 0xffffff);
+            //Screen.Print($"spp (kp_+, kp_-): {_sampleSize}", 2, 42, 0xffffff);
+            //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 62, 0xffffff);
+            Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0xffffff);
 
             Statistics.Reset();
         }
@@ -64,7 +65,7 @@ namespace RayTracer
         readonly Stopwatch _sw = new Stopwatch();
         private Task[] _tasks;
 
-        private int parallelBundles = 32;
+        private int parallelBundles = 8;
         private int _sampleSize = 1;
         private bool _gammaCorrection = true;
         private RNG[] _r;
