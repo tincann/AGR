@@ -32,6 +32,12 @@ namespace RayTracer.World.Objects.Primitives
             BoundingBox = new BoundingBox(center - radVector, center + radVector);
         }
 
+        public static Sphere CreateOnGround(Vector3 groundPoint, float radius, Material material)
+        {
+            var center = groundPoint + new Vector3(0, radius, 0);
+            return new Sphere(center, radius, material);
+        }
+
         public override bool Intersect(Ray ray, out Intersection intersection)
         {
             intersection = null;

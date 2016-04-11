@@ -94,10 +94,9 @@ namespace RayTracer.World
 
         public void PathTracerBox()
         {
-            //Position: (0.1456885, 1.408235, 3.456715) Target: (0.1496517, 1.251657, 2.469057)
-            _camera.Update(new Vector3(0.145f, 1.4f, 3.5f), new Vector3(0.15f, 1.25f, 2.4f));
+            _camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
 
-            var debugLight = new PointLight(new Vector3(0, 0.5f, -0.5f), Color4.White, 2);
+            var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);
             _scene.Add(debugLight);
 
             _scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
@@ -109,6 +108,10 @@ namespace RayTracer.World
                 new Vector3(0.5f, 1.99f,  0.5f),
                 Color4.Green
                 ));
+
+            var diffuse = new Material(MaterialType.Diffuse);
+            _scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, -0.3f), 0.4f, diffuse.WithColor(Color4.Red)));
 
             var wallMat = new Material(MaterialType.Diffuse);
             //top
