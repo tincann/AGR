@@ -110,23 +110,24 @@ namespace RayTracer.World
 
             var diffuse = new Material(MaterialType.Diffuse);
             _scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, -0.3f), 0.4f, Material.Glass));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Glass.WithColor(Color4.Red)));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Metal));
 
             var wallMat = new Material(MaterialType.Diffuse);
             //top
-            //_scene.Add(new Quad(
-            //    new Vector3(-1, 2, -1), 
-            //    new Vector3(1, 2, -1), 
-            //    new Vector3(1, 2, 1), 
-            //    new Vector3(-1, 2, 1),
-            //     wallMat
-            //    ));
+            _scene.Add(new Quad(
+                new Vector3(-1, 2, -1),
+                new Vector3(1, 2, -1),
+                new Vector3(1, 2,  4),
+                new Vector3(-1, 2, 4),
+                 wallMat
+                ));
 
             //bottom
             _scene.Add(new Quad(
                 new Vector3(-1, 0, -1),
-                new Vector3(-1, 0, 1),
-                new Vector3(1, 0, 1),
+                new Vector3(-1, 0, 4),
+                new Vector3(1, 0, 4),
                 new Vector3(1, 0, -1),
                  wallMat
                 ));
@@ -135,16 +136,16 @@ namespace RayTracer.World
             _scene.Add(new Quad(
                 new Vector3(-1, 0, -1),
                 new Vector3(-1, 2, -1),
-                new Vector3(-1, 2, 1),
-                new Vector3(-1, 0, 1),
+                new Vector3(-1, 2, 4),
+                new Vector3(-1, 0, 4),
                  wallMat
                 ));
 
             //right
             _scene.Add(new Quad(
                 new Vector3(1, 0, -1),
-                new Vector3(1, 0, 1),
-                new Vector3(1, 2, 1),
+                new Vector3(1, 0, 4),
+                new Vector3(1, 2, 4),
                 new Vector3(1, 2, -1),
                  wallMat
                 ));
@@ -155,6 +156,15 @@ namespace RayTracer.World
                 new Vector3(1, 0, -1),
                 new Vector3(1, 2, -1),
                 new Vector3(-1, 2, -1),
+                 wallMat
+                ));
+
+            //front
+            _scene.Add(new Quad(
+                new Vector3(-1, 0, 4),
+                new Vector3(-1, 2, 4),
+                new Vector3(1, 2, 4),
+                new Vector3(1, 0, 4),
                  wallMat
                 ));
         }
@@ -168,8 +178,6 @@ namespace RayTracer.World
             _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat.WithColor(Color4.Blue)));
             _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
             _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat.WithColor(Color4.Yellow)));
-
-
 
             //facing down
             var quad = new Quad(

@@ -39,29 +39,36 @@ namespace RayTracer.Shading.Models
 
         public Color3 Diffuse(Intersection intersection)
         {
-
             var direction = _rng.RandomVectorOnHemisphere(intersection.SurfaceNormal);
             var reflected = Ray.CreateFromIntersection(intersection, direction, goesIntoMaterial: true);
 
             var brdf = intersection.Material.CalculateColor(intersection)/(float)Math.PI;
 
             //sample light directly
-            var rLight = _scene.SurfaceLights.GetRandom(); //get random light
-            var lPoint = rLight.GetRandomPoint(_rng); //get random point on light
+            var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
+            var Ld = SampleLightDirectly(ranLight, brdf, intersection);
+
+            //irradiance
+            var Ei = _scene.Sample(reflected, _rng, true) * Vector3.Dot(intersection.SurfaceNormal, direction);
+            return MathHelper.TwoPi*brdf*Ei + Ld;
+        }
+
+        private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)
+        {
+            var lPoint = light.GetRandomPoint(_rng); //get random point on light
             var l = lPoint - intersection.Location; //vector to light
             var dist = l.LengthFast;
             var lightRay = Ray.CreateFromIntersection(intersection, l, dist - 0.01f); //ray to light - epsilon to not intersect with light itself
-            var nlightDotL = Vector3.Dot(rLight.Normal, -l); //light normal dot light
+            var nlightDotL = Vector3.Dot(light.Normal, -l); //light normal dot light
             var nDotL = Vector3.Dot(intersection.SurfaceNormal, l); //normal dot light
-            Color3 Ld = Color4.Black;
+
             if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects))
             {
-                var solidAngle = (nlightDotL * rLight.Area)/(dist*dist);
-                Ld = rLight.Color*solidAngle*brdf*nDotL;
+                var solidAngle = (nlightDotL * light.Area) / (dist * dist);
+                return light.Color * solidAngle * brdf * nDotL;
             }
 
-            var Ei = _scene.Sample(reflected, _rng, true) * Vector3.Dot(intersection.SurfaceNormal, direction); //irradiance
-            return MathHelper.TwoPi*brdf*Ei + Ld;
+            return Color4.Black;
         }
         
         public Color3 Specular(Intersection intersection)
