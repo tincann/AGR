@@ -8,6 +8,7 @@ using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Tracers;
 using RayTracer.Structures;
+using RayTracer.World.Ambiance;
 using RayTracer.World.Objects;
 using RayTracer.World.Objects.Complex;
 
@@ -18,16 +19,17 @@ namespace RayTracer.World
         private readonly IRayTracer _tracer;
         private readonly bool _constructBvh;
         public List<PointLight> PointLights { get; set; } = new List<PointLight>();
+
         public List<SurfaceLight> SurfaceLights { get; set; } = new List<SurfaceLight>();
 
         private readonly List<Intersectable> _intersectables = new List<Intersectable>();
         private readonly List<Boundable> _boundables = new List<Boundable>();
 
-        public readonly List<Intersectable> Objects = new List<Intersectable>(); 
+        public readonly List<Intersectable> Objects = new List<Intersectable>();
 
-        public BoundingVolumeHierarchy BVH;
+        private BoundingVolumeHierarchy BVH;
 
-        public readonly Skybox Skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
+        public Skybox Skybox = new SingleColorSkybox(Color4.Black);
 
         public Scene(IRayTracer tracer, bool constructBVH)
         {
@@ -43,6 +45,7 @@ namespace RayTracer.World
         public void Add(SurfaceLight surfaceLight)
         {
             SurfaceLights.Add(surfaceLight);
+            Add((IMesh)surfaceLight);
         }
 
         public void Add(Intersectable intersectable)

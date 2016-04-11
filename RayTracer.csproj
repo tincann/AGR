@@ -53,6 +53,7 @@
     <Compile Include="Shading\Tracers\PathTracer.cs" />
     <Compile Include="Shading\Tracers\IRayTracer.cs" />
     <Compile Include="Shading\Tracers\WhittedStyleTracer.cs" />
+    <Compile Include="World\Ambiance\TexturedSkybox.cs" />
     <Compile Include="World\Camera.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Game.cs" />
@@ -84,7 +85,8 @@
     <Compile Include="Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\SceneDefinition.cs" />
-    <Compile Include="World\Skybox.cs" />
+    <Compile Include="World\Ambiance\SingleColorSkybox.cs" />
+    <Compile Include="World\Ambiance\Skybox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

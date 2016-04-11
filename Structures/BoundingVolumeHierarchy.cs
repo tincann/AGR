@@ -20,6 +20,11 @@ namespace RayTracer.Structures
         
         public BVHNode Construct(BVHNode leaf)
         {
+            if (leaf.Boundables.Count == 0)
+            {
+                return leaf;
+            }
+
             var bb = BoundingBox.FromBoundables(leaf.Boundables);
             var xLen = bb.Max.X - bb.Min.X;
             var yLen = bb.Max.Y - bb.Min.Y;

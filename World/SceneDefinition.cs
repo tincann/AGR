@@ -1,8 +1,10 @@
-﻿using OpenTK;
+﻿using System.IO;
+using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Textures;
+using RayTracer.World.Ambiance;
 using RayTracer.World.Objects.Complex;
 using RayTracer.World.Objects.Primitives;
 
@@ -17,6 +19,11 @@ namespace RayTracer.World
         {
             _camera = camera;
             _scene = scene;
+        }
+
+        private void AddSkybox()
+        {
+            _scene.Skybox = new TexturedSkybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
         }
 
         private void AddFloor()
@@ -36,6 +43,7 @@ namespace RayTracer.World
 
         public void Teapot()
         {
+            AddSkybox();
             AddFloor();
             AddLight();
             var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", Vector3.Zero, Material.Metal);
@@ -44,6 +52,7 @@ namespace RayTracer.World
 
         public void Default()
         {
+            AddSkybox();
             AddFloor();
             AddLight();
             
@@ -69,6 +78,7 @@ namespace RayTracer.World
 
         public void BeerTest()
         {
+            AddSkybox();
             _camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
             AddFloor();
             AddLight();
@@ -89,10 +99,17 @@ namespace RayTracer.World
 
             var debugLight = new PointLight(new Vector3(0, 0.5f, -0.5f), Color4.White, 2);
             _scene.Add(debugLight);
-            //_scene.Add(new DebugSphere(debugLight, 0.1f, new Material(MaterialType.Diffuse)));
 
             _scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
             
+            _scene.Add(new SurfaceLight(
+                new Vector3(-0.5f, 1.99f, 0.5f),
+                new Vector3(-0.5f, 1.99f,-0.5f),
+                new Vector3(0.5f, 1.99f, -0.5f),
+                new Vector3(0.5f, 1.99f,  0.5f),
+                Color4.Green
+                ));
+
             var wallMat = new Material(MaterialType.Diffuse);
             //top
             _scene.Add(new Quad(
@@ -130,7 +147,14 @@ namespace RayTracer.World
                  wallMat
                 ));
 
-
+            //back
+            _scene.Add(new Quad(
+                new Vector3(-1, 0, -1),
+                new Vector3(1, 0, -1),
+                new Vector3(1, 2, -1),
+                new Vector3(-1, 2, -1),
+                 wallMat
+                ));
         }
 
         public void PathTracerTest()

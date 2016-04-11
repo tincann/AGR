@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using OpenTK;
 using RayTracer.Shading;
 using RayTracer.Shading.Textures;
 
-namespace RayTracer.World
+namespace RayTracer.World.Ambiance
 {
-    public class Skybox
+    public class TexturedSkybox : Skybox
     {
         private readonly ImageTexture _texture;
-        public Skybox(string path)
+        public TexturedSkybox(string path)
         {
             _texture = new ImageTexture(path);
         }
