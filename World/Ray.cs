@@ -58,10 +58,7 @@ namespace RayTracer.World
 
         public Material Medium { get; } = Material.Air;
         
-        //Is ray now inside last intersected material?
-        public bool Transmitted { get; } = false;
-
-        public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction, float t, bool goesIntoMaterial = false)
+        public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction, float t = float.MaxValue, bool goesIntoMaterial = false)
         {
             var epsilon = direction.Normalized()*0.001f;
             var medium = goesIntoMaterial ? intersection.Material : intersection.Ray.Medium;

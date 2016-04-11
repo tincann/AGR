@@ -56,10 +56,10 @@ namespace RayTracer.World
             AddFloor();
             AddLight();
             
-            var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj",
-                new Vector3(3, 0.51f, 1),
-                Material.Glass);
-            _scene.Add(cube);
+            //var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj",
+            //    new Vector3(3, 0.51f, 1),
+            //    Material.Glass);
+            //_scene.Add(cube);
             
             _scene.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = Color4.Red, Specularity = 0.9f }));
@@ -106,7 +106,7 @@ namespace RayTracer.World
                 new Vector3(-0.5f, 1.99f,-0.5f),
                 new Vector3(0.5f, 1.99f, -0.5f),
                 new Vector3(0.5f, 1.99f,  0.5f),
-                Color4.Green
+                Color4.White
                 ));
 
             var diffuse = new Material(MaterialType.Diffuse);

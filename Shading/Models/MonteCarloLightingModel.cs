@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK;
+using RayTracer.Helpers;
 using RayTracer.World;
 
 namespace RayTracer.Shading.Models
@@ -31,8 +32,9 @@ namespace RayTracer.Shading.Models
 
         public Color3 Diffuse(Intersection intersection)
         {
-            var direction = intersection.SurfaceNormal; //todo random
-            var reflected = Ray.CreateFromIntersection(intersection, direction, float.MaxValue);
+
+            var direction = RNG.RandomVectorOnHemisphere(intersection.SurfaceNormal);
+            var reflected = Ray.CreateFromIntersection(intersection, direction, goesIntoMaterial: true);
 
             var brdf = intersection.Material.Color/(float)Math.PI;
 

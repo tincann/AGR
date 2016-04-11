@@ -55,6 +55,11 @@ namespace RayTracer.Shading
             return new Color3(c1.R * c2.R, c1.G * c2.G, c1.B * c2.B);
         }
 
+        public static Color3 operator -(Color3 c1, Color3 c2)
+        {
+            return new Color3(c1.R - c2.R, c1.G - c2.G, c1.B - c2.B);
+        }
+
         public static Color3 operator /(Color3 color, float denominator)
         {
             return new Color3(color.R / denominator, color.G / denominator, color.B / denominator);
@@ -67,13 +72,14 @@ namespace RayTracer.Shading
 
         public int ToArgb(bool gammaCorrect)
         {
+            float r = R, g = G, b = B;
             if (gammaCorrect)
             {
-                R = (float)Math.Sqrt(R);
-                G = (float)Math.Sqrt(G);
-                B = (float)Math.Sqrt(B);
+                r = (float)Math.Sqrt(R);
+                g = (float)Math.Sqrt(G);
+                b = (float)Math.Sqrt(B);
             }
-            return new Color4(Math.Min(R, 1), Math.Min(G, 1), Math.Min(B, 1), 1).ToArgb();
+            return new Color4(Math.Min(r, 1), Math.Min(g, 1), Math.Min(b, 1), 1).ToArgb();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#define PARALLEL
+﻿//#define PARALLEL
 
 using System;
 using OpenTK;
@@ -17,14 +17,16 @@ namespace RayTracer
         private readonly Camera _camera = new Camera(new Vector3(3, 5, 0), Vector3.UnitZ);
         private Scene _scene;
         public Surface Screen;
+        private Accumulator _acc;
         
         public void Init()
         {
             _tasks = new Task[parallelBundles];
             Screen.Clear(0x2222ff);
+            _acc = new Accumulator(Screen);
 
-            var tracer = new WhittedStyleTracer();
-            //var tracer = new PathTracer();
+            //var tracer = new WhittedStyleTracer();
+            var tracer = new PathTracer();
             _scene = new Scene(tracer, true);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
@@ -82,7 +84,9 @@ namespace RayTracer
                     {
                         for (int x = 0; x < Screen.Width; x++)
                         {
-                            TraceRay(x, y);
+                            var color = TraceRay(x, y);
+                            _acc.Plot(x, y, color, _gammaCorrection);
+                            //Screen.Plot(x, y, color.ToArgb(_gammaCorrection));
                         }
                     }
                 });
@@ -96,15 +100,17 @@ namespace RayTracer
                 //Console.WriteLine($"y: {y}");
                 for (int x = 0; x < Screen.Width; x++)
                 {
-                    TraceRay(x, y);
+                    var color = TraceRay(x, y);
+                    _acc.Plot(x, y, color, _gammaCorrection);
                 }
             }
 #endif
             _sw.Stop();
+            _acc.EndFrame();
             Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0xffffff);
         }
 
-        public void TraceRay(int x, int y)
+        public Color3 TraceRay(int x, int y)
         {
             float v = (float)y / Screen.Height;
             float u = (float)x / Screen.Width;
@@ -122,20 +128,20 @@ namespace RayTracer
             }
 
             color /= _sampleSize;
-            
-            Screen.Plot(x, y, color.ToArgb(_gammaCorrection));
+            return color;
         }
 
         public void MoveCamera(Vector3 moveVector)
         {
             _camera.Move(moveVector);
+            _acc.Reset();
         }
 
         public void RotateCamera(Vector2 rotVector)
         {
             _camera.Rotate(rotVector);
+            _acc.Reset();
         }
-
 
         public void Antialiasing(int d)
         {
