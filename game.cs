@@ -1,4 +1,4 @@
-﻿//#define PARALLEL
+﻿#define PARALLEL
 
 using System;
 using OpenTK;
@@ -22,6 +22,8 @@ namespace RayTracer
         public void Init()
         {
             _tasks = new Task[parallelBundles];
+            _r = RNG.CreateMultipleRNGs(parallelBundles);
+            
             Screen.Clear(0x2222ff);
             _acc = new Accumulator(Screen);
 
@@ -65,6 +67,7 @@ namespace RayTracer
         private int parallelBundles = 32;
         private int _sampleSize = 1;
         private bool _gammaCorrection = true;
+        private RNG[] _r;
 
         public void Render()
         {
@@ -84,7 +87,7 @@ namespace RayTracer
                     {
                         for (int x = 0; x < Screen.Width; x++)
                         {
-                            var color = TraceRay(x, y);
+                            var color = TraceRay(x, y, _r[currentBundle]);
                             _acc.Plot(x, y, color, _gammaCorrection);
                             //Screen.Plot(x, y, color.ToArgb(_gammaCorrection));
                         }
@@ -110,7 +113,7 @@ namespace RayTracer
             Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0xffffff);
         }
 
-        public Color3 TraceRay(int x, int y)
+        public Color3 TraceRay(int x, int y, RNG rng)
         {
             float v = (float)y / Screen.Height;
             float u = (float)x / Screen.Width;
@@ -124,7 +127,7 @@ namespace RayTracer
                 var dx = xSize*i/_sampleSize;
                 var dy = ySize*i/_sampleSize;
                 var ray = _camera.CreatePrimaryRay(u + dx, v + dy);
-                color += _scene.Sample(ray);
+                color += _scene.Sample(ray, rng);
             }
 
             color /= _sampleSize;

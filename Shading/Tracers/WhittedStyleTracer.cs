@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Shading.Models;
@@ -8,7 +9,7 @@ namespace RayTracer.Shading.Tracers
 {
     public class WhittedStyleTracer : IRayTracer
     {
-        public Color3 Sample(Scene scene, Ray ray)
+        public Color3 Sample(Scene scene, Ray ray, RNG random)
         {
             //Debug.Assert(scene.BVH != null);
 
@@ -24,7 +25,7 @@ namespace RayTracer.Shading.Tracers
                 return scene.Skybox.Intersect(ray.Direction);
             }
 
-            var lightingModel = new WhittedStyleLightingModel(scene);
+            var lightingModel = new WhittedStyleLightingModel(scene, random);
             return lightingModel.Calculate(intersection);
         }
     }

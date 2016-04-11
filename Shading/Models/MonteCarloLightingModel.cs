@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.World;
 
@@ -8,10 +9,12 @@ namespace RayTracer.Shading.Models
     public class MonteCarloLightingModel
     {
         private readonly Scene _scene;
+        private readonly RNG _rng;
 
-        public MonteCarloLightingModel(Scene scene)
+        public MonteCarloLightingModel(Scene scene, RNG rng)
         {
             _scene = scene;
+            _rng = rng;
         }
 
         public Color3 Calculate(Intersection intersection)
@@ -25,7 +28,7 @@ namespace RayTracer.Shading.Models
                 case MaterialType.Specular:
                     throw new NotImplementedException();
                 case MaterialType.Dielectric:
-                    throw new NotImplementedException();
+                    return Color4.Pink;
             }
             throw new Exception("Materialtype is not supported");
         }
@@ -33,12 +36,12 @@ namespace RayTracer.Shading.Models
         public Color3 Diffuse(Intersection intersection)
         {
 
-            var direction = RNG.RandomVectorOnHemisphere(intersection.SurfaceNormal);
+            var direction = _rng.RandomVectorOnHemisphere(intersection.SurfaceNormal);
             var reflected = Ray.CreateFromIntersection(intersection, direction, goesIntoMaterial: true);
 
             var brdf = intersection.Material.Color/(float)Math.PI;
 
-            var Ei = _scene.Sample(reflected) * Vector3.Dot(intersection.SurfaceNormal, direction); //irradiance
+            var Ei = _scene.Sample(reflected, _rng) * Vector3.Dot(intersection.SurfaceNormal, direction); //irradiance
             return MathHelper.TwoPi*brdf*Ei;
         }
     }

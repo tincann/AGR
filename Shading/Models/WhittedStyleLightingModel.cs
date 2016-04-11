@@ -10,10 +10,12 @@ namespace RayTracer.Shading.Models
     public class WhittedStyleLightingModel
     {
         private readonly Scene _scene;
+        private readonly RNG _rng;
 
-        public WhittedStyleLightingModel(Scene scene)
+        public WhittedStyleLightingModel(Scene scene, RNG rng)
         {
             _scene = scene;
+            _rng = rng;
         }
 
         public Color3 Calculate(Intersection intersection)
@@ -72,7 +74,7 @@ namespace RayTracer.Shading.Models
                 }
             }
 
-            return mat.Specularity * (specColor + _scene.Sample(reflectedRay)) + (1 - mat.Specularity) * DirectIllumination(intersection);
+            return mat.Specularity * (specColor + _scene.Sample(reflectedRay, _rng)) + (1 - mat.Specularity) * DirectIllumination(intersection);
         }
 
         public Color3 Dielectric(Intersection intersection)
@@ -111,7 +113,7 @@ namespace RayTracer.Shading.Models
                     (float)Math.Exp(-absorbance.G),
                     (float)Math.Exp(-absorbance.B)); 
             }
-            var color = Ft* _scene.Sample(refracted) + Fr * Specular(intersection);
+            var color = Ft* _scene.Sample(refracted, _rng) + Fr * Specular(intersection);
             return transparency*color;
         }
     }

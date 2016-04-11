@@ -68,7 +68,7 @@ namespace RayTracer.World
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {
             var dir = target - origin;
-            return new Ray(origin, dir, Constants.MaxRayBounces, originalPrimitive) { T = dir.Length };
+            return new Ray(origin, dir, Constants.MaxRayBounces, originalPrimitive) { T = dir.LengthFast };
         }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target)

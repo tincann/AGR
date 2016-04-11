@@ -3,6 +3,7 @@ using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using RayTracer.Helpers;
 
 namespace RayTracer
 {
@@ -42,7 +43,7 @@ namespace RayTracer
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-            _game.TraceRay(e.X, e.Y);
+            _game.TraceRay(e.X, e.Y, new RNG());
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)

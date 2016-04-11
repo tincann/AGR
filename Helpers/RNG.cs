@@ -3,11 +3,32 @@ using OpenTK;
 
 namespace RayTracer.Helpers
 {
-    public static class RNG
+    public class RNG
     {
-        private static readonly Random _r = new Random();
+        private Random _r;
 
-        public static Vector3 RandomVector()
+        public static RNG[] CreateMultipleRNGs(int count)
+        {
+            var m = new Random();
+            var r = new RNG[count];
+            for (int i = 0; i < count; i++)
+            {
+                r[i] = new RNG(m.Next());
+            }
+            return r;
+        }
+
+        public RNG(int seed)
+        {
+            _r = new Random(seed);
+        }
+
+        public RNG()
+        {
+            _r = new Random();
+        }
+        
+        public Vector3 RandomVector()
         {
             return new Vector3(
                 RandomFloat() * 2 - 1, 
@@ -15,12 +36,12 @@ namespace RayTracer.Helpers
                 RandomFloat() * 2 - 1);
         }
 
-        public static Vector3 RandomVectorOnHemisphere(Vector3 orientation)
+        public Vector3 RandomVectorOnHemisphere(Vector3 orientation)
         {
             //calculate random point on hemisphere
             while (true)
             {
-                var vec = RNG.RandomVector();
+                var vec = RandomVector();
                 if (vec.Length <= 1 && Vector3.Dot(vec, orientation) > 0)
                 {
                     return vec;
@@ -28,7 +49,7 @@ namespace RayTracer.Helpers
             }
         }
 
-        public static float RandomFloat()
+        public float RandomFloat()
         {
             return (float)_r.NextDouble();
         }

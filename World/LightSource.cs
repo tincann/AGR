@@ -43,10 +43,10 @@ namespace RayTracer.World
         {
         }
 
-        public Vector3 GetRandomPoint()
+        public Vector3 GetRandomPoint(RNG rng)
         {
-            var u = RNG.RandomFloat();
-            var v = RNG.RandomFloat();
+            var u = rng.RandomFloat();
+            var v = rng.RandomFloat();
 
             return _quad.P1 + u*_quad.Width + v*_quad.Depth;
         }
