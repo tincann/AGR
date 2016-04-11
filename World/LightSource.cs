@@ -18,7 +18,7 @@ namespace RayTracer.World
             Intensity = intensity;
         }
 
-        public Vector3 Position { get; }
+        public Vector3 Position { get; set; }
         public Color3 Color { get; }
         public float Intensity { get; }
     }

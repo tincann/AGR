@@ -10,7 +10,7 @@ namespace RayTracer.Shading.Tracers
     {
         public Color3 Sample(Scene scene, Ray ray)
         {
-            Debug.Assert(scene.BVH != null);
+            //Debug.Assert(scene.BVH != null);
 
             if (ray.BouncesLeft < 1)
             {

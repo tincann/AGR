@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.World;
+using RayTracer.World.Objects.Primitives;
 
 namespace RayTracer.Shading.Models
 {
@@ -38,8 +39,8 @@ namespace RayTracer.Shading.Models
             {
                 var lightVector = light.Position - intersection.Location;
                 var invLightDistance2 = 1/lightVector.LengthSquared;
-                var shadowRay = Ray.CreateFromIntersection(intersection, lightVector);
-                if (IntersectionHelper.DoesIntersect(shadowRay, _scene.Objects))
+                var shadowRay = Ray.CreateFromIntersection(intersection, lightVector, lightVector.LengthFast);
+                if (IntersectionHelper.DoesIntersect(shadowRay, _scene.Objects) && !(intersection.IntersectsWith is DebugSphere)) //todo debug
                 {
                     continue;
                 }
@@ -92,8 +93,8 @@ namespace RayTracer.Shading.Models
             }
 
             var T = n*ray.Direction + normal*(n*cost - (float) Math.Sqrt(k));
-            
-            var refracted = Ray.CreateFromIntersection(intersection, T, true);
+
+            var refracted = Ray.CreateFromIntersection(intersection, T, float.MaxValue, true);
 
             float R0 = (n1 - n2)/(n1 + n2);
             R0 *= R0;

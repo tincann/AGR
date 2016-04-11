@@ -5,9 +5,21 @@ using RayTracer.Structures;
 
 namespace RayTracer.World.Objects.Primitives
 {
+    public class DebugSphere : Sphere
+    {
+        private readonly PointLight _light;
+
+        public DebugSphere(PointLight light, float radius, Material material) : base(light.Position, radius, material)
+        {
+            _light = light;
+        }
+
+        public override Vector3 Center => _light.Position;
+    }
+
     public class Sphere : Primitive, Boundable
     {
-        public Vector3 Center { get; }
+        public virtual Vector3 Center { get; }
         public float Radius { get; }
         public BoundingBox BoundingBox { get; }
         private readonly float _rad2;
@@ -17,7 +29,7 @@ namespace RayTracer.World.Objects.Primitives
             Radius = radius;
             _rad2 = radius*radius;
             var radVector = new Vector3(radius);
-            BoundingBox = new BoundingBox(Center - radVector, Center + radVector);
+            BoundingBox = new BoundingBox(center - radVector, center + radVector);
         }
 
         public override bool Intersect(Ray ray, out Intersection intersection)

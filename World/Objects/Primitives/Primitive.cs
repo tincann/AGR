@@ -5,6 +5,8 @@ namespace RayTracer.World.Objects.Primitives
     public abstract class Primitive : Intersectable
     {
         public Material Material { get; set; }
+
+        public string DebugName { get; set; }
         
         protected Primitive(Material material)
         {

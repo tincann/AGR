@@ -61,21 +61,23 @@ namespace RayTracer.World
         //Is ray now inside last intersected material?
         public bool Transmitted { get; } = false;
 
-        public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction, bool goesIntoMaterial = false)
+        public static Ray CreateFromIntersection(Intersection intersection, Vector3 direction, float t, bool goesIntoMaterial = false)
         {
             var epsilon = direction.Normalized()*0.001f;
             var medium = goesIntoMaterial ? intersection.Material : intersection.Ray.Medium;
-            return new Ray(intersection.Location + epsilon, direction, intersection.Ray.BouncesLeft, intersection.IntersectsWith, medium);
+            return new Ray(intersection.Location + epsilon, direction, intersection.Ray.BouncesLeft, intersection.IntersectsWith, medium) { T = t };
         }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target, Intersectable originalPrimitive)
         {
-            return new Ray(origin, target - origin, Constants.MaxRayBounces, originalPrimitive);
+            var dir = target - origin;
+            return new Ray(origin, dir, Constants.MaxRayBounces, originalPrimitive) { T = dir.Length };
         }
 
         public static Ray CreateFromTwoPoints(Vector3 origin, Vector3 target)
         {
-            return new Ray(origin, target - origin, Constants.MaxRayBounces);
+            var dir = target - origin;
+            return new Ray(origin, dir, Constants.MaxRayBounces);
         }
     }
 }

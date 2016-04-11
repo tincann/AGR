@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RayTracer.World;
 using RayTracer.World.Objects;
+using RayTracer.World.Objects.Primitives;
 
 namespace RayTracer.Helpers
 {
@@ -32,6 +33,10 @@ namespace RayTracer.Helpers
         {
             foreach (var obj in intersectables)
             {
+                if (obj is DebugSphere)
+                {
+                    continue;
+                }
                 Intersection intersection;
                 if (obj.Intersect(ray, out intersection))// && !ReferenceEquals(ray.OriginPrimitive, obj))
                 {

@@ -3,7 +3,6 @@ using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Textures;
-using RayTracer.World.Objects;
 using RayTracer.World.Objects.Complex;
 using RayTracer.World.Objects.Primitives;
 
@@ -87,7 +86,12 @@ namespace RayTracer.World
         {
             //Position: (0.1456885, 1.408235, 3.456715) Target: (0.1496517, 1.251657, 2.469057)
             _camera.Update(new Vector3(0.145f, 1.4f, 3.5f), new Vector3(0.15f, 1.25f, 2.4f));
-            _scene.Add(new PointLight(new Vector3(0, 0.5f, 0.5f), Color4.White, 2));
+
+            var debugLight = new PointLight(new Vector3(0, 0.5f, -0.5f), Color4.White, 2);
+            _scene.Add(debugLight);
+            //_scene.Add(new DebugSphere(debugLight, 0.1f, new Material(MaterialType.Diffuse)));
+
+            _scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
             
             var wallMat = new Material(MaterialType.Diffuse);
             //top
@@ -116,15 +120,15 @@ namespace RayTracer.World
                 new Vector3(-1, 0, 1),
                  wallMat
                 ));
-            
-            ////right
-            //_scene.Add(new Quad(
-            //    new Vector3(1, 0, -1),
-            //    new Vector3(1, 0, 1),
-            //    new Vector3(1, 2, 1),
-            //    new Vector3(1, 2, -1),
-            //     wallMat
-            //    ));
+
+            //right
+            _scene.Add(new Quad(
+                new Vector3(1, 0, -1),
+                new Vector3(1, 0, 1),
+                new Vector3(1, 2, 1),
+                new Vector3(1, 2, -1),
+                 wallMat
+                ));
 
 
         }

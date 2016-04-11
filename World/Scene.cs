@@ -16,6 +16,7 @@ namespace RayTracer.World
     public class Scene
     {
         private readonly IRayTracer _tracer;
+        private readonly bool _constructBvh;
         public List<PointLight> PointLights { get; set; } = new List<PointLight>();
         public List<SurfaceLight> SurfaceLights { get; set; } = new List<SurfaceLight>();
 
@@ -28,9 +29,10 @@ namespace RayTracer.World
 
         public readonly Skybox Skybox = new Skybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
 
-        public Scene(IRayTracer tracer)
+        public Scene(IRayTracer tracer, bool constructBVH)
         {
             _tracer = tracer;
+            _constructBvh = constructBVH;
         }
 
         public void Add(PointLight pointLight)
@@ -66,9 +68,16 @@ namespace RayTracer.World
         public void Construct()
         {
             Objects.Clear();
-            BVH = new BoundingVolumeHierarchy(_boundables);
             Objects.AddRange(_intersectables);
-            Objects.Add(BVH.Root);
+            if (_constructBvh)
+            {
+                BVH = new BoundingVolumeHierarchy(_boundables);
+                Objects.Add(BVH.Root);
+            }
+            else
+            {
+                Objects.AddRange(_boundables);
+            }
         }
         
     }

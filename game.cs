@@ -1,9 +1,11 @@
 ﻿#define PARALLEL
 
+using System;
 using OpenTK;
 using RayTracer.World;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Tracers;
@@ -23,7 +25,7 @@ namespace RayTracer
 
             var tracer = new WhittedStyleTracer();
             //var tracer = new PathTracer();
-            _scene = new Scene(tracer);
+            _scene = new Scene(tracer, true);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
             //sceneDef.Default();
@@ -36,10 +38,13 @@ namespace RayTracer
 
             Statistics.Enabled = false;
         }
-        
+
+        private float c = 0;
         public void Tick()
         {
             Screen.Print($"d: {_camera.D}", 2, 2, 0xffffff);
+            c += 0.001f;
+            //_scene.PointLights.First().Position = new Vector3((float)Math.Sin(c) * 5, 1.5f, 0);
             
             if (Statistics.Enabled)
             {
