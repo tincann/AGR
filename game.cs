@@ -150,11 +150,13 @@ namespace RayTracer
         public void Antialiasing(int d)
         {
             _sampleSize = MathHelper.Clamp(_sampleSize + d, 1, 16);
+            Console.WriteLine($"Sample per pixels: {_sampleSize}");
         }
 
         public void GammaCorrection(bool on)
         {
             _gammaCorrection = on;
+            Console.WriteLine($"Gamme correction: {_gammaCorrection}");
         }
     }
 }

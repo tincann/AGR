@@ -44,9 +44,13 @@ namespace RayTracer.Shading.Models
 
             var brdf = intersection.Material.CalculateColor(intersection)/(float)Math.PI;
 
-            //sample light directly
-            var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
-            var Ld = SampleLightDirectly(ranLight, brdf, intersection);
+            Color3 Ld = Color4.Black;
+            if (_scene.SurfaceLights.Count > 0)
+            {
+                //sample light directly - next event estimation
+                var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
+                Ld = SampleLightDirectly(ranLight, brdf, intersection);
+            }
 
             //irradiance
             var Ei = _scene.Sample(reflected, _rng, true) * Vector3.Dot(intersection.SurfaceNormal, direction);
@@ -64,7 +68,7 @@ namespace RayTracer.Shading.Models
 
             if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects))
             {
-                var solidAngle = (nlightDotL * light.Area) / (dist * dist);
+                var solidAngle = (nlightDotL * light.Area) / (dist * dist); //light area on hemisphere
                 return light.Color * solidAngle * brdf * nDotL;
             }
 

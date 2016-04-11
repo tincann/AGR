@@ -47,12 +47,49 @@ namespace RayTracer
             _game.TraceRay(e.X, e.Y, new RNG());
         }
 
+        protected override void OnKeyUp(KeyboardKeyEventArgs e)
+        {
+            if (e.Key == Key.L)
+            {
+                lockKeys = !lockKeys;
+                Console.WriteLine($"Keys locked: {lockKeys}");   
+            }
+
+
+            if (e.Key == Key.KeypadPlus)
+            {
+                _game.Antialiasing(1);
+            }
+
+            if (e.Key == Key.KeypadMinus)
+            {
+                _game.Antialiasing(-1);
+            }
+
+            if (e.Key == Key.Keypad7)
+            {
+                _game.GammaCorrection(true);
+            }
+
+            if (e.Key == Key.Keypad8)
+            {
+                _game.GammaCorrection(false);
+            }
+            base.OnKeyUp(e);
+        }
+
+        private bool lockKeys = false;
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             
             // called once per frame; app logic
             var keyboard = OpenTK.Input.Keyboard.GetState();
             if (keyboard[Key.Escape]) Exit();
+
+            if (lockKeys)
+            {
+                return;
+            }
 
             var moveVector = Vector3.Zero;
             if (keyboard[Key.A])
@@ -103,26 +140,6 @@ namespace RayTracer
             if (rotVector != Vector2.Zero)
             {
                 _game.RotateCamera(rotVector);
-            }
-
-            if (keyboard[Key.KeypadPlus])
-            {
-                _game.Antialiasing(1);
-            }
-
-            if (keyboard[Key.KeypadMinus])
-            {
-                _game.Antialiasing(-1);
-            }
-
-            if (keyboard[Key.Keypad7])
-            {
-                _game.GammaCorrection(true);
-            }
-
-            if (keyboard[Key.Keypad8])
-            {
-                _game.GammaCorrection(false);
             }
         }
 
