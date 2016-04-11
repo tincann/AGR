@@ -19,6 +19,7 @@ namespace RayTracer
             GL.Enable(EnableCap.Texture2D);
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
             ClientSize = new Size(512, 512);
+            //ClientSize = new Size(1024, 1024);
             _game = new Game();
             _game.Screen = new Surface(Width, Height);
             Sprite.Target = _game.Screen;
@@ -48,6 +49,7 @@ namespace RayTracer
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            
             // called once per frame; app logic
             var keyboard = OpenTK.Input.Keyboard.GetState();
             if (keyboard[Key.Escape]) Exit();

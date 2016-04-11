@@ -69,10 +69,8 @@ namespace RayTracer.World
                 new Material(MaterialType.Diffuse) { Color = Color4.Blue, Specularity = 0.9f }));
             _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.4f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));
-
-            var mat = Material.Glass;
-            mat.Color = Color4.Green;
-            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, mat));
+            
+            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass.WithColor(Color4.Red)));
             _scene.Add(new Sphere(new Vector3(0, 3, 2), 1, Material.Metal));
         }
 
