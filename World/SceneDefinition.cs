@@ -92,7 +92,7 @@ namespace RayTracer.World
 
         public void PathTracerBox()
         {
-            AddSkybox();
+            //AddSkybox();
             _camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
 
             var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);

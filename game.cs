@@ -32,11 +32,11 @@ namespace RayTracer
             _scene = new Scene(tracer, true);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
-            sceneDef.Default();
+            //sceneDef.Default();
             //sceneDef.Teapot();
             //sceneDef.BeerTest();
             //sceneDef.PathTracerTest();
-            //sceneDef.PathTracerBox();
+            sceneDef.PathTracerBox();
 
             _scene.Construct();
 
@@ -128,7 +128,7 @@ namespace RayTracer
                 var dx = xSize*i/_sampleSize;
                 var dy = ySize*i/_sampleSize;
                 var ray = _camera.CreatePrimaryRay(u + dx, v + dy);
-                color += _scene.Sample(ray, rng);
+                color += _scene.Sample(ray, rng, false);
             }
 
             color /= _sampleSize;

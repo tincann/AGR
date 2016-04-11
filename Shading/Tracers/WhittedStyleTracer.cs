@@ -9,7 +9,7 @@ namespace RayTracer.Shading.Tracers
 {
     public class WhittedStyleTracer : IRayTracer
     {
-        public Color3 Sample(Scene scene, Ray ray, RNG random)
+        public Color3 Sample(Scene scene, Ray ray, RNG random, bool ignoreLight)
         {
             //Debug.Assert(scene.BVH != null);
 

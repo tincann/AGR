@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Graphics.ES20;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Structures;
@@ -28,10 +29,14 @@ namespace RayTracer.World
     public class SurfaceLight : IMesh
     {
         private readonly Quad _quad;
+        public readonly Vector3 Normal;
+        public Color3 Color => _quad.Material.Color;
 
         public SurfaceLight(Quad quad)
         {
             _quad = quad;
+            Normal = quad.Normal;
+            Area = (quad.P2 - quad.P1).Length*(quad.P4 - quad.P1).Length;
             if (_quad.Material.MaterialType != MaterialType.Light)
             {
                 _quad.Material = Material.Light;
@@ -52,5 +57,6 @@ namespace RayTracer.World
         }
 
         public List<Boundable> Boundables => _quad.Boundables;
+        public float Area { get; private set; }
     }
 }

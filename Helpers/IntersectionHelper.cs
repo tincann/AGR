@@ -33,10 +33,10 @@ namespace RayTracer.Helpers
         {
             foreach (var obj in intersectables)
             {
-                if (obj is DebugSphere)
-                {
-                    continue;
-                }
+                //if (obj is DebugSphere)
+                //{
+                //    continue;
+                //}
                 Intersection intersection;
                 if (obj.Intersect(ray, out intersection))// && !ReferenceEquals(ray.OriginPrimitive, obj))
                 {

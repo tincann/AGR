@@ -8,7 +8,7 @@ namespace RayTracer.Shading.Tracers
 {
     public class PathTracer : IRayTracer
     {
-        public Color3 Sample(Scene scene, Ray ray, RNG rng)
+        public Color3 Sample(Scene scene, Ray ray, RNG rng, bool ignoreLight)
         {
             if (ray.BouncesLeft < 1)
             {
@@ -23,7 +23,7 @@ namespace RayTracer.Shading.Tracers
             }
 
             var lightingModel = new MonteCarloLightingModel(scene, rng);
-            return lightingModel.Calculate(intersection);
+            return lightingModel.Calculate(intersection, ignoreLight);
         }
     }
 }

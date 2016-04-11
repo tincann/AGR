@@ -6,6 +6,6 @@ namespace RayTracer.Shading.Tracers
 {
     public interface IRayTracer
     {
-        Color3 Sample(Scene scene, Ray ray, RNG rng);
+        Color3 Sample(Scene scene, Ray ray, RNG rng, bool ignoreLight);
     }
 }

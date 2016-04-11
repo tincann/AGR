@@ -17,6 +17,8 @@ namespace RayTracer.World.Objects.Complex
         public readonly Vector3 Depth;
         public Material Material { get; set; }
 
+        public readonly Vector3 Normal;
+
         public List<Boundable> Boundables { get; } = new List<Boundable>();
 
         public Quad(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Material material)
@@ -28,6 +30,7 @@ namespace RayTracer.World.Objects.Complex
             Material = material;
             var t1 = new Triangle(p1, p2, p4, material);
             var t2 = new Triangle(p2, p3, p4, material);
+            Normal = t1.Normal;
             Boundables.Add(t1);
             Boundables.Add(t2);
 

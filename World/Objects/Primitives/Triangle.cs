@@ -10,7 +10,7 @@ namespace RayTracer.World.Objects.Primitives
         private readonly Vector3 _e1;
         private readonly Vector3 _e2;
         private readonly Vector3 _p1;
-        private readonly Vector3 _normal;
+        public readonly Vector3 Normal;
 
         public BoundingBox BoundingBox { get; }
 
@@ -22,7 +22,7 @@ namespace RayTracer.World.Objects.Primitives
             //vectors of triangle edges
             _e1 = Vector3.Subtract(p2, _p1);
             _e2 = Vector3.Subtract(p3, _p1);
-            _normal = Vector3.Cross(_e1, _e2).Normalized();
+            Normal = Vector3.Cross(_e1, _e2).Normalized();
             BoundingBox = BoundingBox.FromVectors(p1, p2, p3);
         }
 
@@ -34,7 +34,7 @@ namespace RayTracer.World.Objects.Primitives
             intersection = null;
 
             //don't intersect backside
-            if (Vector3.Dot(ray.Direction, _normal) > 0)
+            if (Vector3.Dot(ray.Direction, Normal) > 0)
             {
                 return false;
             }
@@ -80,7 +80,7 @@ namespace RayTracer.World.Objects.Primitives
             {
                 var intersectionPoint = ray.GetPoint(t);
                 ray.SetLength(t);
-                intersection = new Intersection(this, ray, _normal, intersectionPoint, t, Material);
+                intersection = new Intersection(this, ray, Normal, intersectionPoint, t, Material);
                 Statistics.Add("Triangle test success");
                 return true;
             }

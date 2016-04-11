@@ -72,7 +72,7 @@ namespace RayTracer.Shading.Models
                 }
             }
 
-            return mat.Specularity * (specColor + _scene.Sample(reflectedRay, _rng)) + (1 - mat.Specularity) * DirectIllumination(intersection);
+            return mat.Specularity * (specColor + _scene.Sample(reflectedRay, _rng, false)) + (1 - mat.Specularity) * DirectIllumination(intersection);
         }
 
         public Color3 Dielectric(Intersection intersection)
@@ -111,7 +111,7 @@ namespace RayTracer.Shading.Models
                     (float)Math.Exp(-absorbance.G),
                     (float)Math.Exp(-absorbance.B)); 
             }
-            var color = Ft* _scene.Sample(refracted, _rng) + Fr * Specular(intersection);
+            var color = Ft* _scene.Sample(refracted, _rng, false) + Fr * Specular(intersection);
             return transparency*color;
         }
     }

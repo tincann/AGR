@@ -63,9 +63,9 @@ namespace RayTracer.World
             _boundables.AddRange(mesh.Boundables);
         }
 
-        public Color3 Sample(Ray ray, RNG random)
+        public Color3 Sample(Ray ray, RNG random, bool ignoreLight)
         {
-            return _tracer.Sample(this, ray, random);
+            return _tracer.Sample(this, ray, random, ignoreLight);
         }
 
         public void Construct()
