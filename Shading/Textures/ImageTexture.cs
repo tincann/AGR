@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.ES11;
 
 namespace RayTracer.Shading.Textures
 {
@@ -55,7 +57,24 @@ namespace RayTracer.Shading.Textures
             int x = (int) (u*(_width - 1));
             int y = (int) (v*(_height - 1));
 
-            var offset = (y*_width + x)*_depth;
+
+            Color3 c = Color4.Black;
+            
+            for (int yd = -3; yd <= 3; yd++)
+                for (int xd = -3; xd <= 3; xd++)
+                {
+                    var xx = (x + xd + _width)%_width;
+                    var yy = (y + yd + _height)%_height;
+                    c += 4 * GetColor(xx, yy) * BlurKernel[yd + 3] * BlurKernel[xd + 3];
+                }
+            
+            return c;
+        }
+
+        private static readonly float[] BlurKernel = { 0.001f, 0.020f, 0.109f, 0.172f, 0.109f, 0.020f, 0.001f };
+        private Color3 GetColor(int x, int y)
+        {
+            var offset = (y * _width + x) * _depth;
             return new Color3(_imageBuffer[offset + 2], _imageBuffer[offset + 1], _imageBuffer[offset]);
         }
     }

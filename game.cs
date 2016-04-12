@@ -6,6 +6,7 @@ using RayTracer.World;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Tracers;
@@ -21,8 +22,9 @@ namespace RayTracer
 
         private OpenTKApp _app;
         
-        public void Init(OpenTKApp app)
+        public void Init(OpenTKApp app, CancellationToken exitToken)
         {
+            _exitToken = exitToken;
             _app = app;
             _tasks = new Task[parallelBundles];
             _r = RNG.CreateMultipleRNGs(parallelBundles);
@@ -35,11 +37,11 @@ namespace RayTracer
             _scene = new Scene(tracer, true);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
-            //sceneDef.Default();
+            sceneDef.Default();
             //sceneDef.Teapot();
             //sceneDef.BeerTest();
             //sceneDef.PathTracerTest();
-            sceneDef.PathTracerBox();
+            //sceneDef.PathTracerBox();
 
             _scene.Construct();
 
@@ -73,6 +75,7 @@ namespace RayTracer
         private int _sampleSize = 1;
         private bool _gammaCorrection = true;
         private RNG[] _r;
+        private CancellationToken _exitToken;
 
         public void Render()
         {
@@ -100,10 +103,10 @@ namespace RayTracer
                 });
             }
 
-            while (_tasks.Any(x => !x.IsCompleted))
+            while (!_exitToken.IsCancellationRequested && _tasks.Any(x => !x.IsCompleted))
             {
-                Task.WaitAny(_tasks);
                 _app.ProcessEvents();
+                Task.WaitAny(_tasks, _exitToken);
             }
 
 #else

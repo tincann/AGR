@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -11,6 +12,7 @@ namespace RayTracer
     {
         private static int _screenId;
         private static Game _game;
+        private static CancellationTokenSource _exited = new CancellationTokenSource();
 
         protected override void OnLoad(EventArgs e)
         {
@@ -24,7 +26,7 @@ namespace RayTracer
             _game.Screen = new Surface(Width, Height);
             Sprite.Target = _game.Screen;
             _screenId = _game.Screen.GenTexture();
-            _game.Init(this);
+            _game.Init(this, _exited.Token);
         }
 
         protected override void OnUnload(EventArgs e)
@@ -84,7 +86,11 @@ namespace RayTracer
             
             // called once per frame; app logic
             var keyboard = OpenTK.Input.Keyboard.GetState();
-            if (keyboard[Key.Escape]) Exit();
+            if (keyboard[Key.Escape])
+            {
+                _exited.Cancel();
+                Exit();
+            }
 
             if (lockKeys)
             {
