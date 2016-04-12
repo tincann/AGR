@@ -18,9 +18,12 @@ namespace RayTracer
         private Scene _scene;
         public Surface Screen;
         private Accumulator _acc;
+
+        private OpenTKApp _app;
         
-        public void Init()
+        public void Init(OpenTKApp app)
         {
+            _app = app;
             _tasks = new Task[parallelBundles];
             _r = RNG.CreateMultipleRNGs(parallelBundles);
             
@@ -55,9 +58,10 @@ namespace RayTracer
                 Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
             }
 
-            //Screen.Print($"spp (kp_+, kp_-): {_sampleSize}", 2, 42, 0xffffff);
-            //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 62, 0xffffff);
-            Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0xffffff);
+            Screen.Print($"spp (kp_+, kp_-): {_sampleSize}", 2, 42, 0xffffff);
+            Screen.Print($"samples: {_acc.NumSamples}", 2, 62, 0xffffff);
+            //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 82, 0xffffff);
+
 
             Statistics.Reset();
         }
@@ -95,9 +99,13 @@ namespace RayTracer
                     }
                 });
             }
-            
-            Task.WaitAll(_tasks);
-            
+
+            while (_tasks.Any(x => !x.IsCompleted))
+            {
+                Task.WaitAny(_tasks);
+                _app.ProcessEvents();
+            }
+
 #else
             for (int y = 0; y < Screen.Height; y++)
             {

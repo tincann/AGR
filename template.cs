@@ -24,7 +24,7 @@ namespace RayTracer
             _game.Screen = new Surface(Width, Height);
             Sprite.Target = _game.Screen;
             _screenId = _game.Screen.GenTexture();
-            _game.Init();
+            _game.Init(this);
         }
 
         protected override void OnUnload(EventArgs e)
@@ -49,7 +49,7 @@ namespace RayTracer
 
         protected override void OnKeyUp(KeyboardKeyEventArgs e)
         {
-            if (e.Key == Key.L)
+            if (e.Key == Key.Pause)
             {
                 lockKeys = !lockKeys;
                 Console.WriteLine($"Keys locked: {lockKeys}");   
