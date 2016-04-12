@@ -26,16 +26,50 @@ namespace RayTracer.World
         public float Intensity { get; }
     }
 
-    public class SurfaceLight : IMesh
+    public interface ISurfaceLight
+    {
+        float Area { get; }
+        Color3 Color { get; }
+        Vector3 GetRandomPoint(RNG rng);
+
+        Vector3 GetNormal(Intersection intersection);
+    }
+
+    public class SphereLight : Sphere, ISurfaceLight
+    {
+        public SphereLight(Vector3 center, float radius, Material material) : base(center, radius, material)
+        {
+            Area = (float) (4 * Math.PI * radius * radius);
+        }
+
+        public Color3 Color => Material.Color;
+        public float Area { get; }
+        public Vector3 GetRandomPoint(RNG rng)
+        {
+            var theta = rng.RandomFloat()*MathHelper.TwoPi; // 0 - 2pi
+            var u = rng.RandomFloat()*2 - 1; // -1 - 1
+            var v = new Vector3((float)(Math.Sqrt(1 - u * u) * Math.Cos(theta)), (float)(Math.Sqrt(1 - u * u) * Math.Sin(theta)), u);
+            return v * Radius;
+        }
+
+        public Vector3 GetNormal(Intersection intersection)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class QuadLight : IMesh, ISurfaceLight
     {
         private readonly Quad _quad;
-        public readonly Vector3 Normal;
         public Color3 Color => _quad.Material.Color;
+        public Vector3 GetNormal(Intersection intersection)
+        {
+            return _quad.Normal;
+        }
 
-        public SurfaceLight(Quad quad)
+        public QuadLight(Quad quad)
         {
             _quad = quad;
-            Normal = quad.Normal;
             Area = (quad.P2 - quad.P1).Length*(quad.P4 - quad.P1).Length;
             if (_quad.Material.MaterialType != MaterialType.Light)
             {
@@ -43,7 +77,7 @@ namespace RayTracer.World
             }
         }
 
-        public SurfaceLight(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Color4 color) 
+        public QuadLight(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Color4 color) 
             : this(new Quad(p1, p2, p3, p4, new Material(MaterialType.Light) { Color = color }))
         {
         }
