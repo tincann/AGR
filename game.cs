@@ -49,9 +49,10 @@ namespace RayTracer
         }
 
         private float c = 0;
+        private DateTime _startTime = DateTime.Now;
         public void Tick()
         {
-            Screen.Print($"d: {_camera.D}", 2, 2, 0xffffff);
+            //Screen.Print($"d: {_camera.D}", 2, 2, 0xffffff);
             c += 0.001f;
             //_scene.PointLights.First().Position = new Vector3((float)Math.Sin(c) * 5, 1.5f, 0);
             
@@ -60,11 +61,12 @@ namespace RayTracer
                 Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
             }
 
-            Screen.Print($"spp (kp_+, kp_-): {_sampleSize}", 2, 42, 0xffffff);
-            Screen.Print($"samples: {_acc.NumSamples}", 2, 62, 0xffffff);
+            Screen.Print($"total: {(DateTime.Now - _startTime).TotalSeconds} sec", 2, 2, 0xffffff);
+            Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0xffffff);
+            Screen.Print($"spp: {_sampleSize}", 450, 2, 0xffffff);
+
             //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 82, 0xffffff);
-
-
+            
             Statistics.Reset();
         }
 
@@ -173,6 +175,7 @@ namespace RayTracer
         public void RestartSample()
         {
             Console.WriteLine("Resetting sampling");
+            _startTime = DateTime.Now;
             _acc.Reset();
         }
     }

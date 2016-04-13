@@ -81,11 +81,6 @@ namespace RayTracer
             {
                 _game.GammaCorrection(false);
             }
-            
-            if (e.Key == Key.KeypadEnter)
-            {
-                _game.RestartSample();
-            }
 
             base.OnKeyUp(e);
         }
@@ -107,6 +102,11 @@ namespace RayTracer
                 return;
             }
             
+            if (keyboard[Key.KeypadEnter])
+            {
+                _game.RestartSample();
+            }
+
             var moveVector = Vector3.Zero;
             if (keyboard[Key.A])
             {
