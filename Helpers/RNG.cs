@@ -76,7 +76,7 @@ namespace RayTracer.Helpers
                 w = new Vector3(0, 1, 0);
             }
 
-            var t = Vector3.Cross(normal, w);
+            var t = Vector3.Cross(normal, w).Normalized();
             var b = Vector3.Cross(t, normal);
 
             return vec.X * t + vec.Y * b + vec.Z * normal;

@@ -114,10 +114,10 @@ namespace RayTracer.World
             var diffuse = new Material(MaterialType.Diffuse);
             _scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
             //_scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, new Material(MaterialType.Light)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Glass.WithColor(Color4.Red)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Metal));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Metal));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Glass));
 
-            var wallMat = new Material(MaterialType.Diffuse);
+            var wallMat = new Material(MaterialType.Diffuse) { Color = new Color3(0.7f, 0.7f, 0.7f)};
             //top
             _scene.Add(new Quad(
                 new Vector3(-1, 2, -1),

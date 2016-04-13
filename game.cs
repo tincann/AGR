@@ -63,7 +63,7 @@ namespace RayTracer
 
             Screen.Print($"total: {(DateTime.Now - _startTime).TotalSeconds} sec", 2, 2, 0xffffff);
             Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0xffffff);
-            Screen.Print($"spp: {_sampleSize}", 450, 2, 0xffffff);
+            Screen.Print($"spp: {_sampleSize}", 410, 2, 0xffffff);
 
             //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 82, 0xffffff);
             
