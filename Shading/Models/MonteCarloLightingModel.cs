@@ -57,13 +57,13 @@ namespace RayTracer.Shading.Models
             return MathHelper.TwoPi*brdf*Ei + Ld;
         }
 
-        private Color3 SampleLightDirectly(ISurfaceLight light, Color3 brdf, Intersection intersection)
+        private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)
         {
             var lPoint = light.GetRandomPoint(_rng); //get random point on light
             var l = lPoint - intersection.Location; //vector to light
             var dist = l.LengthFast;
             var lightRay = Ray.CreateFromIntersection(intersection, l, dist - 0.01f); //ray to light - epsilon to not intersect with light itself
-            var nlightDotL = Vector3.Dot(light.GetNormal(intersection), -l); //light normal dot light
+            var nlightDotL = Vector3.Dot(light.Normal, -l); //light normal dot light
             var nDotL = Vector3.Dot(intersection.SurfaceNormal, l); //normal dot light
 
             if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects))
