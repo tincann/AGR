@@ -115,7 +115,7 @@ namespace RayTracer
                 //Console.WriteLine($"y: {y}");
                 for (int x = 0; x < Screen.Width; x++)
                 {
-                    var color = TraceRay(x, y, _r[0]);
+                    var color = TraceRay(x, y);
                     _acc.Plot(x, y, color, _gammaCorrection);
                 }
             }

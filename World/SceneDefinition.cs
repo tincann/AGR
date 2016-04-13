@@ -99,18 +99,18 @@ namespace RayTracer.World
             _scene.Add(debugLight);
 
             _scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
-
+            
             _scene.Add(new QuadLight(
-                new Vector3(-0.25f, 1.99f, 0.25f),
-                new Vector3(-0.25f, 1.99f, -0.25f),
-                new Vector3(0.25f, 1.99f, -0.25f),
-                new Vector3(0.25f, 1.99f, 0.25f),
+                new Vector3(-0.5f, 1.99f, 0.5f),
+                new Vector3(-0.5f, 1.99f,-0.5f),
+                new Vector3(0.5f, 1.99f, -0.5f),
+                new Vector3(0.5f, 1.99f,  0.5f),
                 Color4.White
                 ));
 
             var diffuse = new Material(MaterialType.Diffuse);
-            _scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
-            //_scene.Add(new SphereLight(new Vector3(-0.5f, 1f, 0), 0.3f, new Material(MaterialType.Light)));
+            //_scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
+            _scene.Add(new SphereLight(new Vector3(-0.5f, 0, 0), 0.3f, new Material(MaterialType.Light)));
             _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Glass.WithColor(Color4.Red)));
             _scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Metal));
 

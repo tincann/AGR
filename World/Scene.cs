@@ -45,7 +45,14 @@ namespace RayTracer.World
         public void Add(ISurfaceLight surfaceLight)
         {
             SurfaceLights.Add(surfaceLight);
-            Add((Boundable)surfaceLight);
+            if (surfaceLight is IMesh)
+            {
+                Add((IMesh)surfaceLight);    
+            }
+            else if (surfaceLight is Boundable)
+            {
+                Add((Boundable)surfaceLight);
+            }
         }
 
         public void Add(Intersectable intersectable)

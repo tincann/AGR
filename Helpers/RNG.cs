@@ -44,7 +44,7 @@ namespace RayTracer.Helpers
                 var vec = RandomVector();
                 if (vec.LengthFast <= 1 && Vector3.Dot(vec, orientation) > 0)
                 {
-                    return vec.Normalized();
+                    return vec;
                 }
             }
         }

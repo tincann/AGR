@@ -29,7 +29,7 @@ namespace RayTracer.Helpers
         }
 
         
-        public static bool DoesIntersect(Ray ray, IEnumerable<Intersectable> intersectables, Intersectable ignore = null)
+        public static bool DoesIntersect(Ray ray, IEnumerable<Intersectable> intersectables)
         {
             foreach (var obj in intersectables)
             {
@@ -38,7 +38,7 @@ namespace RayTracer.Helpers
                 //    continue;
                 //}
                 Intersection intersection;
-                if (obj != ignore && obj.Intersect(ray, out intersection))// && !ReferenceEquals(ray.OriginPrimitive, obj))
+                if (obj.Intersect(ray, out intersection))// && !ReferenceEquals(ray.OriginPrimitive, obj))
                 {
                     return true;
                 }

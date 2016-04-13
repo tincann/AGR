@@ -59,14 +59,14 @@ namespace RayTracer.Shading.Models
 
         private Color3 SampleLightDirectly(ISurfaceLight light, Color3 brdf, Intersection intersection)
         {
-            var lPoint = light.GetRandomPoint(_rng, intersection.Location); //get random point on light
-            var l = lPoint.Location - intersection.Location; //vector to light
+            var lPoint = light.GetRandomPoint(_rng); //get random point on light
+            var l = lPoint - intersection.Location; //vector to light
             var dist = l.LengthFast;
             var lightRay = Ray.CreateFromIntersection(intersection, l, dist - 0.01f); //ray to light - epsilon to not intersect with light itself
-            var nlightDotL = Vector3.Dot(lPoint.Normal, -l); //light normal dot light
+            var nlightDotL = Vector3.Dot(light.GetNormal(intersection), -l); //light normal dot light
             var nDotL = Vector3.Dot(intersection.SurfaceNormal, l); //normal dot light
 
-            if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects, light))
+            if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects))
             {
                 var solidAngle = (nlightDotL * light.Area) / (dist * dist); //light area on hemisphere
                 return light.Color * solidAngle * brdf * nDotL;
