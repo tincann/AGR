@@ -39,9 +39,11 @@ namespace RayTracer.Shading.Models
 
         public Color3 Diffuse(Intersection intersection)
         {
-            var direction = _rng.RandomVectorOnHemisphere(intersection.SurfaceNormal);
-            var reflected = Ray.CreateFromIntersection(intersection, direction, goesIntoMaterial: true);
+            //random reflected ray
+            var rDir = _rng.CosineDistributed(intersection.SurfaceNormal);
+            var reflected = Ray.CreateFromIntersection(intersection, rDir, goesIntoMaterial: true);
 
+            //brdf of material
             var brdf = intersection.Material.CalculateColor(intersection)/(float)Math.PI;
 
             Color3 Ld = Color4.Black;
@@ -49,17 +51,22 @@ namespace RayTracer.Shading.Models
             {
                 //sample light directly - next event estimation
                 var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
-                Ld = SampleLightDirectly(ranLight, brdf, intersection);
+                Ld = SampleLightDirectly(ranLight, brdf, intersection) * _scene.SurfaceLights.Count;
             }
 
             //irradiance
-            var Ei = _scene.Sample(reflected, _rng, true) * Vector3.Dot(intersection.SurfaceNormal, direction);
-            return MathHelper.TwoPi*brdf*Ei + Ld;
+            var nDotR = Vector3.Dot(intersection.SurfaceNormal, rDir);
+            var Ei = _scene.Sample(reflected, _rng, true) * nDotR;
+            
+            //probability density function
+            var pdf = nDotR / MathHelper.Pi;
+
+            return brdf*Ei / pdf + Ld;
         }
 
         private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)
         {
-            var lPoint = light.GetRandomPoint(_rng); //get random point on light
+            var lPoint = light.GetRandomPoint(_rng, intersection); //get random point on light
             var l = lPoint - intersection.Location; //vector to light
             var dist = l.LengthFast;
             var lightRay = Ray.CreateFromIntersection(intersection, l, dist - 0.01f); //ray to light - epsilon to not intersect with light itself

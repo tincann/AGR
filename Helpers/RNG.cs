@@ -53,6 +53,27 @@ namespace RayTracer.Helpers
             }
         }
 
+        public Vector3 CosineDistributed(Vector3 normal)
+        {
+            //generate random cosine distributed vector
+            float r0 = RandomFloat(), r1 = RandomFloat();
+            float r = (float)Math.Sqrt(r0);
+            float theta = 2 * (float)Math.PI * r1;
+            float x = r * (float)Math.Cos(theta);
+            float y = r * (float)Math.Sin(theta);
+            var z = (float)Math.Sqrt(1 - r0);
+            var vec = new Vector3(x, y, z);                        //transform to world space            var w = new Vector3(1, 0, 0);
+            if (Math.Abs(normal.X) > 0.99)
+            {
+                w = new Vector3(0, 1, 0);
+            }
+
+            var t = Vector3.Cross(normal, w);
+            var b = Vector3.Cross(t, normal);
+
+            return vec.X * t + vec.Y * b + vec.Z * normal;
+        }
+
         public float RandomFloat()
         {
             return (float)_r.NextDouble();

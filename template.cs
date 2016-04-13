@@ -56,7 +56,11 @@ namespace RayTracer
                 lockKeys = !lockKeys;
                 Console.WriteLine($"Keys locked: {lockKeys}");   
             }
-
+            
+            if (lockKeys)
+            {
+                return;
+            }
 
             if (e.Key == Key.KeypadPlus)
             {
@@ -77,6 +81,12 @@ namespace RayTracer
             {
                 _game.GammaCorrection(false);
             }
+            
+            if (e.Key == Key.KeypadEnter)
+            {
+                _game.RestartSample();
+            }
+
             base.OnKeyUp(e);
         }
 
@@ -96,7 +106,7 @@ namespace RayTracer
             {
                 return;
             }
-
+            
             var moveVector = Vector3.Zero;
             if (keyboard[Key.A])
             {

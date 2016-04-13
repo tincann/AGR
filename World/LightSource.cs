@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using OpenTK;
 using OpenTK.Graphics;
@@ -27,7 +28,24 @@ namespace RayTracer.World
         public float Intensity { get; }
     }
 
-    public class SurfaceLight : Intersectable
+    public interface ISurfaceLight : Intersectable
+    {
+        Vector3 GetRandomPoint(RNG rng, Intersection intersection);
+    }
+
+    public class SphereLight : Sphere, ISurfaceLight
+    {
+        public SphereLight(Vector3 center, float radius, Material material) : base(center, radius, material)
+        {
+        }
+
+        public Vector3 GetRandomPoint(RNG rng, Intersection intersection)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SurfaceLight : ISurfaceLight
     {
         private readonly Quad _quad;
         public readonly Vector3 Normal;
@@ -38,6 +56,7 @@ namespace RayTracer.World
             _quad = quad;
             Normal = quad.Normal;
             Area = (quad.P2 - quad.P1).Length*(quad.P4 - quad.P1).Length;
+
             if (_quad.Material.MaterialType != MaterialType.Light)
             {
                 _quad.Material = Material.Light;
@@ -55,15 +74,13 @@ namespace RayTracer.World
             return intersection != null;
         }
 
-        public Vector3 GetRandomPoint(RNG rng)
+        public Vector3 GetRandomPoint(RNG rng, Intersection intersection)
         {
             var u = rng.RandomFloat();
             var v = rng.RandomFloat();
 
             return _quad.P1 + u*_quad.Width + v*_quad.Depth;
         }
-
-        public List<Boundable> Boundables => _quad.Boundables;
         public float Area { get; private set; }
     }
 }

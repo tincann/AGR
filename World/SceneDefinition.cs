@@ -99,12 +99,15 @@ namespace RayTracer.World
             _scene.Add(debugLight);
 
             _scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
-            
+
+
+            var lightWidth = 0.75f;
+            var hw = lightWidth/2;
             _scene.Add(new SurfaceLight(
-                new Vector3(-0.5f, 1.99f, 0.5f),
-                new Vector3(-0.5f, 1.99f,-0.5f),
-                new Vector3(0.5f, 1.99f, -0.5f),
-                new Vector3(0.5f, 1.99f,  0.5f),
+                new Vector3(-hw, 1.99f, hw),
+                new Vector3(-hw, 1.99f,-hw),
+                new Vector3(hw, 1.99f, -hw),
+                new Vector3(hw, 1.99f,  hw),
                 Color4.White
                 ));
 

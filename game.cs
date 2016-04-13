@@ -149,13 +149,13 @@ namespace RayTracer
         public void MoveCamera(Vector3 moveVector)
         {
             _camera.Move(moveVector);
-            _acc.Reset();
+            RestartSample();
         }
 
         public void RotateCamera(Vector2 rotVector)
         {
             _camera.Rotate(rotVector);
-            _acc.Reset();
+            RestartSample();
         }
 
         public void Antialiasing(int d)
@@ -168,6 +168,12 @@ namespace RayTracer
         {
             _gammaCorrection = on;
             Console.WriteLine($"Gamme correction: {_gammaCorrection}");
+        }
+
+        public void RestartSample()
+        {
+            Console.WriteLine("Resetting sampling");
+            _acc.Reset();
         }
     }
 }
