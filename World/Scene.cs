@@ -45,7 +45,7 @@ namespace RayTracer.World
         public void Add(SurfaceLight surfaceLight)
         {
             SurfaceLights.Add(surfaceLight);
-            Add((IMesh)surfaceLight);
+            Add((Intersectable)surfaceLight);
         }
 
         public void Add(Intersectable intersectable)

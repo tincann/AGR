@@ -19,6 +19,13 @@ namespace RayTracer.Shading.Models
 
         public Color3 Calculate(Intersection intersection, bool ignoreLight)
         {
+
+            if (_rng.TestChance(Constants.RussianRouletteDieChance))
+            {
+                return Color4.Black;
+            }
+
+            Color3 result;
             switch (intersection.Material.MaterialType)
             {
                 case MaterialType.Light:
@@ -26,22 +33,31 @@ namespace RayTracer.Shading.Models
                     {
                         return Color4.Black; //Black because next event estimation
                     }
-                    return intersection.Material.Color;
+                    result = intersection.Material.Color;
+                    break;
                 case MaterialType.Diffuse:
-                    return Diffuse(intersection);
+                    result = Diffuse(intersection);
+                    break;
                 case MaterialType.Specular:
-                    return Specular(intersection);
+                    result = Specular(intersection);
+                    break;
                 case MaterialType.Dielectric:
-                    return Dielectric(intersection);
+                    result = Dielectric(intersection);
+                    break;
+                default:
+                    throw new Exception("Materialtype is not supported");
             }
-            throw new Exception("Materialtype is not supported");
+
+            return result / (1 - Constants.RussianRouletteDieChance);
         }
 
         public Color3 Diffuse(Intersection intersection)
         {
-            var direction = _rng.RandomVectorOnHemisphere(intersection.SurfaceNormal);
-            var reflected = Ray.CreateFromIntersection(intersection, direction, goesIntoMaterial: true);
+            //random reflected ray
+            var rDir = _rng.CosineDistributed(intersection.SurfaceNormal);
+            var reflected = Ray.CreateFromIntersection(intersection, rDir, goesIntoMaterial: true);
 
+            //brdf of material
             var brdf = intersection.Material.CalculateColor(intersection)/(float)Math.PI;
 
             Color3 Ld = Color4.Black;
@@ -49,24 +65,29 @@ namespace RayTracer.Shading.Models
             {
                 //sample light directly - next event estimation
                 var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
-                Ld = SampleLightDirectly(ranLight, brdf, intersection);
+                Ld = SampleLightDirectly(ranLight, brdf, intersection) * _scene.SurfaceLights.Count;
             }
 
             //irradiance
-            var Ei = _scene.Sample(reflected, _rng, true) * Vector3.Dot(intersection.SurfaceNormal, direction);
-            return MathHelper.TwoPi*brdf*Ei + Ld;
+            var nDotR = Vector3.Dot(intersection.SurfaceNormal, rDir);
+            var Ei = _scene.Sample(reflected, _rng, true) * nDotR;
+            
+            //probability density function
+            var pdf = nDotR / MathHelper.Pi;
+
+            return brdf*Ei / pdf + Ld;
         }
 
         private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)
         {
-            var lPoint = light.GetRandomPoint(_rng); //get random point on light
+            var lPoint = light.GetRandomPoint(_rng, intersection); //get random point on light
             var l = lPoint - intersection.Location; //vector to light
             var dist = l.LengthFast;
             var lightRay = Ray.CreateFromIntersection(intersection, l, dist - 0.01f); //ray to light - epsilon to not intersect with light itself
             var nlightDotL = Vector3.Dot(light.Normal, -l); //light normal dot light
             var nDotL = Vector3.Dot(intersection.SurfaceNormal, l); //normal dot light
 
-            if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects))
+            if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects, light))
             {
                 var solidAngle = (nlightDotL * light.Area) / (dist * dist); //light area on hemisphere
                 return light.Color * solidAngle * brdf * nDotL;
