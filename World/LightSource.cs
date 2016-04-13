@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES20;
@@ -26,7 +27,7 @@ namespace RayTracer.World
         public float Intensity { get; }
     }
 
-    public class SurfaceLight : IMesh
+    public class SurfaceLight : Intersectable
     {
         private readonly Quad _quad;
         public readonly Vector3 Normal;
@@ -46,6 +47,12 @@ namespace RayTracer.World
         public SurfaceLight(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Color4 color) 
             : this(new Quad(p1, p2, p3, p4, new Material(MaterialType.Light) { Color = color }))
         {
+        }
+
+        public bool Intersect(Ray ray, out Intersection intersection)
+        {
+            intersection = IntersectionHelper.GetClosestIntersection(ray, _quad.Boundables);
+            return intersection != null;
         }
 
         public Vector3 GetRandomPoint(RNG rng)

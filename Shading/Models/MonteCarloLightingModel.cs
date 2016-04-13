@@ -66,7 +66,7 @@ namespace RayTracer.Shading.Models
             var nlightDotL = Vector3.Dot(light.Normal, -l); //light normal dot light
             var nDotL = Vector3.Dot(intersection.SurfaceNormal, l); //normal dot light
 
-            if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects))
+            if (nDotL > 0 && nlightDotL > 0 && !IntersectionHelper.DoesIntersect(lightRay, _scene.Objects, light))
             {
                 var solidAngle = (nlightDotL * light.Area) / (dist * dist); //light area on hemisphere
                 return light.Color * solidAngle * brdf * nDotL;
