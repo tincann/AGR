@@ -19,6 +19,13 @@ namespace RayTracer.Shading.Models
 
         public Color3 Calculate(Intersection intersection, bool ignoreLight)
         {
+
+            if (_rng.TestChance(Constants.RussianRouletteDieChance))
+            {
+                return Color4.Black;
+            }
+
+            Color3 result;
             switch (intersection.Material.MaterialType)
             {
                 case MaterialType.Light:
@@ -26,15 +33,22 @@ namespace RayTracer.Shading.Models
                     {
                         return Color4.Black; //Black because next event estimation
                     }
-                    return intersection.Material.Color;
+                    result = intersection.Material.Color;
+                    break;
                 case MaterialType.Diffuse:
-                    return Diffuse(intersection);
+                    result = Diffuse(intersection);
+                    break;
                 case MaterialType.Specular:
-                    return Specular(intersection);
+                    result = Specular(intersection);
+                    break;
                 case MaterialType.Dielectric:
-                    return Dielectric(intersection);
+                    result = Dielectric(intersection);
+                    break;
+                default:
+                    throw new Exception("Materialtype is not supported");
             }
-            throw new Exception("Materialtype is not supported");
+
+            return result / (1 - Constants.RussianRouletteDieChance);
         }
 
         public Color3 Diffuse(Intersection intersection)

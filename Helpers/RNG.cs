@@ -36,6 +36,11 @@ namespace RayTracer.Helpers
                 RandomFloat() * 2 - 1);
         }
 
+        public bool TestChance(float chance)
+        {
+            return RandomFloat() <= chance;
+        }
+
         public Vector3 RandomVectorOnHemisphere(Vector3 orientation)
         {
             //calculate random point on hemisphere
@@ -62,7 +67,10 @@ namespace RayTracer.Helpers
             float x = r * (float)Math.Cos(theta);
             float y = r * (float)Math.Sin(theta);
             var z = (float)Math.Sqrt(1 - r0);
-            var vec = new Vector3(x, y, z);                        //transform to world space            var w = new Vector3(1, 0, 0);
+            var vec = new Vector3(x, y, z);
+            
+            //transform to world space
+            var w = new Vector3(1, 0, 0);
             if (Math.Abs(normal.X) > 0.99)
             {
                 w = new Vector3(0, 1, 0);
