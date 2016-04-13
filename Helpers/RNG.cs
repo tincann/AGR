@@ -42,8 +42,12 @@ namespace RayTracer.Helpers
             while (true)
             {
                 var vec = RandomVector();
-                if (vec.LengthFast <= 1 && Vector3.Dot(vec, orientation) > 0)
+                if (vec.LengthFast <= 1)
                 {
+                    if (Vector3.Dot(vec, orientation) < 0)
+                    {
+                        return -vec;
+                    }
                     return vec;
                 }
             }
