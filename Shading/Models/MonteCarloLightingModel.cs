@@ -12,22 +12,26 @@ namespace RayTracer.Shading.Models
         private readonly RNG _rng;
         private readonly bool _nee;
         private readonly bool _cosineDist;
+        private readonly bool _russianRoulette;
 
-        public MonteCarloLightingModel(Scene scene, RNG rng, bool nee, bool cosineDist)
+        public MonteCarloLightingModel(Scene scene, RNG rng, bool nee, bool cosineDist, bool russianRoulette)
         {
             _scene = scene;
             _rng = rng;
             _nee = nee;
             _cosineDist = cosineDist;
+            _russianRoulette = russianRoulette;
+        }
+
+        private bool KillRay(Color3 color)
+        {
+            var chance = (color.R + color.G + color.B)/3;
+            chance = MathHelper.Clamp(chance, 0.1f, 0.9f);
+            return _rng.TestChance(chance);
         }
 
         public Color3 Calculate(Intersection intersection, bool ignoreLight)
         {
-            //if (_rng.TestChance(Constants.RussianRouletteDieChance))
-            //{
-            //    return Color4.Black;
-            //}
-
             Color3 result;
             switch (intersection.Material.MaterialType)
             {
@@ -60,6 +64,11 @@ namespace RayTracer.Shading.Models
 
         public Color3 Diffuse(Intersection intersection)
         {
+            if (_russianRoulette && KillRay(intersection.Material.Color))
+            {
+                return Color4.Black;
+            }
+
             //random reflected ray
             Vector3 rDir;
             if (_cosineDist)
@@ -92,14 +101,25 @@ namespace RayTracer.Shading.Models
                     Ld = SampleLightDirectly(ranLight, brdf, intersection)*_scene.SurfaceLights.Count;
                 }
             }
+
+            Color3 result;
             if (_cosineDist)
             {
                 //probability density function
                 var pdf = nDotR/MathHelper.Pi;
-                return brdf*Ei/pdf + Ld;
+                result = brdf*Ei/pdf + Ld;
+            }
+            else
+            {
+                result = MathHelper.TwoPi * brdf * Ei + Ld;
             }
 
-            return MathHelper.TwoPi*brdf*Ei + Ld;
+            if (_russianRoulette)
+            {
+                return result/(1 - Constants.RussianRouletteDieChance);
+            }
+
+            return result;
         }
 
         private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)

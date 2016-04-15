@@ -1,4 +1,4 @@
-﻿//#define PARALLEL
+﻿#define PARALLEL
 
 using System;
 using OpenTK;
