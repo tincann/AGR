@@ -23,11 +23,10 @@ namespace RayTracer.Shading.Models
             _russianRoulette = russianRoulette;
         }
 
-        private bool KillRay(Color3 color)
+        private float GetKillChance(Color3 color)
         {
             var chance = (color.R + color.G + color.B)/3;
-            chance = MathHelper.Clamp(chance, 0.1f, 0.9f);
-            return _rng.TestChance(chance);
+            return MathHelper.Clamp(1 - chance, 0.1f, 0.9f);
         }
 
         public Color3 Calculate(Intersection intersection, bool ignoreLight)
@@ -64,9 +63,14 @@ namespace RayTracer.Shading.Models
 
         public Color3 Diffuse(Intersection intersection)
         {
-            if (_russianRoulette && KillRay(intersection.Material.Color))
+            float killChance = 0;
+            if (_russianRoulette)
             {
-                return Color4.Black;
+                killChance = GetKillChance(intersection.Material.Color);
+                if (_rng.TestChance(killChance))
+                {
+                    return Color4.Black;
+                }
             }
 
             //random reflected ray
@@ -114,12 +118,7 @@ namespace RayTracer.Shading.Models
                 result = MathHelper.TwoPi * brdf * Ei + Ld;
             }
 
-            if (_russianRoulette)
-            {
-                return result/(1 - Constants.RussianRouletteDieChance);
-            }
-
-            return result;
+            return result/(1 - killChance);
         }
 
         private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)

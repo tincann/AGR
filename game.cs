@@ -43,7 +43,7 @@ namespace RayTracer
             _sceneManager.Add(SceneDefinitions.BeerTest);
             _sceneManager.Add(SceneDefinitions.Teapot);
             
-            _sceneManager.SetScene(1);
+            _sceneManager.SetScene(2);
 
             Statistics.Enabled = false;
         }
