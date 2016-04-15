@@ -21,7 +21,7 @@ namespace RayTracer.World
         private readonly bool _constructBvh;
         public List<PointLight> PointLights { get; set; } = new List<PointLight>();
 
-        public List<SurfaceLight> SurfaceLights { get; set; } = new List<SurfaceLight>();
+        public List<ISurfaceLight> SurfaceLights { get; set; } = new List<ISurfaceLight>();
 
         private readonly List<Intersectable> _intersectables = new List<Intersectable>();
         private readonly List<Boundable> _boundables = new List<Boundable>();
@@ -47,6 +47,12 @@ namespace RayTracer.World
         {
             SurfaceLights.Add(surfaceLight);
             Add((Intersectable)surfaceLight);
+        }
+
+        public void Add(SphereLight sphereLight)
+        {
+            SurfaceLights.Add(sphereLight);
+            Add((Intersectable)sphereLight);
         }
 
         public void Add(Intersectable intersectable)

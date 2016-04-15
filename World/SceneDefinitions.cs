@@ -91,19 +91,21 @@ namespace RayTracer.World
 
             var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);
             scene.Add(debugLight);
-
             scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
 
+            
+            scene.Add(new SphereLight(new Vector3(0.4f, 1.5f, 0.4f), 0.2f, Color4.White));
 
-            var lightWidth = 1.75f;
-            var hw = lightWidth/2;
-            scene.Add(new SurfaceLight(
-                new Vector3(-hw, 1.99f, hw),
-                new Vector3(-hw, 1.99f,-hw),
-                new Vector3(hw, 1.99f, -hw),
-                new Vector3(hw, 1.99f,  hw),
-                Color4.White
-                ));
+
+            //var lightWidth = 1.75f;
+            //var hw = lightWidth/2;
+            //scene.Add(new SurfaceLight(
+            //    new Vector3(-hw, 1.99f, hw),
+            //    new Vector3(-hw, 1.99f,-hw),
+            //    new Vector3(hw, 1.99f, -hw),
+            //    new Vector3(hw, 1.99f,  hw),
+            //    Color4.White
+            //    ));
 
             var diffuse = new Material(MaterialType.Diffuse);
             scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
@@ -179,8 +181,7 @@ namespace RayTracer.World
 
             //light
             scene.Add(CreateLight(new Vector3(2.5f,5,-5f), Color4.White, 10, 10));
-            //scene.Add(CreateLight(new Vector3(-15,5, 15), Color4.White, 10, 10));
-
+            
             //floor
             scene.Add(new Plane(
                 Vector3.UnitY,

@@ -30,19 +30,38 @@ namespace RayTracer.World
 
     public interface ISurfaceLight : Intersectable
     {
-        Vector3 GetRandomPoint(RNG rng, Intersection intersection);
+        RandomPoint GetRandomPoint(RNG rng, Intersection intersection);
+        Color3 Color { get; }
+        float Area { get; }
     }
 
     public class SphereLight : Sphere, ISurfaceLight
     {
-        public SphereLight(Vector3 center, float radius, Material material) : base(center, radius, material)
+        public Color3 Color => Material.Color;
+        public float Area { get; }
+
+        public SphereLight(Vector3 center, float radius, Color4 color) : base(center, radius, new Material(MaterialType.Light).WithColor(color))
         {
+            Area = 4*MathHelper.Pi*radius*radius / 2;
         }
 
-        public Vector3 GetRandomPoint(RNG rng, Intersection intersection)
+        public RandomPoint GetRandomPoint(RNG rng, Intersection intersection)
         {
-            throw new NotImplementedException();
+            var v = rng.RandomVector().Normalized();
+            var lDir = (intersection.Location - Center).Normalized();
+            if (Vector3.Dot(v, lDir) > 0)
+            {
+                v *= -1;
+            }
+
+            return new RandomPoint { Location = Center + v*Radius, Normal = lDir };
         }
+    }
+
+    public class RandomPoint
+    {
+        public Vector3 Location;
+        public Vector3 Normal;
     }
 
     public class SurfaceLight : ISurfaceLight
@@ -50,7 +69,7 @@ namespace RayTracer.World
         private readonly Quad _quad;
         public readonly Vector3 Normal;
         public Color3 Color => _quad.Material.Color;
-
+        
         public SurfaceLight(Quad quad)
         {
             _quad = quad;
@@ -74,12 +93,13 @@ namespace RayTracer.World
             return intersection != null;
         }
 
-        public Vector3 GetRandomPoint(RNG rng, Intersection intersection)
+        public RandomPoint GetRandomPoint(RNG rng, Intersection intersection)
         {
             var u = rng.RandomFloat();
             var v = rng.RandomFloat();
 
-            return _quad.P1 + u*_quad.Width + v*_quad.Depth;
+            var p = _quad.P1 + u*_quad.Width + v*_quad.Depth;
+            return new RandomPoint {Location = p, Normal = _quad.Normal};
         }
         public float Area { get; private set; }
     }
