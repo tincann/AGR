@@ -63,7 +63,7 @@ namespace RayTracer.Helpers
             //generate random cosine distributed vector
             float r0 = RandomFloat(), r1 = RandomFloat();
             float r = (float)Math.Sqrt(r0);
-            float theta = 2 * (float)Math.PI * r1;
+            float theta = MathHelper.TwoPi * r1;
             float x = r * (float)Math.Cos(theta);
             float y = r * (float)Math.Sin(theta);
             var z = (float)Math.Sqrt(1 - r0);

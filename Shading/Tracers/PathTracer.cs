@@ -22,7 +22,7 @@ namespace RayTracer.Shading.Tracers
                 return scene.Skybox.Intersect(ray.Direction);
             }
 
-            var lightingModel = new MonteCarloLightingModel(scene, rng);
+            var lightingModel = new MonteCarloLightingModel(scene, rng, nee: true, cosineDist: false);
             return lightingModel.Calculate(intersection, ignoreLight);
         }
     }

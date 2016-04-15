@@ -10,11 +10,15 @@ namespace RayTracer.Shading.Models
     {
         private readonly Scene _scene;
         private readonly RNG _rng;
+        private readonly bool _nee;
+        private readonly bool _cosineDist;
 
-        public MonteCarloLightingModel(Scene scene, RNG rng)
+        public MonteCarloLightingModel(Scene scene, RNG rng, bool nee, bool cosineDist)
         {
             _scene = scene;
             _rng = rng;
+            _nee = nee;
+            _cosineDist = cosineDist;
         }
 
         public Color3 Calculate(Intersection intersection, bool ignoreLight)
@@ -28,9 +32,15 @@ namespace RayTracer.Shading.Models
             switch (intersection.Material.MaterialType)
             {
                 case MaterialType.Light:
-                    //result = ignoreLight ? Color4.Black : intersection.Material.Color;
-                    result = intersection.Material.Color;
-                    break;
+                    if (_nee)
+                    {
+                        result = ignoreLight ? Color4.Black : intersection.Material.Color;
+                    }
+                    else
+                    {
+                        result = intersection.Material.Color;
+                    }
+            break;
                 case MaterialType.Diffuse:
                     result = Diffuse(intersection);
                     break;
@@ -51,29 +61,45 @@ namespace RayTracer.Shading.Models
         public Color3 Diffuse(Intersection intersection)
         {
             //random reflected ray
-            var rDir = _rng.CosineDistributed(intersection.SurfaceNormal);
+            Vector3 rDir;
+            if (_cosineDist)
+            {
+                rDir = _rng.CosineDistributed(intersection.SurfaceNormal);
+            }
+            else
+            {
+                rDir = _rng.RandomVectorOnHemisphere(intersection.SurfaceNormal);
+            }
+            
             var reflected = Ray.CreateFromIntersection(intersection, rDir, goesIntoMaterial: true);
 
             //brdf of material
             var brdf = intersection.Material.CalculateColor(intersection)/(float)Math.PI;
 
-            Color3 Ld = Color4.Black;
-            //if (_scene.SurfaceLights.Count > 0)
-            //{
-            //    //sample light directly - next event estimation
-            //    var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
-            //    Ld = SampleLightDirectly(ranLight, brdf, intersection) * _scene.SurfaceLights.Count;
-            //}
-
             //irradiance
             var nDotR = Vector3.Dot(intersection.SurfaceNormal, rDir);
             var Ei = _scene.Sample(reflected, _rng, true) * nDotR;
 
-            //probability density function
-            //var pdf = nDotR / MathHelper.Pi;
-            var pdf = 1;
+            Color3 Ld = Color4.Black;
 
-            return MathHelper.TwoPi * brdf*Ei / pdf + Ld;
+            //use next event estimation?
+            if (_nee)
+            {
+                if (_scene.SurfaceLights.Count > 0)
+                {
+                    //sample light directly - next event estimation
+                    var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
+                    Ld = SampleLightDirectly(ranLight, brdf, intersection)*_scene.SurfaceLights.Count;
+                }
+            }
+            if (_cosineDist)
+            {
+                //probability density function
+                var pdf = nDotR/MathHelper.Pi;
+                return brdf*Ei/pdf + Ld;
+            }
+
+            return MathHelper.TwoPi*brdf*Ei + Ld;
         }
 
         private Color3 SampleLightDirectly(SurfaceLight light, Color3 brdf, Intersection intersection)
