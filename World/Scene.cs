@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using OpenTK.Graphics;
+using OpenTK.Graphics.ES11;
 using RayTracer.Helpers;
 using RayTracer.Shading;
 using RayTracer.Shading.Tracers;
@@ -82,6 +83,14 @@ namespace RayTracer.World
                 Objects.AddRange(_boundables);
             }
         }
-        
+
+        public void Clear()
+        {
+            SurfaceLights.Clear();
+            PointLights.Clear();
+            _intersectables.Clear();
+            _boundables.Clear();
+            Objects.Clear();
+        }
     }
 }

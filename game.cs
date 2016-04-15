@@ -35,16 +35,15 @@ namespace RayTracer
             //var tracer = new WhittedStyleTracer();
             var tracer = new PathTracer();
             _scene = new Scene(tracer, true);
-            var sceneDef = new SceneDefinition(_camera, _scene);
+            _sceneManager = new SceneManager(_camera, _scene);
 
-            //sceneDef.Default();
-            //sceneDef.Teapot();
-            //sceneDef.BeerTest();
-            //sceneDef.PathTracerTest();
-            //sceneDef.PathTracerBox();
-            sceneDef.DarkRoom();
-
-            _scene.Construct();
+            _sceneManager.Add(SceneDefinitions.Default);
+            _sceneManager.Add(SceneDefinitions.DarkRoom);
+            _sceneManager.Add(SceneDefinitions.PathTracerBox);
+            _sceneManager.Add(SceneDefinitions.BeerTest);
+            _sceneManager.Add(SceneDefinitions.Teapot);
+            
+            _sceneManager.Init();
 
             Statistics.Enabled = false;
         }
@@ -81,6 +80,7 @@ namespace RayTracer
         private bool _gammaCorrection = true;
         private RNG[] _r;
         private CancellationToken _exitToken;
+        private SceneManager _sceneManager;
 
         public void Render()
         {
@@ -173,6 +173,18 @@ namespace RayTracer
         {
             _gammaCorrection = on;
             Console.WriteLine($"Gamme correction: {_gammaCorrection}");
+        }
+
+        public void PreviousScene()
+        {
+            _sceneManager.Previous();
+            RestartSample();
+        }
+
+        public void NextScene()
+        {
+            _sceneManager.Next();
+            RestartSample();
         }
 
         public void RestartSample()

@@ -89,6 +89,7 @@
     <Compile Include="World\SceneDefinition.cs" />
     <Compile Include="World\Ambiance\SingleColorSkybox.cs" />
     <Compile Include="World\Ambiance\Skybox.cs" />
+    <Compile Include="World\SceneManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

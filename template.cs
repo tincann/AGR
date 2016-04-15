@@ -62,6 +62,15 @@ namespace RayTracer
                 return;
             }
 
+            if (e.Key == Key.KeypadDivide)
+            {
+                _game.PreviousScene();
+            }
+            if (e.Key == Key.KeypadMultiply)
+            {
+                _game.NextScene();
+            }
+
             if (e.Key == Key.KeypadPlus)
             {
                 _game.Antialiasing(1);

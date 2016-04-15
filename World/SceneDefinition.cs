@@ -10,101 +10,94 @@ using RayTracer.World.Objects.Primitives;
 
 namespace RayTracer.World
 {
-    public class SceneDefinition
+    public static class SceneDefinitions
     {
-        private readonly Camera _camera;
-        private readonly Scene _scene;
+        
 
-        public SceneDefinition(Camera camera, Scene scene)
+        private static void AddSkybox(Scene scene)
         {
-            _camera = camera;
-            _scene = scene;
+            scene.Skybox = new TexturedSkybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
         }
 
-        private void AddSkybox()
+        private static void AddFloor(Scene scene)
         {
-            _scene.Skybox = new TexturedSkybox(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\assets\\skybox3.jpg"));
-        }
-
-        private void AddFloor()
-        {
-            _scene.Add(new Plane(
+            scene.Add(new Plane(
                 Vector3.UnitY,
                 0,
                 new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, Color4.Bisque, Color4.White) }
             ));
         }
 
-        public void AddLight()
+        public static void AddLight(Scene scene)
         {
-            _scene.Add(new PointLight(new Vector3(5, 6, 3), Color4.White, 20));
-            _scene.Add(new PointLight(new Vector3(-2000, 2000, 2000), Color4.White, 7000000));
+            scene.Add(new PointLight(new Vector3(5, 6, 3), Color4.White, 20));
+            scene.Add(new PointLight(new Vector3(-2000, 2000, 2000), Color4.White, 7000000));
         }
 
-        public void Teapot()
+        public static void Teapot(Camera camera, Scene scene)
         {
-            AddSkybox();
-            AddFloor();
-            AddLight();
+            AddSkybox(scene);
+            AddFloor(scene);
+            AddLight(scene);
             var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", Vector3.Zero, Material.Metal);
-            _scene.Add(teapot);
+            scene.Add(teapot);
         }
 
-        public void Default()
+        public static void Default(Camera camera, Scene scene)
         {
-            _camera.Update(new Vector3(1.922451f, 2.341791f, 3.731561f), new Vector3(1.634576f, 1.94541f, 2.859776f));
-            AddSkybox();
-            AddFloor();
-            AddLight();
+            camera.Update(new Vector3(1.922451f, 2.341791f, 3.731561f), new Vector3(1.634576f, 1.94541f, 2.859776f));
+            AddSkybox(scene);
+            AddFloor(scene);
+            AddLight(scene);
             
             //var cube = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\cube.obj",
             //    new Vector3(3, 0.51f, 1),
             //    Material.Glass);
             //_scene.Add(cube);
             
-            _scene.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
+            scene.Add(new Sphere(new Vector3(1, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = Color4.Red, Specularity = 0.9f }));
-            _scene.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
+            scene.Add(new Sphere(new Vector3(2, 0.5f, -1), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = Color4.Green, Specularity = 0.9f }));
-            _scene.Add(new Sphere(new Vector3(1.5f, 0.5f, -1.9f), 0.5f,
+            scene.Add(new Sphere(new Vector3(1.5f, 0.5f, -1.9f), 0.5f,
                 new Material(MaterialType.Diffuse) { Color = Color4.Blue, Specularity = 0.9f }));
-            _scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.4f), 0.5f,
+            scene.Add(new Sphere(new Vector3(1.5f, 1.25f, -1.4f), 0.5f,
                 new Material(MaterialType.Diffuse) { Specularity = 0.95f }));
             
-            _scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass.WithColor(Color4.Red)));
-            _scene.Add(new Sphere(new Vector3(0, 3, 2), 1, Material.Metal));
+            scene.Add(new Sphere(new Vector3(0, 1, 2), 1, Material.Glass.WithColor(Color4.Red)));
+            scene.Add(new Sphere(new Vector3(0, 3, 2), 1, Material.Metal));
         }
 
-        public void BeerTest()
+        public static void BeerTest(Camera camera, Scene scene)
         {
-            AddSkybox();
-            _camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
-            AddFloor();
-            AddLight();
+            AddSkybox(scene);
+            camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
+            AddFloor(scene);
+            AddLight(scene);
 
             var mat = Material.Glass;
             mat.Color = Color4.Red;
             
-            _scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat));
-            _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat));
-            _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat));
-            _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat));
+            scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat));
+            scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat));
+            scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat));
+            scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat));
         }
 
-        public void PathTracerBox()
+        public static void PathTracerBox(Camera camera, Scene scene)
         {
             //AddSkybox();
-            _camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
+            camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
 
             var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);
-            _scene.Add(debugLight);
+            scene.Add(debugLight);
 
-            _scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
+            scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
 
 
             var lightWidth = 0.75f;
             var hw = lightWidth/2;
-            _scene.Add(new SurfaceLight(
+            scene.Add(new SurfaceLight(
                 new Vector3(-hw, 1.99f, hw),
                 new Vector3(-hw, 1.99f,-hw),
                 new Vector3(hw, 1.99f, -hw),
@@ -113,14 +106,14 @@ namespace RayTracer.World
                 ));
 
             var diffuse = new Material(MaterialType.Diffuse);
-            _scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
             //_scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, new Material(MaterialType.Light)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Metal));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Glass));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Metal));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Glass));
 
             var wallMat = new Material(MaterialType.Diffuse) { Color = new Color3(0.7f, 0.7f, 0.7f)};
             //top
-            _scene.Add(new Quad(
+            scene.Add(new Quad(
                 new Vector3(-1, 2, -1),
                 new Vector3(1, 2, -1),
                 new Vector3(1, 2,  4),
@@ -129,7 +122,7 @@ namespace RayTracer.World
                 ));
 
             //bottom
-            _scene.Add(new Quad(
+            scene.Add(new Quad(
                 new Vector3(-1, 0, -1),
                 new Vector3(-1, 0, 4),
                 new Vector3(1, 0, 4),
@@ -138,7 +131,7 @@ namespace RayTracer.World
                 ));
 
             //left
-            _scene.Add(new Quad(
+            scene.Add(new Quad(
                 new Vector3(-1, 0, -1),
                 new Vector3(-1, 2, -1),
                 new Vector3(-1, 2, 4),
@@ -147,7 +140,7 @@ namespace RayTracer.World
                 ));
 
             //right
-            _scene.Add(new Quad(
+            scene.Add(new Quad(
                 new Vector3(1, 0, -1),
                 new Vector3(1, 0, 4),
                 new Vector3(1, 2, 4),
@@ -156,7 +149,7 @@ namespace RayTracer.World
                 ));
 
             //back
-            _scene.Add(new Quad(
+            scene.Add(new Quad(
                 new Vector3(-1, 0, -1),
                 new Vector3(1, 0, -1),
                 new Vector3(1, 2, -1),
@@ -165,7 +158,7 @@ namespace RayTracer.World
                 ));
 
             //front
-            _scene.Add(new Quad(
+            scene.Add(new Quad(
                 new Vector3(-1, 0, 4),
                 new Vector3(-1, 2, 4),
                 new Vector3(1, 2, 4),
@@ -174,26 +167,26 @@ namespace RayTracer.World
                 ));
         }
 
-        public void DarkRoom()
+        public static void DarkRoom(Camera camera, Scene scene)
         {
-            _camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
+            camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
 
-            _scene.Skybox = new SingleColorSkybox(Color4.Black);
+            scene.Skybox = new SingleColorSkybox(Color4.Black);
 
             //light
-            _scene.Add(CreateLight(new Vector3(10,7.5f,-10), Color4.White, 10, 5));
+            scene.Add(CreateLight(new Vector3(10,7.5f,-10), Color4.White, 10, 5));
 
             //floor
-            _scene.Add(new Plane(
+            scene.Add(new Plane(
                 Vector3.UnitY,
                 0,
                 new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, Color4.DarkGray, Color4.WhiteSmoke) }
             ));
             
             var mat = new Material(MaterialType.Diffuse);
-            _scene.Add(Sphere.CreateOnGround(new Vector3(0,0,0), 0.5f, mat.WithColor(Color4.Red)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(1,0,1), 0.5f, mat.WithColor(Color4.Green)));
-            _scene.Add(Sphere.CreateOnGround(new Vector3(2,0,2), 0.5f, mat.WithColor(Color4.Blue)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0,0,0), 0.5f, mat.WithColor(Color4.Red)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(1,0,1), 0.5f, mat.WithColor(Color4.Green)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(2,0,2), 0.5f, mat.WithColor(Color4.Blue)));
             //_scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat.WithColor(Color4.Red)));
             //_scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat.WithColor(Color4.Blue)));
             //_scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
@@ -201,7 +194,7 @@ namespace RayTracer.World
 
         }
 
-        private SurfaceLight CreateLight(Vector3 position, Color4 color, float width, float height)
+        private static SurfaceLight CreateLight(Vector3 position, Color4 color, float width, float height)
         {
             float hWidth = width/2;
             float hHeight = height/2;
