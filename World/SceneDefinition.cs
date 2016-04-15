@@ -52,6 +52,7 @@ namespace RayTracer.World
 
         public void Default()
         {
+            _camera.Update(new Vector3(1.922451f, 2.341791f, 3.731561f), new Vector3(1.634576f, 1.94541f, 2.859776f));
             AddSkybox();
             AddFloor();
             AddLight();

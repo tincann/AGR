@@ -37,11 +37,11 @@ namespace RayTracer
             _scene = new Scene(tracer, true);
             var sceneDef = new SceneDefinition(_camera, _scene);
 
-            //sceneDef.Default();
+            sceneDef.Default();
             //sceneDef.Teapot();
             //sceneDef.BeerTest();
             //sceneDef.PathTracerTest();
-            sceneDef.PathTracerBox();
+            //sceneDef.PathTracerBox();
 
             _scene.Construct();
 
@@ -63,7 +63,7 @@ namespace RayTracer
 
             Screen.Print($"total: {(DateTime.Now - _startTime).TotalSeconds} sec", 2, 2, 0xffffff);
             Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0xffffff);
-            Screen.Print($"spp: {_sampleSize}", 410, 2, 0xffffff);
+            Screen.Print($"spp: {SampleSize}", 410, 2, 0xffffff);
 
             //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 82, 0xffffff);
             
@@ -74,7 +74,9 @@ namespace RayTracer
         private Task[] _tasks;
 
         private int parallelBundles = 8;
-        private int _sampleSize = 1;
+        private int _sampleSizeX = 1;
+        private int _sampleSizeY = 1;
+        private int SampleSize => _sampleSizeX*_sampleSizeY;
         private bool _gammaCorrection = true;
         private RNG[] _r;
         private CancellationToken _exitToken;
@@ -99,7 +101,6 @@ namespace RayTracer
                         {
                             var color = TraceRay(x, y, _r[currentBundle]);
                             _acc.Plot(x, y, color, _gammaCorrection);
-                            //Screen.Plot(x, y, color.ToArgb(_gammaCorrection));
                         }
                     }
                 });
@@ -132,19 +133,19 @@ namespace RayTracer
             float v = (float)y / Screen.Height;
             float u = (float)x / Screen.Width;
 
-            var xSize = 1.0f/Screen.Width;
-            var ySize = 1.0f/Screen.Height;
-
             Color3 color = new Color3(0,0,0);
-            for (int i = 0; i < _sampleSize; i++)
+           
+            var strat = new Stratifier(rng, _sampleSizeX, _sampleSizeY);
+            for (int i = 0; i < SampleSize; i++)
             {
-                var dx = xSize*i/_sampleSize;
-                var dy = ySize*i/_sampleSize;
-                var ray = _camera.CreatePrimaryRay(u + dx, v + dy);
-                color += _scene.Sample(ray, rng, false);
+                var pos = strat.GetRandomPointInStratum(i);
+                var dx = pos.X / Screen.Width;
+                var dy = pos.Y / Screen.Height;
+                var r = _camera.CreatePrimaryRay(u + dx, v + dy);
+                color += _scene.Sample(r, rng, false);
             }
 
-            color /= _sampleSize;
+            color /= SampleSize;
             return color;
         }
 
@@ -162,8 +163,9 @@ namespace RayTracer
 
         public void Antialiasing(int d)
         {
-            _sampleSize = MathHelper.Clamp(_sampleSize + d, 1, 16);
-            Console.WriteLine($"Sample per pixels: {_sampleSize}");
+            _sampleSizeX = MathHelper.Clamp(_sampleSizeX + d, 1, 16);
+            _sampleSizeY = _sampleSizeX; //always square samples
+            Console.WriteLine($"Sample per pixels: {_sampleSizeX * _sampleSizeY}");
         }
 
         public void GammaCorrection(bool on)

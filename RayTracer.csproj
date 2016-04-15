@@ -49,6 +49,7 @@
     <Compile Include="Accumulator.cs" />
     <Compile Include="Helpers\ListExtensions.cs" />
     <Compile Include="Helpers\RNG.cs" />
+    <Compile Include="Helpers\Stratifier.cs" />
     <Compile Include="Shading\Models\MonteCarloLightingModel.cs" />
     <Compile Include="Shading\Textures\ImageTexture.cs" />
     <Compile Include="Shading\Tracers\PathTracer.cs" />
