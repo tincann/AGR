@@ -95,7 +95,7 @@ namespace RayTracer.World
             scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
 
 
-            var lightWidth = 0.75f;
+            var lightWidth = 1.75f;
             var hw = lightWidth/2;
             scene.Add(new SurfaceLight(
                 new Vector3(-hw, 1.99f, hw),

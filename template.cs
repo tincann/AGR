@@ -62,7 +62,7 @@ namespace RayTracer
                 return;
             }
 
-            if (e.Key == Key.KeypadDivide)
+            if (e.Key == Key.Slash)
             {
                 _game.PreviousScene();
             }

@@ -9,7 +9,7 @@ namespace RayTracer.World
         private readonly Camera _camera;
         private readonly Scene _scene;
         readonly List<Action<Camera, Scene>> _constructors = new List<Action<Camera, Scene>>();
-        private int _currentScene = 0;
+        public int CurrentScene { get; private set; }
 
         public SceneManager(Camera camera, Scene scene)
         {
@@ -24,26 +24,26 @@ namespace RayTracer.World
 
         public void Init()
         {
-            _currentScene = 0;
+            CurrentScene = 0;
             SetScene(0);
         }
 
         public void Previous()
         {
-            if (_currentScene == 0)
+            if (CurrentScene == 0)
             {
                 return;
             }
-            SetScene(--_currentScene);
+            SetScene(--CurrentScene);
         }
 
         public void Next()
         {
-            if (_currentScene == _constructors.Count - 1)
+            if (CurrentScene == _constructors.Count - 1)
             {
                 return;
             }
-            SetScene(++_currentScene);
+            SetScene(++CurrentScene);
         }
 
         private void SetScene(int i)

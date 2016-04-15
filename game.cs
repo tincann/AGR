@@ -58,12 +58,12 @@ namespace RayTracer
             
             if (Statistics.Enabled)
             {
-                Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0xffffff);
+                Screen.Print($"Triangle tests {Statistics.Get("Triangle test")}", 2, 42, 0x00ff00);
             }
 
-            Screen.Print($"total: {(DateTime.Now - _startTime).TotalSeconds} sec", 2, 2, 0xffffff);
-            Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0xffffff);
-            Screen.Print($"spp: {SampleSize}", 410, 2, 0xffffff);
+            Screen.Print($"total: {(DateTime.Now - _startTime).TotalSeconds} sec", 2, 2, 0x00ff00);
+            Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0x00ff00);
+            Screen.Print($"spp: {SampleSize}", 410, 2, 0x00ff00);
 
             //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 82, 0xffffff);
             
@@ -179,12 +179,14 @@ namespace RayTracer
         {
             _sceneManager.Previous();
             RestartSample();
+            Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
         }
 
         public void NextScene()
         {
             _sceneManager.Next();
             RestartSample();
+            Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
         }
 
         public void RestartSample()
