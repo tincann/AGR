@@ -174,35 +174,45 @@ namespace RayTracer.World
                 ));
         }
 
-        public void PathTracerTest()
+        public void DarkRoom()
         {
             _camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
-            AddFloor();
+
+            _scene.Skybox = new SingleColorSkybox(Color4.Black);
+
+            //light
+            _scene.Add(CreateLight(new Vector3(10,7.5f,-10), Color4.White, 10, 5));
+
+            //floor
+            _scene.Add(new Plane(
+                Vector3.UnitY,
+                0,
+                new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, Color4.DarkGray, Color4.WhiteSmoke) }
+            ));
+            
             var mat = new Material(MaterialType.Diffuse);
-            _scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat.WithColor(Color4.Red)));
-            _scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat.WithColor(Color4.Blue)));
-            _scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
-            _scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat.WithColor(Color4.Yellow)));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(0,0,0), 0.5f, mat.WithColor(Color4.Red)));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(1,0,1), 0.5f, mat.WithColor(Color4.Green)));
+            _scene.Add(Sphere.CreateOnGround(new Vector3(2,0,2), 0.5f, mat.WithColor(Color4.Blue)));
+            //_scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat.WithColor(Color4.Red)));
+            //_scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat.WithColor(Color4.Blue)));
+            //_scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
+            //_scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat.WithColor(Color4.Yellow)));
 
+        }
+
+        private SurfaceLight CreateLight(Vector3 position, Color4 color, float width, float height)
+        {
+            float hWidth = width/2;
+            float hHeight = height/2;
             //facing down
-            var quad = new Quad(
-                new Vector3(1, 5f, 0),
-                new Vector3(1, 5f, 1),
-                new Vector3(0, 5f, 1),
-                new Vector3(0, 5f, 0),
-                    new Material(MaterialType.Diffuse).WithColor(Color4.Green)
-                );
-
-            //facing up
-            //var quad = new Quad(
-            //    new Vector3(0, 5f, 0),
-            //    new Vector3(0, 5f, 1),
-            //    new Vector3(1, 5f, 1),
-            //    new Vector3(1, 5f, 0),
-            //        new Material(MaterialType.Diffuse)
-            //    );
-
-            _scene.Add(new SurfaceLight(quad));
+            return new SurfaceLight(
+                new Vector3(hWidth, 0, -hHeight) + position,
+                new Vector3(hWidth, 0, hHeight) + position,
+                new Vector3(-hWidth, 0, hHeight) + position,
+                new Vector3(-hWidth, 0, -hHeight) + position,
+                color
+            );
         }
     }
 }
