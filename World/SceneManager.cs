@@ -22,12 +22,6 @@ namespace RayTracer.World
             _constructors.Add(constructor);
         }
 
-        public void Init()
-        {
-            CurrentScene = 0;
-            SetScene(0);
-        }
-
         public void Previous()
         {
             if (CurrentScene == 0)
@@ -46,8 +40,9 @@ namespace RayTracer.World
             SetScene(++CurrentScene);
         }
 
-        private void SetScene(int i)
+        public void SetScene(int i)
         {
+            CurrentScene = i;
             _scene.Clear();
             _constructors[i].Invoke(_camera, _scene);
             _scene.Construct();

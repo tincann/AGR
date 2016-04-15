@@ -43,7 +43,7 @@ namespace RayTracer
             _sceneManager.Add(SceneDefinitions.BeerTest);
             _sceneManager.Add(SceneDefinitions.Teapot);
             
-            _sceneManager.Init();
+            _sceneManager.SetScene(1);
 
             Statistics.Enabled = false;
         }
@@ -126,7 +126,7 @@ namespace RayTracer
 #endif
             _sw.Stop();
             _acc.EndFrame();
-            Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0xffffff);
+            Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0x00ff00);
         }
 
         public Color3 TraceRay(int x, int y, RNG rng)

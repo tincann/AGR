@@ -169,24 +169,32 @@ namespace RayTracer.World
 
         public static void DarkRoom(Camera camera, Scene scene)
         {
-            camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
+            //(2.138888, 1.241551, -0.6152115) Target: (1.217189, 1.035707, -0.2864288)
+            //camera.Update(new Vector3(3.61508f, 2.465492f, 8.432084f), new Vector3(3.699683f, 2.259647f, 7.457158f));
+            //camera.Update(new Vector3(2.138888f, 1.241551f, -0.6152115f), new Vector3(1.217189f, 1.035707f, -0.2864288f));
+            //(5.049499, 1.474878, 0.4852568) Target: (4.071804, 1.269033, 0.526975)
+            camera.Update(new Vector3(5.049499f, 1.474878f, 0.4852568f), new Vector3(4.071804f, 1.269033f, 0.526975f));
 
             scene.Skybox = new SingleColorSkybox(Color4.Black);
 
             //light
-            scene.Add(CreateLight(new Vector3(10,7.5f,-10), Color4.White, 10, 5));
+            scene.Add(CreateLight(new Vector3(2.5f,5,-5f), Color4.White, 10, 10));
+            //scene.Add(CreateLight(new Vector3(-15,5, 15), Color4.White, 10, 10));
 
             //floor
             scene.Add(new Plane(
                 Vector3.UnitY,
                 0,
-                new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, Color4.DarkGray, Color4.WhiteSmoke) }
+                new Material(MaterialType.Diffuse) { Texture = new Checkerboard(5, Color4.DarkGray, Color4.White) }
             ));
             
             var mat = new Material(MaterialType.Diffuse);
-            scene.Add(Sphere.CreateOnGround(new Vector3(0,0,0), 0.5f, mat.WithColor(Color4.Red)));
-            scene.Add(Sphere.CreateOnGround(new Vector3(1,0,1), 0.5f, mat.WithColor(Color4.Green)));
-            scene.Add(Sphere.CreateOnGround(new Vector3(2,0,2), 0.5f, mat.WithColor(Color4.Blue)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0,0.5f,0), 0.5f, mat.WithColor(Color4.Red)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0,-0.5f,0), 0.5f, mat));
+            scene.Add(Sphere.CreateOnGround(new Vector3(1,0.5f,1), 0.5f, mat.WithColor(Color4.Green)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(1, -0.5f, 1), 0.5f, mat));
+            scene.Add(Sphere.CreateOnGround(new Vector3(2,0.5f,2), 0.5f, mat.WithColor(Color4.Blue)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(2, -0.5f, 2), 0.5f, mat));
             //_scene.Add(new Sphere(new Vector3(0, 0.2f, 0), 0.2f, mat.WithColor(Color4.Red)));
             //_scene.Add(new Sphere(new Vector3(1, 0.4f, 0), 0.4f, mat.WithColor(Color4.Blue)));
             //_scene.Add(new Sphere(new Vector3(2.5f, 0.8f, 0), 0.8f, mat.WithColor(Color4.Green)));
