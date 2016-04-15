@@ -15,8 +15,8 @@ namespace RayTracer.World.Ambiance
 
         public Color3 Intersect(Vector3 direction)
         {
-            var u = (1 + Math.Atan2(direction.X, -direction.Z)/Math.PI)/ 2;
-            var v = Math.Acos(direction.Y)/Math.PI;
+            var u = (1 + Math.Atan2(direction.X, -direction.Z)/MathHelper.Pi)/ 2;
+            var v = Math.Acos(direction.Y)/MathHelper.Pi;
             var color = _texture.GetColor((float)u, (float)v);
             return color;
         }

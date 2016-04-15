@@ -40,7 +40,7 @@ namespace RayTracer.Shading.Models
                     {
                         result = intersection.Material.Color;
                     }
-            break;
+                    break;
                 case MaterialType.Diffuse:
                     result = Diffuse(intersection);
                     break;
@@ -74,7 +74,7 @@ namespace RayTracer.Shading.Models
             var reflected = Ray.CreateFromIntersection(intersection, rDir, goesIntoMaterial: true);
 
             //brdf of material
-            var brdf = intersection.Material.CalculateColor(intersection)/(float)Math.PI;
+            var brdf = intersection.Material.CalculateColor(intersection)/MathHelper.Pi;
 
             //irradiance
             var nDotR = Vector3.Dot(intersection.SurfaceNormal, rDir);
@@ -107,7 +107,8 @@ namespace RayTracer.Shading.Models
             var lPoint = light.GetRandomPoint(_rng, intersection); //get random point on light
             var l = lPoint - intersection.Location; //vector to light
             var dist = l.LengthFast;
-            var lightRay = Ray.CreateFromIntersection(intersection, l, dist - 0.01f); //ray to light - epsilon to not intersect with light itself
+            l.Normalize();
+            var lightRay = Ray.CreateFromIntersection(intersection, l, dist); //ray to light - epsilon to not intersect with light itself
             var nlightDotL = Vector3.Dot(light.Normal, -l); //light normal dot light
             var nDotL = Vector3.Dot(intersection.SurfaceNormal, l); //normal dot light
 
