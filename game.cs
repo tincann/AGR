@@ -104,7 +104,7 @@ namespace RayTracer
                             _acc.Plot(x, y, color, _gammaCorrection);
                         }
                     }
-                });
+                }, _exitToken);
             }
 
             while (!_exitToken.IsCancellationRequested && _tasks.Any(x => !x.IsCompleted))
