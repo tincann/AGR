@@ -7,11 +7,13 @@ using RayTracer.World.Objects;
 
 namespace RayTracer.Structures
 {
-    public class BoundingVolumeHierarchy
+    public class BoundingVolumeHierarchy : Intersectable
     {
-        public BVHNode Root;
+        public readonly BVHNode Root;
+        private int _logNumBoundables;
         public BoundingVolumeHierarchy(List<Boundable> boundables)
         {
+            _logNumBoundables = (int)Math.Ceiling(Math.Log(boundables.Count));
             var time = DateTime.UtcNow;
             Console.WriteLine($"Building BVH for {boundables.Count} boundables...");
             Root = Construct(new BVHNode(boundables));
@@ -78,6 +80,53 @@ namespace RayTracer.Structures
 
             return bestSplitPlane;
         }
+
+        
+        public bool Intersect(Ray ray, out Intersection intersection)
+        {
+            intersection = null;
+            var nodes = new Stack<BVHNode>(_logNumBoundables);
+            nodes.Push(Root);
+            while (nodes.Count > 0)
+            {
+                var node = nodes.Pop();
+                if (node.IsLeaf)
+                {
+                    var i = IntersectionHelper.GetClosestIntersection(ray, node.Boundables);
+                    intersection = IntersectionHelper.GetMinimumIntersection(intersection, i);
+                }
+
+                Intersection i1 = null, i2 = null;
+                float t1 = float.MaxValue, t2 = float.MaxValue;
+                var goLeft = node._left != null && node._left.BoundingBox.Intersect(ray, out t1);
+                var goRight = node._right != null && node._right.BoundingBox.Intersect(ray, out t2);
+
+                if (goLeft && goRight)
+                {
+                    //choose shortest
+                    if (t1 < t2)
+                    {
+                        nodes.Push(node._right);
+                        nodes.Push(node._left);
+                    }
+                    else
+                    {
+                        nodes.Push(node._left);
+                        nodes.Push(node._right);
+                    }
+                }
+                else if (goLeft)
+                {
+                    nodes.Push(node._left);
+                }
+                else if (goRight)
+                {
+                    nodes.Push(node._right);
+                }
+            }
+            
+            return intersection != null;
+        }
     }
 
     struct SplitPlane
@@ -99,16 +148,16 @@ namespace RayTracer.Structures
         }
     }
 
-    public class BVHNode : Intersectable
+    public class BVHNode
     {
         public BoundingBox BoundingBox { get; }
 
-        private readonly BVHNode _left;
-        private readonly BVHNode _right;
+        public readonly BVHNode _left;
+        public readonly BVHNode _right;
 
         public readonly List<Boundable> Boundables;
 
-        private bool IsLeaf => Boundables != null;
+        public bool IsLeaf => Boundables != null;
 
         public BVHNode(BVHNode left)
         {
@@ -127,44 +176,6 @@ namespace RayTracer.Structures
         {
             Boundables = boundables.ToList();
             BoundingBox = BoundingBox.Combine(Boundables.Select(x => x.BoundingBox).ToArray());
-        }
-
-        public bool Intersect(Ray ray, out Intersection intersection)
-        {
-            if (IsLeaf)
-            {
-                intersection = IntersectionHelper.GetClosestIntersection(ray, Boundables);
-                return intersection != null;
-            }
-            
-            Intersection i1 = null, i2 = null;
-            float t1 = float.MaxValue, t2 = float.MaxValue;
-            var goLeft = _left != null && _left.BoundingBox.Intersect(ray, out t1);
-            var goRight = _right != null && _right.BoundingBox.Intersect(ray, out t2);
-
-            if (goLeft && goRight)
-            {
-                //choose shortest
-                if (t1 < t2)
-                {
-                    _left.Intersect(ray, out i1);
-                    _right.Intersect(ray, out i2);
-                }
-                else
-                {
-                    _right.Intersect(ray, out i2);
-                    _left.Intersect(ray, out i1);
-                }
-            }else if (goLeft)
-            {
-                _left.Intersect(ray, out i1);
-            }else if (goRight)
-            {
-                _right.Intersect(ray, out i2);
-            }
-
-            intersection = IntersectionHelper.GetMinimumIntersection(i1, i2);
-            return intersection != null;
         }
     }
 }

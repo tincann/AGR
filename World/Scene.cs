@@ -82,7 +82,7 @@ namespace RayTracer.World
             if (_constructBvh)
             {
                 BVH = new BoundingVolumeHierarchy(_boundables);
-                Objects.Add(BVH.Root);
+                Objects.Add(BVH);
             }
             else
             {
