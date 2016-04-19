@@ -39,11 +39,12 @@ namespace RayTracer
 
             _sceneManager.Add(SceneDefinitions.Default);
             _sceneManager.Add(SceneDefinitions.DarkRoom);
+            _sceneManager.Add(SceneDefinitions.PathTracerBoxCool);
             _sceneManager.Add(SceneDefinitions.PathTracerBox);
             _sceneManager.Add(SceneDefinitions.BeerTest);
             _sceneManager.Add(SceneDefinitions.Teapot);
             
-            _sceneManager.SetScene(1);
+            _sceneManager.SetScene(0);
 
             Statistics.Enabled = false;
         }
@@ -64,6 +65,7 @@ namespace RayTracer
             Screen.Print($"total: {(DateTime.Now - _startTime).TotalSeconds} sec", 2, 2, 0x00ff00);
             Screen.Print($"samples: {_acc.NumSamples}", 2, 42, 0x00ff00);
             Screen.Print($"spp: {SampleSize}", 410, 2, 0x00ff00);
+            Screen.Print($"scene: {_sceneManager.CurrentScene}", 410, 22, 0x00ff00);
 
             //Screen.Print($"gamma (kp_7, kp_8): {_gammaCorrection}", 2, 82, 0xffffff);
             
@@ -113,19 +115,6 @@ namespace RayTracer
                 Task.WaitAny(_tasks, _exitToken);
             }
 
-            //switch scenes after all threads are joined
-            if (_dScene == -1)
-            {
-                _sceneManager.Previous();
-                RestartSample();
-                Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
-            }else if (_dScene == 1)
-            {
-                _sceneManager.Next();
-                RestartSample();
-                Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
-            }
-            _dScene = 0;
 #else
             for (int y = 0; y < Screen.Height; y++)
             {
@@ -140,6 +129,21 @@ namespace RayTracer
             _sw.Stop();
             _acc.EndFrame();
             Screen.Print($"time: {_sw.ElapsedMilliseconds}", 2, 22, 0x00ff00);
+
+            //switch scenes after all threads are joined
+            if (_dScene == -1)
+            {
+                _sceneManager.Previous();
+                RestartSample();
+                Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
+            }
+            else if (_dScene == 1)
+            {
+                _sceneManager.Next();
+                RestartSample();
+                Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
+            }
+            _dScene = 0;
         }
 
         public Color3 TraceRay(int x, int y, RNG rng)

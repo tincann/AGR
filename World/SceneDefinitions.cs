@@ -88,7 +88,93 @@ namespace RayTracer.World
             scene.Add(new Sphere(new Vector3(5, 1.6f, 0), 1.6f, mat));
         }
 
+
         public static void PathTracerBox(Camera camera, Scene scene)
+        {
+            //AddSkybox();
+            camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
+
+            var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);
+            scene.Add(debugLight);
+
+            scene.Add(new PointLight(new Vector3(5, 5, 5), Color4.White, 30));
+
+
+            var lightWidth = 1f;
+            var hw = lightWidth / 2;
+            scene.Add(new QuadLight(
+                new Vector3(-hw, 1.99f, hw),
+                new Vector3(-hw, 1.99f, -hw),
+                new Vector3(hw, 1.99f, -hw),
+                new Vector3(hw, 1.99f, hw),
+                Color4.White,
+                2
+                ));
+
+            var diffuse = new Material(MaterialType.Diffuse);
+            scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, diffuse.WithColor(Color4.Green)));
+            //_scene.Add(Sphere.CreateOnGround(new Vector3(-0.5f, 0, 0), 0.3f, new Material(MaterialType.Light)));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0.4f, 0, 0.6f), 0.2f, Material.Metal));
+            scene.Add(Sphere.CreateOnGround(new Vector3(0.5f, 0, -0.4f), 0.4f, Material.Glass));
+
+            var wallMat = new Material(MaterialType.Diffuse) { Color = new Color3(0.7f, 0.7f, 0.7f) };
+            //top
+            scene.Add(new Quad(
+                new Vector3(-1, 2, -1),
+                new Vector3(1, 2, -1),
+                new Vector3(1, 2, 4),
+                new Vector3(-1, 2, 4),
+                 wallMat
+                ));
+
+            //bottom
+            scene.Add(new Quad(
+                new Vector3(-1, 0, -1),
+                new Vector3(-1, 0, 4),
+                new Vector3(1, 0, 4),
+                new Vector3(1, 0, -1),
+                 wallMat
+                ));
+
+            //left
+            scene.Add(new Quad(
+                new Vector3(-1, 0, -1),
+                new Vector3(-1, 2, -1),
+                new Vector3(-1, 2, 4),
+                new Vector3(-1, 0, 4),
+                 wallMat
+                ));
+
+            //right
+            scene.Add(new Quad(
+                new Vector3(1, 0, -1),
+                new Vector3(1, 0, 4),
+                new Vector3(1, 2, 4),
+                new Vector3(1, 2, -1),
+                 wallMat
+                ));
+
+            //back
+            scene.Add(new Quad(
+                new Vector3(-1, 0, -1),
+                new Vector3(1, 0, -1),
+                new Vector3(1, 2, -1),
+                new Vector3(-1, 2, -1),
+                 wallMat
+                ));
+
+            //front
+            scene.Add(new Quad(
+                new Vector3(-1, 0, 4),
+                new Vector3(-1, 2, 4),
+                new Vector3(1, 2, 4),
+                new Vector3(1, 0, 4),
+                 wallMat
+                ));
+        }
+
+
+        public static void PathTracerBoxCool(Camera camera, Scene scene)
         {
             AddSkybox(scene);
             AddFloor(scene);
