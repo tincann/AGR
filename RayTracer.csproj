@@ -76,8 +76,12 @@
     <Compile Include="Structures\BoundingBox.cs" />
     <Compile Include="Structures\BoundingVolumeHierarchy.cs" />
     <Compile Include="World\Intersection.cs" />
-    <Compile Include="World\LightSource.cs" />
+    <Compile Include="World\Lighting\ISurfaceLight.cs" />
+    <Compile Include="World\Lighting\SurfacePoint.cs" />
     <Compile Include="Shading\MaterialType.cs" />
+    <Compile Include="World\Lighting\PointLight.cs" />
+    <Compile Include="World\Lighting\SphereLight.cs" />
+    <Compile Include="World\Lighting\QuadLight.cs" />
     <Compile Include="World\Objects\Complex\IMesh.cs" />
     <Compile Include="World\Objects\Intersectable.cs" />
     <Compile Include="World\Objects\Primitives\Plane.cs" />

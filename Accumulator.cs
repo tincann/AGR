@@ -37,6 +37,8 @@ namespace RayTracer
 
         public void Plot(int x, int y, Color3 color, bool gammaCorrection)
         {
+            if (float.IsNaN(color.R)) return;
+            
             var oldColor = _acc[x, y];
             var newColor = (oldColor*NumSamples + color)/(NumSamples + 1);
             _acc[x, y] = newColor;

@@ -5,7 +5,7 @@ namespace RayTracer.Helpers
 {
     public class RNG
     {
-        private Random _r;
+        public readonly Random R;
 
         public static RNG[] CreateMultipleRNGs(int count)
         {
@@ -20,12 +20,12 @@ namespace RayTracer.Helpers
 
         public RNG(int seed)
         {
-            _r = new Random(seed);
+            R = new Random(seed);
         }
 
         public RNG()
         {
-            _r = new Random();
+            R = new Random();
         }
         
         public Vector3 RandomVector()
@@ -84,7 +84,7 @@ namespace RayTracer.Helpers
 
         public float RandomFloat()
         {
-            return (float)_r.NextDouble();
+            return (float)R.NextDouble();
         }
     }
 }

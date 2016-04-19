@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
 using RayTracer.World;
+using RayTracer.World.Lighting;
 
 namespace RayTracer.Shading.Models
 {
@@ -101,8 +102,8 @@ namespace RayTracer.Shading.Models
                 if (_scene.SurfaceLights.Count > 0)
                 {
                     //sample light directly - next event estimation
-                    var ranLight = _scene.SurfaceLights.GetRandom(); //get random light
-                    Ld = SampleLightDirectly(ranLight, brdf, intersection)*_scene.SurfaceLights.Count;
+                    var ranLight = _scene.SurfaceLights.GetRandom(_rng.R); //get random light
+                    Ld = SampleLightDirectly(ranLight, brdf, intersection)*_scene.SurfaceLights.Count*ranLight.Brightness;
                 }
             }
 

@@ -43,7 +43,7 @@ namespace RayTracer
             _sceneManager.Add(SceneDefinitions.BeerTest);
             _sceneManager.Add(SceneDefinitions.Teapot);
             
-            _sceneManager.SetScene(0);
+            _sceneManager.SetScene(1);
 
             Statistics.Enabled = false;
         }
@@ -125,6 +125,7 @@ namespace RayTracer
                 RestartSample();
                 Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
             }
+            _dScene = 0;
 #else
             for (int y = 0; y < Screen.Height; y++)
             {

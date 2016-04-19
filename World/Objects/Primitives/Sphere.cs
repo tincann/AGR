@@ -2,6 +2,7 @@
 using OpenTK;
 using RayTracer.Shading;
 using RayTracer.Structures;
+using RayTracer.World.Lighting;
 
 namespace RayTracer.World.Objects.Primitives
 {

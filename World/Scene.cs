@@ -10,6 +10,7 @@ using RayTracer.Shading;
 using RayTracer.Shading.Tracers;
 using RayTracer.Structures;
 using RayTracer.World.Ambiance;
+using RayTracer.World.Lighting;
 using RayTracer.World.Objects;
 using RayTracer.World.Objects.Complex;
 
@@ -43,10 +44,10 @@ namespace RayTracer.World
             PointLights.Add(pointLight);
         }
 
-        public void Add(SurfaceLight surfaceLight)
+        public void Add(QuadLight quadLight)
         {
-            SurfaceLights.Add(surfaceLight);
-            Add((Intersectable)surfaceLight);
+            SurfaceLights.Add(quadLight);
+            Add((Intersectable)quadLight);
         }
 
         public void Add(SphereLight sphereLight)

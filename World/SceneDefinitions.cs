@@ -7,6 +7,7 @@ using RayTracer.Properties;
 using RayTracer.Shading;
 using RayTracer.Shading.Textures;
 using RayTracer.World.Ambiance;
+using RayTracer.World.Lighting;
 using RayTracer.World.Objects.Complex;
 using RayTracer.World.Objects.Primitives;
 
@@ -89,15 +90,16 @@ namespace RayTracer.World
 
         public static void PathTracerBox(Camera camera, Scene scene)
         {
-            //AddSkybox();
+            AddSkybox(scene);
+            AddFloor(scene);
             camera.Update(new Vector3(-0.01214953f, 1.140012f, 2.391021f), new Vector3(-0.007645808f, 1.0049f, 1.400201f));
 
-            var debugLight = new PointLight(new Vector3(0, 1.7f, -0.5f), Color4.White, 2);
+            var debugLight = new PointLight(new Vector3(0, 1f, -0.5f), Color4.White, 2);
             scene.Add(debugLight);
             scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
 
             
-            scene.Add(new SphereLight(new Vector3(0f, 2, 0), 0.4f, Color4.White));
+            scene.Add(new SphereLight(new Vector3(0f, 1.95f, 0), 0.4f, Color4.White, 4));
 
 
             //var lightWidth = 1.75f;
@@ -119,8 +121,8 @@ namespace RayTracer.World
             var wallMat = new Material(MaterialType.Diffuse) { Color = new Color3(0.7f, 0.7f, 0.7f)};
             //top
             scene.Add(new Quad(
-                new Vector3(-1, 2, -1),
-                new Vector3(1, 2, -1),
+                new Vector3(-1, 2, -4),
+                new Vector3(1, 2, -4),
                 new Vector3(1, 2,  4),
                 new Vector3(-1, 2, 4),
                  wallMat
@@ -128,17 +130,17 @@ namespace RayTracer.World
 
             //bottom
             scene.Add(new Quad(
-                new Vector3(-1, 0, -1),
+                new Vector3(-1, 0, -4),
                 new Vector3(-1, 0, 4),
                 new Vector3(1, 0, 4),
-                new Vector3(1, 0, -1),
+                new Vector3(1, 0, -4),
                  wallMat
                 ));
 
             //left
             scene.Add(new Quad(
-                new Vector3(-1, 0, -1),
-                new Vector3(-1, 2, -1),
+                new Vector3(-1, 0, -4),
+                new Vector3(-1, 2, -4),
                 new Vector3(-1, 2, 4),
                 new Vector3(-1, 0, 4),
                  wallMat
@@ -146,21 +148,21 @@ namespace RayTracer.World
 
             //right
             scene.Add(new Quad(
-                new Vector3(1, 0, -1),
+                new Vector3(1, 0, -4),
                 new Vector3(1, 0, 4),
                 new Vector3(1, 2, 4),
-                new Vector3(1, 2, -1),
+                new Vector3(1, 2, -4),
                  wallMat
                 ));
 
             //back
-            scene.Add(new Quad(
-                new Vector3(-1, 0, -1),
-                new Vector3(1, 0, -1),
-                new Vector3(1, 2, -1),
-                new Vector3(-1, 2, -1),
-                 wallMat
-                ));
+            //scene.Add(new Quad(
+            //    new Vector3(-1, 0, -1),
+            //    new Vector3(1, 0, -1),
+            //    new Vector3(1, 2, -1),
+            //    new Vector3(-1, 2, -1),
+            //     wallMat
+            //    ));
 
             ////front
             //scene.Add(new Quad(
@@ -195,7 +197,7 @@ namespace RayTracer.World
             var mat = new Material(MaterialType.Diffuse);
             scene.Add(Sphere.CreateOnGround(new Vector3(0,0.5f,0), 0.5f, mat.WithColor(Color4.Red)));
             scene.Add(Sphere.CreateOnGround(new Vector3(0,-0.5f,0), 0.5f, mat));
-            scene.Add(Sphere.CreateOnGround(new Vector3(1,0.5f,1), 0.5f, mat.WithColor(Color4.Green)));
+            scene.Add(new SphereLight(new Vector3(1,1,1), 0.5f, Color4.White, 2));
             scene.Add(Sphere.CreateOnGround(new Vector3(1, -0.5f, 1), 0.5f, mat));
             scene.Add(Sphere.CreateOnGround(new Vector3(2,0.5f,2), 0.5f, mat.WithColor(Color4.Blue)));
             scene.Add(Sphere.CreateOnGround(new Vector3(2, -0.5f, 2), 0.5f, mat));
@@ -206,12 +208,12 @@ namespace RayTracer.World
 
         }
 
-        private static SurfaceLight CreateLight(Vector3 position, Color4 color, float width, float height)
+        private static QuadLight CreateLight(Vector3 position, Color4 color, float width, float height)
         {
             float hWidth = width/2;
             float hHeight = height/2;
             //facing down
-            return new SurfaceLight(
+            return new QuadLight(
                 new Vector3(hWidth, 0, -hHeight) + position,
                 new Vector3(hWidth, 0, hHeight) + position,
                 new Vector3(-hWidth, 0, hHeight) + position,
