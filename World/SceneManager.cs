@@ -10,7 +10,7 @@ namespace RayTracer.World
         private readonly Scene _scene;
         readonly List<Action<Camera, Scene>> _constructors = new List<Action<Camera, Scene>>();
         public int CurrentScene { get; private set; }
-
+        
         public SceneManager(Camera camera, Scene scene)
         {
             _camera = camera;

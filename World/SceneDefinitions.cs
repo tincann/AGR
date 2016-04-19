@@ -1,7 +1,9 @@
 ﻿using System.IO;
+using System.Reflection;
 using OpenTK;
 using OpenTK.Graphics;
 using RayTracer.Helpers;
+using RayTracer.Properties;
 using RayTracer.Shading;
 using RayTracer.Shading.Textures;
 using RayTracer.World.Ambiance;
@@ -39,7 +41,8 @@ namespace RayTracer.World
             AddSkybox(scene);
             AddFloor(scene);
             AddLight(scene);
-            var teapot = ObjLoader.Load("C:\\Users\\Morten\\Documents\\Visual Studio 2015\\Projects\\AGR\\Meshes\\teapot.obj", Vector3.Zero, Material.Metal);
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..\\..\\Meshes\\teapot.obj");
+            var teapot = ObjLoader.Load(path, Vector3.Zero, Material.Metal);
             scene.Add(teapot);
         }
 
@@ -94,7 +97,7 @@ namespace RayTracer.World
             scene.Add(new PointLight(new Vector3(5,5,5), Color4.White, 30));
 
             
-            scene.Add(new SphereLight(new Vector3(0.4f, 1.5f, 0.4f), 0.2f, Color4.White));
+            scene.Add(new SphereLight(new Vector3(0f, 2, 0), 0.4f, Color4.White));
 
 
             //var lightWidth = 1.75f;
@@ -159,14 +162,14 @@ namespace RayTracer.World
                  wallMat
                 ));
 
-            //front
-            scene.Add(new Quad(
-                new Vector3(-1, 0, 4),
-                new Vector3(-1, 2, 4),
-                new Vector3(1, 2, 4),
-                new Vector3(1, 0, 4),
-                 wallMat
-                ));
+            ////front
+            //scene.Add(new Quad(
+            //    new Vector3(-1, 0, 4),
+            //    new Vector3(-1, 2, 4),
+            //    new Vector3(1, 2, 4),
+            //    new Vector3(1, 0, 4),
+            //     wallMat
+            //    ));
         }
 
         public static void DarkRoom(Camera camera, Scene scene)

@@ -42,7 +42,7 @@ namespace RayTracer.World
 
         public SphereLight(Vector3 center, float radius, Color4 color) : base(center, radius, new Material(MaterialType.Light).WithColor(color))
         {
-            Area = 4*MathHelper.Pi*radius*radius / 2;
+            Area = 4*MathHelper.Pi*radius*radius;
         }
 
         public RandomPoint GetRandomPoint(RNG rng, Intersection intersection)

@@ -113,6 +113,18 @@ namespace RayTracer
                 Task.WaitAny(_tasks, _exitToken);
             }
 
+            //switch scenes after all threads are joined
+            if (_dScene == -1)
+            {
+                _sceneManager.Previous();
+                RestartSample();
+                Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
+            }else if (_dScene == 1)
+            {
+                _sceneManager.Next();
+                RestartSample();
+                Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
+            }
 #else
             for (int y = 0; y < Screen.Height; y++)
             {
@@ -175,18 +187,15 @@ namespace RayTracer
             Console.WriteLine($"Gamme correction: {_gammaCorrection}");
         }
 
+        private int _dScene = 0;
         public void PreviousScene()
         {
-            _sceneManager.Previous();
-            RestartSample();
-            Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
+            _dScene = -1;
         }
 
         public void NextScene()
         {
-            _sceneManager.Next();
-            RestartSample();
-            Console.WriteLine($"Scene {_sceneManager.CurrentScene}");
+            _dScene = 1;
         }
 
         public void RestartSample()
