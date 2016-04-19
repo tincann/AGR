@@ -34,7 +34,7 @@ namespace RayTracer
 
             //var tracer = new WhittedStyleTracer();
             var tracer = new PathTracer();
-            _scene = new Scene(tracer, true);
+            _scene = new Scene(tracer, constructBVH: true);
             _sceneManager = new SceneManager(_camera, _scene);
 
             _sceneManager.Add(SceneDefinitions.Default);
